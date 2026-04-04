@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Romans Quiz - Set 2 (NKJV Refined)</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    .question { margin-bottom: 20px; padding: 10px; border-radius: 8px; }
+    .question p { font-weight: bold; }
+    .correct { background-color: #d4edda; }
+    .incorrect { background-color: #f8d7da; }
+    .correct-answer { font-size: 14px; margin-top: 5px; }
+    .correct-answer em { font-size: 16px; display: block; margin-top: 6px; padding: 10px; border-left: 4px solid #555; background-color: #f9f9f9; font-style: italic; font-family: 'Georgia', 'Times New Roman', serif; color: #333; }
+    .center { text-align: center; margin-top: 20px; }
+    button { padding: 10px 15px; font-size: 16px; }
+    #result { font-size: 20px; font-weight: bold; margin-top: 20px; white-space: pre-line; }
+    .error { color: red; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<h1>📖 Romans Quiz (Set 2)</h1>
+<p><em>Please select the right option for each question.</em></p>
+
+<div style="margin-bottom:15px;">
+  <label><strong>Enter your name:</strong></label><br>
+  <input type="text" id="playerNameInput" placeholder="Your name" style="padding:8px; width:250px; font-size:14px;">
+</div>
+
+<form id="quizForm"></form>
+
+<div class="center">
+  <button onclick="submitQuiz()">Submit</button>
+</div>
+
+<div id="result"></div>
+<div class="center" id="retakeContainer"></div>
+
+<script>
+const questions = [
+  {q:"What happens when people exchange the truth of God for the lie?", options:["They begin to worship created things instead of the Creator","They become spiritually wiser and stronger","They receive immediate forgiveness without repentance","They grow in righteousness and truth"], answer:0, ref:"Romans 1:25", verse:"Who exchanged the truth of God for the lie, and worshiped and served the creature rather than the Creator."},
+
+  {q:"What is revealed from heaven against all ungodliness?", options:["The grace of God for salvation","The peace of God for believers","The wrath of God against sin","The blessings of God upon all people"], answer:2, ref:"Romans 1:18", verse:"For the wrath of God is revealed from heaven against all ungodliness and unrighteousness of men."},
+
+  {q:"What will God render to each person according to Paul?", options:["A reward based on personal effort","Judgment according to his deeds","Blessings regardless of actions","Grace without accountability"], answer:1, ref:"Romans 2:6", verse:"Who will render to each one according to his deeds."},
+
+  {q:"What kind of circumcision does Paul describe as being of the heart?", options:["A physical ritual performed outwardly","A spiritual work done by the Spirit","A cultural tradition passed through generations","A symbolic act of religious identity"], answer:1, ref:"Romans 2:29", verse:"Circumcision is that of the heart, in the Spirit, not in the letter."},
+
+  {q:"What does the law bring according to Paul's teaching?", options:["It brings justification and eternal life","It produces wrath because of transgression","It removes the need for grace","It guarantees righteousness automatically"], answer:1, ref:"Romans 4:15", verse:"Because the law brings about wrath."},
+
+  {q:"What is excluded when a person is justified by faith?", options:["Faith itself is removed","Grace is no longer needed","Boasting in one's own works","Obedience to God is ignored"], answer:2, ref:"Romans 3:27", verse:"Where is boasting then? It is excluded."},
+
+  {q:"What did Abraham believe God could do, even in impossible situations?", options:["God could ignore human weakness","God could give life to the dead","God would delay His promises","God would change His plans"], answer:1, ref:"Romans 4:17", verse:"God, who gives life to the dead and calls those things which do not exist as though they did."},
+
+  {q:"Through whom did grace and the gift come abundantly to many?", options:["Through Adam as the first man","Through Moses as the lawgiver","Through Jesus Christ as the Savior","Through Abraham as the father of faith"], answer:2, ref:"Romans 5:15", verse:"The grace of God and the gift by the grace of the one Man, Jesus Christ, abounded to many."},
+
+  {q:"What should believers not allow to reign in their mortal bodies?", options:["Their personal desires for success","Sin that leads to disobedience","The influence of other people","The responsibilities of daily life"], answer:1, ref:"Romans 6:12", verse:"Do not let sin reign in your mortal body."},
+
+  {q:"Before being set free, to what were believers enslaved?", options:["The traditions of their ancestors","The authority of earthly rulers","Sin and its controlling power","The expectations of society"], answer:2, ref:"Romans 6:17", verse:"Though you were slaves of sin."},
+
+  {q:"Which commandment did Paul say brought death to him?", options:["You shall not steal from others","You shall not covet what belongs to others","You shall not bear false witness","Honor your father and mother"], answer:1, ref:"Romans 7:10", verse:"The commandment, which was to bring life, I found to bring death."},
+
+  {q:"Who dwells within believers according to Romans 8?", options:["The law written on tablets","The Spirit of God living in them","The memory of past teachings","The influence of good works"], answer:1, ref:"Romans 8:9", verse:"The Spirit of God dwells in you."},
+
+  {q:"What are believers considered if they suffer together with Christ?", options:["Servants without inheritance","Followers without reward","Heirs of God and joint heirs with Christ","Observers of God's promises"], answer:2, ref:"Romans 8:17", verse:"If children, then heirs—heirs of God and joint heirs with Christ."},
+
+  {q:"What did Israel pursue but fail to attain?", options:["A deeper understanding of grace","The law of righteousness through works","A relationship with God through faith","The blessings promised to the Gentiles"], answer:1, ref:"Romans 9:31", verse:"Israel, pursuing the law of righteousness, has not attained to the law of righteousness."},
+
+  {q:"What is described as being near, in the mouth and in the heart?", options:["The written law of Moses","The word of faith that is preached","The traditions of religious leaders","The commandments given at Sinai"], answer:1, ref:"Romans 10:8", verse:"The word is near you, in your mouth and in your heart."},
+
+  {q:"What did many in Israel fail to obey?", options:["The commandments of the law","The message of the prophets","The gospel message preached to them","The traditions of their elders"], answer:2, ref:"Romans 10:16", verse:"They have not all obeyed the gospel."},
+
+  {q:"In the illustration of the olive tree, what happened to some branches?", options:["They grew stronger and flourished","They were broken off due to unbelief","They were replaced without reason","They became the root of the tree"], answer:1, ref:"Romans 11:17", verse:"Some of the branches were broken off."},
+
+  {q:"What are believers warned not to be wise in?", options:["Their understanding of Scripture","Their own opinion and pride","Their service to others","Their spiritual gifts"], answer:1, ref:"Romans 12:16", verse:"Do not be wise in your own opinion."},
+
+  {q:"How should believers respond when faced with evil?", options:["Return evil for evil","Avoid confrontation entirely","Overcome evil with good","Ignore the situation completely"], answer:2, ref:"Romans 12:21", verse:"Do not be overcome by evil, but overcome evil with good."},
+
+  {q:"What instruction is given regarding governing authorities?", options:["They should be ignored if inconvenient","Submission is required under God","They have no authority over believers","They should always be resisted"], answer:1, ref:"Romans 13:1", verse:"Let every soul be subject to the governing authorities."},
+
+  {q:"What should believers put on instead of making provision for the flesh?", options:["A disciplined lifestyle","The Lord Jesus Christ","A stronger moral code","Greater self-control"], answer:1, ref:"Romans 13:14", verse:"Put on the Lord Jesus Christ, and make no provision for the flesh."},
+
+  {q:"To whom will each person give an account of themselves?", options:["Their spiritual leaders","Their community","God Himself","Their family members"], answer:2, ref:"Romans 14:12", verse:"Each of us shall give account of himself to God."},
+
+  {q:"What should believers actively pursue with one another?", options:["Doctrinal debates","Peace and mutual edification","Personal achievements","Spiritual recognition"], answer:1, ref:"Romans 14:19", verse:"Let us pursue the things which make for peace and the things by which one may edify another."},
+
+  {q:"Why were the Scriptures written beforehand?", options:["For historical record only","For our learning and encouragement","To establish legal systems","To preserve traditions"], answer:1, ref:"Romans 15:4", verse:"Whatever things were written before were written for our learning."},
+
+  {q:"What did Christ confirm according to the truth of God?", options:["The promises made to the fathers","The authority of the law","The traditions of Israel","The works of humanity"], answer:0, ref:"Romans 15:8", verse:"Jesus Christ has become a servant... to confirm the promises made to the fathers."},
+
+  {q:"Who is commended as a helper of many, including Paul?", options:["Mary who labored much","Phoebe who served the church","Priscilla who taught Apollos","Junia who was notable among apostles"], answer:1, ref:"Romans 16:2", verse:"For indeed she has been a helper of many and of myself also."},
+
+  {q:"What are believers told to avoid in Paul's final warning?", options:["Difficult teachings","Divisions and offenses","Strong leaders","Public discussions"], answer:1, ref:"Romans 16:17", verse:"Note those who cause divisions and offenses... and avoid them."},
+
+  {q:"What is the mindset focused on the flesh described as?", options:["A path to success","A sign of maturity","Spiritual death","A temporary struggle"], answer:2, ref:"Romans 8:6", verse:"To be carnally minded is death."},
+
+  {q:"What is the mindset focused on the Spirit described as?", options:["Life and peace","Faith and endurance","Hope and patience","Grace and truth"], answer:0, ref:"Romans 8:6", verse:"To be spiritually minded is life and peace."},
+
+  {q:"How does Paul describe his response to tribulations?", options:["He avoids them whenever possible","He ignores their impact","He glories in them","He fears their outcome"], answer:2, ref:"Romans 5:3", verse:"We also glory in tribulations."},
+
+  {q:"What does tribulation produce in a believer's life?", options:["Doubt and fear","Perseverance and endurance","Immediate success","Loss of faith"], answer:1, ref:"Romans 5:3", verse:"Tribulation produces perseverance."},
+
+  {q:"How should believers regard themselves in relation to sin?", options:["Struggling but controlled by it","Dead to sin and alive to God","Partially free from its power","Unaffected by its presence"], answer:1, ref:"Romans 6:11", verse:"Reckon yourselves to be dead indeed to sin."},
+
+  {q:"What are believers alive to in Christ?", options:["Their personal calling","God through Jesus Christ","Their spiritual potential","The promises of the law"], answer:1, ref:"Romans 6:11", verse:"Alive to God in Christ Jesus our Lord."},
+
+  {q:"What does Paul declare cannot separate believers from Christ's love?", options:["Only minor troubles","Only persecution","Nothing at all","Only spiritual struggles"], answer:2, ref:"Romans 8:35", verse:"Shall tribulation, or distress... separate us from the love of Christ?"},
+
+  {q:"How are God's gifts and calling described?", options:["Temporary and conditional","Subject to change","Irrevocable and unchanging","Based on human effort"], answer:2, ref:"Romans 11:29", verse:"The gifts and the calling of God are irrevocable."},
+
+  {q:"How should believers use their spiritual gifts?", options:["Carefully but rarely","Diligently in service to others","Only in private settings","For personal growth alone"], answer:1, ref:"Romans 12:6-8", verse:"Having then gifts differing... let us use them."},
+
+  {q:"What does love refrain from doing to a neighbor?", options:["Speaking truth","Doing harm","Offering correction","Showing kindness"], answer:1, ref:"Romans 13:10", verse:"Love does no harm to a neighbor."},
+
+  {q:"What is anything not done from faith considered?", options:["A mistake","A weakness","Sin","A learning process"], answer:2, ref:"Romans 14:23", verse:"Whatever is not from faith is sin."},
+
+  {q:"What did Paul say he had fully preached across regions?", options:["The law of Moses","The gospel of Christ","The history of Israel","The message of prophets"], answer:1, ref:"Romans 15:19", verse:"I have fully preached the gospel of Christ."}
+  ,{q:"Who greets the Roman Christians and identifies himself as the one who wrote down the letter in the Lord?", options:["Tertius, who wrote this epistle","Timothy, Paul's fellow worker","Erastus, the treasurer of the city","Lucius, a relative of Paul"], answer:0, ref:"Romans 16:22", verse:"I, Tertius, who wrote this epistle, greet you in the Lord."}
+];
+
+const form = document.getElementById("quizForm");
+const startTime = new Date();
+
+questions.forEach((item, index) => {
+  const div = document.createElement("div");
+  div.classList.add("question");
+  div.id = `qbox${index}`;
+
+  let html = `<p>${index + 1}. ${item.q}</p>`;
+  item.options.forEach((opt, i) => {
+    html += `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
+  });
+  html += `<div class="error" id="error${index}"></div>`;
+
+  div.innerHTML = html;
+  form.appendChild(div);
+});
+
+function submitQuiz() {
+  let playerName = document.getElementById("playerNameInput").value.trim();
+  if (!playerName) playerName = "Anonymous";
+  let score = 0;
+  let unanswered = false;
+  let incorrectChapters = new Set();
+
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name=q${i}]:checked`);
+    const errorDiv = document.getElementById(`error${i}`);
+    const box = document.getElementById(`qbox${i}`);
+    errorDiv.textContent = "";
+
+    if (!selected) {
+      errorDiv.textContent = "Please select an answer.";
+      unanswered = true;
+      return;
+    }
+
+    const selectedVal = parseInt(selected.value);
+
+    if (selectedVal === q.answer) {
+      score++;
+      box.classList.add("correct");
+    } else {
+      box.classList.add("incorrect");
+
+      if (!box.querySelector(".correct-answer")) {
+        const info = document.createElement("div");
+        info.className = "correct-answer";
+        info.innerHTML = `<strong>Correct answer:</strong> ${q.options[q.answer]}<br><em>${q.ref} - ${q.verse}</em>`;
+        box.appendChild(info);
+      }
+    }
+
+    document.querySelectorAll(`input[name=q${i}]`).forEach(inp => inp.disabled = true);
+  });
+
+  if (unanswered) {
+    document.getElementById("result").innerText = "Please answer all questions before submitting.";
+    return;
+  }
+
+  let message = `Your Score: ${score} / ${questions.length}\n\n`;
+
+  if (score >= 30) {
+    message += "Well done! You've grasped the essentials of the Book of Romans.";
+  } else if (score >= 20) {
+    message += "Not bad. Keep reviewing key sections for better understanding.";
+  } else if (score >= 10) {
+    message += "Hmm, do read through the book again carefully.";
+  } else {
+    message += "No worries, just do the Bible study once more.";
+  }
+
+  document.getElementById("result").innerText = message;
+
+  // Save to leaderboard
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+  const endTime = new Date();
+  const totalSeconds = Math.round((endTime - startTime) / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const timeTaken = `${minutes}m ${seconds}s`;
+
+  leaderboard.push({
+    name: playerName,
+    score: score,
+    time: timeTaken
+  });
+
+  leaderboard.sort((a, b) => b.score - a.score);
+  leaderboard = leaderboard.slice(0, 10);
+
+  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+  displayLeaderboard();
+
+  const retakeDiv = document.getElementById("retakeContainer");
+  retakeDiv.innerHTML = `<br><button onclick="location.reload()">Retake Quiz</button>`;
+}
+
+function displayLeaderboard() {
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+  let html = "<h2>🏆 Your Scores</h2>";
+
+  leaderboard.forEach((entry, index) => {
+    let medal = "";
+    if (index === 0) medal = "🥇 ";
+    else if (index === 1) medal = "🥈 ";
+    else if (index === 2) medal = "🥉 ";
+
+    html += `${medal}${index + 1}. ${entry.name} - ${entry.score} (${entry.time})<br>`;
+  });
+
+  document.getElementById("result").innerHTML += "<br>" + html;
+}
+</script>
+
+</body>
+</html>

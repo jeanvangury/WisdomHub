@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Romans Quiz</title>
+
+<style>
+body { font-family: Arial; padding:20px; max-width:800px; margin:auto; }
+
+.question { margin-bottom:20px; padding:10px; border-radius:8px; }
+
+.question p {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.correct { background:#d4edda; }
+.incorrect { background:#f8d7da; }
+
+.correct-answer { font-size:14px; margin-top:8px; }
+
+.verse {
+  font-size:13px;
+  margin-top:5px;
+  font-style:italic;
+  color:#333;
+}
+
+.center { text-align:center; margin-top:20px; }
+
+button { padding:10px 15px; font-size:16px; }
+
+#result {
+  font-size:20px;
+  font-weight:bold;
+  margin-top:20px;
+  white-space:pre-line;
+}
+
+input[type="text"] {
+  padding:10px 12px;
+  font-size:16px;
+  width: 260px;
+  max-width: 100%;
+  box-sizing:border-box;
+}
+
+/* Certificate */
+#certificateContainer { display:none; margin-top: 24px; }
+.certificate {
+  width: 760px;
+  max-width: 100%;
+  position: relative;
+  padding: 36px 28px 92px;
+  background: #f7f7f7;
+  border: 10px solid #7a2e2e;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.certificate::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(122,46,46,0.35);
+  pointer-events: none;
+}
+
+.cert-corner {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #8b3a3a, #6a2323);
+  opacity: 0.95;
+}
+.cert-corner.tl { top: -16px; left: -16px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.cert-corner.tr { top: -16px; right: -16px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.cert-corner.bl { bottom: -16px; left: -16px; clip-path: polygon(0 0, 0 100%, 100% 100%); }
+.cert-corner.br { bottom: -16px; right: -16px; clip-path: polygon(100% 0, 0 100%, 100% 100%); }
+
+.certificate h2 {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 36px;
+  letter-spacing: 4px;
+  font-weight: 700;
+}
+.certificate .company {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.certificate .small {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+}
+.certificate #certName {
+  font-family: "Brush Script MT", "Lucida Handwriting", "Segoe Script", cursive;
+  font-size: 46px;
+  margin-top: 10px;
+}
+.certificate .meta {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+.certificate .awardBy {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 700;
+}
+
+.cert-emblem {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 8px;
+}
+.cert-emblem svg {
+  width: 92px;
+  height: 92px;
+}
+
+.cert-footer {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+.sig-block {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+.sig-line {
+  height: 2px;
+  width: 190px;
+  margin: 0 auto 8px;
+  background: #333;
+}
+.sig-block.right .sig-line {
+  width: 190px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📖 Romans Quiz</h1>
+<p><em>Please select the right option for each question.</em></p>
+
+<div class="center">
+  <label for="nameInput" style="display:block; font-size:16px; margin-bottom:8px; font-weight:700;">Your Name</label>
+  <input id="nameInput" type="text" placeholder="Enter your name" autocomplete="name" />
+</div>
+
+<form id="quizForm"></form>
+
+<div class="center">
+<button onclick="submitQuiz()">Submit</button>
+</div>
+
+<div id="result"></div>
+<div class="center" id="retakeContainer"></div>
+
+<div id="certificateContainer" class="center">
+  <div class="certificate">
+    <span class="cert-corner tl" aria-hidden="true"></span>
+    <span class="cert-corner tr" aria-hidden="true"></span>
+    <span class="cert-corner bl" aria-hidden="true"></span>
+    <span class="cert-corner br" aria-hidden="true"></span>
+
+    <h2>CERTIFICATE<br>OF ACHIEVEMENT</h2>
+    <div class="small">This certificate awarded to:</div>
+    <div id="certName"></div>
+
+    <div class="cert-emblem" aria-hidden="true">
+      <!-- Simple laurel-style mark -->
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 90 C47 78 45 61 50 44 C43 46 36 53 33 62 C29 75 35 92 48 102"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 90 C73 78 75 61 70 44 C77 46 84 53 87 62 C91 75 85 92 72 102"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+        <path d="M43 36 C40 29 41 22 45 18 C50 13 57 15 60 22 C63 15 70 13 75 18 C79 22 80 29 77 36"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="meta">Percentage: <span id="certPercent"></span></div>
+    <div class="awardBy">Awarded by Friday Bible Study</div>
+
+  </div>
+</div>
+
+<script>
+
+const questions = [
+{q:"What does Paul say the gospel reveals?",options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"],answer:1,ref:"Romans 1:17",verse:"For in it the righteousness of God is revealed from faith to faith; as it is written, 'The just shall live by faith.'"},
+{q:"According to Scripture, how is God’s invisible nature made known?",options:["Through prophets","Through Scripture alone","Through creation","Through angels"],answer:2,ref:"Romans 1:20",verse:"For since the creation of the world His invisible attributes are clearly seen, being understood by the things that are made."},
+{q:"What leads people to repentance?",options:["Fear of judgment","God’s kindness","Law enforcement","Punishment"],answer:1,ref:"Romans 2:4",verse:"The goodness of God leads you to repentance."},
+{q:"Who is considered a true Jew?",options:["One circumcised outwardly","One born in Israel","One inwardly, by the Spirit","One who follows traditions"],answer:2,ref:"Romans 2:29",verse:"He is a Jew who is one inwardly; and circumcision is that of the heart, in the Spirit."},
+{q:"How many people are righteous according to Paul?",options:["Many","Few","None","Only Jews"],answer:2,ref:"Romans 3:10",verse:"There is none righteous, no, not one."},
+{q:"Justification comes through:",options:["Works of the law","Faith in Jesus Christ","Ritual sacrifice","Obedience alone"],answer:1,ref:"Romans 3:22",verse:"Even the righteousness of God, through faith in Jesus Christ, to all and on all who believe."},
+{q:"Abraham was justified by:",options:["Works","Circumcision","Faith","Obedience to the law"],answer:2,ref:"Romans 4:3",verse:"Abraham believed God, and it was accounted to him for righteousness."},
+{q:"Righteousness was credited to Abraham before:",options:["He obeyed God","He was circumcised","He believed God","He left his land"],answer:1,ref:"Romans 4:10",verse:"Not while circumcised, but while uncircumcised."},
+{q:"Through one man, sin entered the world. Who?",options:["Moses","Abraham","Adam","David"],answer:2,ref:"Romans 5:12",verse:"Through one man sin entered the world, and death through sin."},
+{q:"What does suffering produce?",options:["Fear","Weakness","Perseverance","Confusion"],answer:2,ref:"Romans 5:3-4",verse:"Tribulation produces perseverance; and perseverance, character; and character, hope."},
+{q:"What are believers dead to?",options:["The law","Sin","The world","Judgment"],answer:1,ref:"Romans 6:2",verse:"How shall we who died to sin live any longer in it?"},
+{q:"The wages of sin is:",options:["Punishment","Death","Separation","Judgment"],answer:1,ref:"Romans 6:23",verse:"For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord."},
+{q:"The law is compared to what kind of relationship?",options:["Friendship","Marriage","Servanthood","Brotherhood"],answer:1,ref:"Romans 7:2",verse:"The woman who has a husband is bound by the law to her husband as long as he lives."},
+{q:"What struggle does Paul describe?",options:["Doing what he wants","Not knowing the law","Doing what he hates","Ignoring God"],answer:2,ref:"Romans 7:15",verse:"For what I am doing, I do not understand... what I hate, that I do."},
+{q:"There is now no condemnation for whom?",options:["All people","The righteous","Those in Christ Jesus","The obedient"],answer:2,ref:"Romans 8:1",verse:"There is therefore now no condemnation to those who are in Christ Jesus."},
+{q:"What helps us in our weakness?",options:["The law","Angels","The Spirit","Faith alone"],answer:2,ref:"Romans 8:26",verse:"The Spirit also helps in our weaknesses."},
+{q:"What can separate us from the love of God?",options:["Sin","Death","Nothing","Trials"],answer:2,ref:"Romans 8:38-39",verse:"Nothing shall be able to separate us from the love of God which is in Christ Jesus our Lord."},
+{q:"God told Rebekah:",options:["The younger will serve the older","The older will serve the younger","Both are equal","Neither will lead"],answer:1,ref:"Romans 9:12",verse:"The older shall serve the younger."},
+{q:"God has mercy on whom?",options:["The deserving","The obedient","Whom He wills","Israel only"],answer:2,ref:"Romans 9:15",verse:"I will have mercy on whomever I will have mercy."},
+{q:"Faith comes by:",options:["Reading","Hearing the Word of God","Prayer","Obedience"],answer:1,ref:"Romans 10:17",verse:"Faith comes by hearing, and hearing by the word of God."},
+{q:"Who will be saved?",options:["The righteous","Those who confess and believe","The Jews","The obedient"],answer:1,ref:"Romans 10:9",verse:"If you confess with your mouth the Lord Jesus and believe in your heart... you will be saved."},
+{q:"What tree represents Israel?",options:["Fig tree","Olive tree","Vine","Cedar"],answer:1,ref:"Romans 11:17",verse:"You, being a wild olive tree, were grafted in among them."},
+{q:"Gentiles are described as:",options:["Natural branches","Broken branches","Wild branches grafted in","Root of the tree"],answer:2,ref:"Romans 11:17",verse:"A wild olive tree grafted in."},
+{q:"What kind of sacrifice should believers offer?",options:["Burnt offering","Living sacrifice","Sin offering","Grain offering"],answer:1,ref:"Romans 12:1",verse:"Present your bodies a living sacrifice, holy, acceptable to God."},
+{q:"How is transformation achieved?",options:["By effort","By discipline","By renewing the mind","By prayer alone"],answer:2,ref:"Romans 12:2",verse:"Be transformed by the renewing of your mind."},
+{q:"Authorities are established by:",options:["Governments","People","God","Leaders"],answer:2,ref:"Romans 13:1",verse:"There is no authority except from God."},
+{q:"Love fulfills:",options:["Faith","The law","Grace","Justice"],answer:1,ref:"Romans 13:10",verse:"Love is the fulfillment of the law."},
+{q:"We should not judge others over:",options:["Sin","Faith","Disputable matters","Truth"],answer:2,ref:"Romans 14:1",verse:"Not to disputes over doubtful things."},
+{q:"The kingdom of God is about:",options:["Food and drink","Rules","Righteousness, peace, and joy","Sacrifice"],answer:2,ref:"Romans 14:17",verse:"Righteousness and peace and joy in the Holy Spirit."},
+{q:"Christ became a servant to:",options:["Gentiles","Jews","The poor","All people"],answer:1,ref:"Romans 15:8",verse:"Jesus Christ has become a servant to the circumcision."},
+{q:"The God of hope fills believers with:",options:["Strength","Knowledge","Joy and peace","Faith only"],answer:2,ref:"Romans 15:13",verse:"May the God of hope fill you with all joy and peace in believing."},
+{q:"Who is commended as a servant of the church?",options:["Priscilla","Phoebe","Mary","Junia"],answer:1,ref:"Romans 16:1",verse:"I commend to you Phoebe our sister, who is a servant of the church."},
+{q:"What should believers watch out for?",options:["False teachers causing division","Governments","Persecution","Poverty"],answer:0,ref:"Romans 16:17",verse:"Note those who cause divisions... and avoid them."},
+{q:"What is the power of God for salvation?",options:["Law","Gospel","Faith","Grace"],answer:1,ref:"Romans 1:16",verse:"The gospel of Christ... is the power of God to salvation."},
+{q:"What is the purpose of the law?",options:["To save","To justify","To reveal sin","To bless"],answer:2,ref:"Romans 3:20",verse:"By the law is the knowledge of sin."},
+{q:"Who gives life to the dead?",options:["Angels","God","Faith","Spirit"],answer:1,ref:"Romans 4:17",verse:"God... who gives life to the dead."},
+{q:"Who reigns through righteousness?",options:["Law","Grace","Faith","Spirit"],answer:1,ref:"Romans 5:21",verse:"Grace might reign through righteousness to eternal life."},
+{q:"Who are led by the Spirit?",options:["Servants","Believers","Sons of God","Apostles"],answer:2,ref:"Romans 8:14",verse:"These are sons of God."},
+{q:"What did Israel pursue but not attain?",options:["Faith","Grace","Righteousness","Salvation"],answer:2,ref:"Romans 9:31",verse:"Has not attained the law of righteousness."},
+{q:"What is the root that supports the branches?",options:["Faith","Law","Patriarchs/promises","Covenant"],answer:2,ref:"Romans 11:18",verse:"The root supports you."}
+];
+
+const form = document.getElementById("quizForm");
+
+questions.forEach((item,index)=>{
+const div=document.createElement("div");
+div.classList.add("question");
+div.id=`qbox${index}`;
+
+let html=`<p>${index+1}. ${item.q}</p>`;
+item.options.forEach((opt,i)=>{
+html+=`<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
+});
+
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+function submitQuiz(){
+
+let score=0;
+let total=questions.length;
+
+questions.forEach((q,i)=>{
+const selected=document.querySelector(`input[name=q${i}]:checked`);
+const box=document.getElementById(`qbox${i}`);
+
+if(!selected) return;
+
+const val=parseInt(selected.value);
+
+if(val===q.answer){
+score++;
+box.classList.add("correct");
+}else{
+box.classList.add("incorrect");
+
+const info=document.createElement("div");
+info.className="correct-answer";
+
+info.innerHTML=`
+<b>Correct Answer:</b> ${q.options[q.answer]}<br>
+<span class="verse">${q.ref} – ${q.verse}</span>
+`;
+
+box.appendChild(info);
+}
+
+document.querySelectorAll(`input[name=q${i}]`).forEach(inp=>inp.disabled=true);
+});
+
+let message=`Your Score: ${score} / ${total}\n\n`;
+
+const nameInput = document.getElementById("nameInput");
+const participantName = (nameInput && nameInput.value ? nameInput.value.trim() : "");
+const safeName = participantName || "Participant";
+const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+
+const certificateContainer = document.getElementById("certificateContainer");
+certificateContainer.style.display = "none";
+
+if(score > 30){
+  message += `Excellent, ${safeName}! You've grasped the essentials of Romans 🎉`;
+  certificateContainer.style.display = "block";
+  document.getElementById("certName").innerText = safeName;
+  document.getElementById("certPercent").innerText = `${percentage}%`;
+}
+else if(score >= 20){
+  message += `Good effort, ${safeName}! Review a few chapters and grow deeper 📖`;
+}
+else if(score >= 10){
+  message += `You're learning, ${safeName}! Keep studying Romans carefully 🙏`;
+}
+else{
+  message += `Take time to read Romans again, ${safeName}, and try once more 💪`;
+}
+
+document.getElementById("result").innerText=message;
+
+document.getElementById("retakeContainer").innerHTML=
+`<br><button onclick="location.reload()">Retake Quiz</button>`;
+}
+
+</script>
+
+</body>
+</html>
