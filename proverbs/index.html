@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prudence Scorecard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background:#f5f7fb; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; }
+    th { background: #e9eefc; }
+    td:first-child { }
+    td:nth-child(2) { font-weight: bold; }
+    td:nth-child(5) { font-weight: bold; font-style: italic; }
+    input[type="number"] { width: 70px; padding:5px; }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; padding:10px; border-radius:8px; }
+    .green { background:#d4edda; }
+    .yellow { background:#fff3cd; }
+    .red { background:#f8d7da; }
+    .section { margin-top: 30px; }
+    .encouragement { margin-top:15px; padding:15px; background:#ffffff; border-left:5px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<h1>Prudence Scorecard</h1>
+<p><strong>Instruction:</strong> Rate yourself on each proverb on a scale of 1 to 10, 1 (Weak) to 10 (Strong).</p>
+
+<table>
+<tr>
+<th>#</th><th>Proverb</th><th>Reference</th><th>Verse (NKJV)</th><th>Reflection Question</th><th>Score</th>
+</tr>
+
+<script>
+const data = [
+{p:"Self-Controlled", ref:"Prov 12:16", verse:"A fool’s wrath is known at once, But a prudent man covers shame.", q:"Do I control my reactions, especially when offended or embarrassed?"},
+{p:"Selective in Speech", ref:"Prov 12:23", verse:"A prudent man conceals knowledge, But the heart of fools proclaims foolishness.", q:"Do I think before I speak and avoid unnecessary or harmful words?"},
+{p:"Thoughtful in Action", ref:"Prov 13:16; 14:8", verse:"Every prudent man acts with knowledge, But a fool lays open his folly.<br><br>The wisdom of the prudent is to understand his way, But the folly of fools is deceit.", q:"Do I act intentionally with understanding, or do I act impulsively?"},
+{p:"Discerning", ref:"Prov 14:15", verse:"The simple believes every word, But the prudent considers well his steps.", q:"Do I evaluate information carefully before making decisions?"},
+{p:"Teachable", ref:"Prov 15:5", verse:"A fool despises his father’s instruction, But he who receives correction is prudent.", q:"Am I open to correction and willing to learn from others?"},
+{p:"Kind in Speech", ref:"Prov 16:21", verse:"Sweetness of the lips increases learning.", q:"Do my words reflect kindness, gentleness, and clarity?"},
+{p:"Eager to Learn", ref:"Prov 14:18; 18:15", verse:"The simple inherit folly, But the prudent are crowned with knowledge.<br><br>The heart of the prudent acquires knowledge, And the ear of the wise seeks knowledge.", q:"Am I actively seeking knowledge and growing in wisdom?"},
+{p:"Forward-Looking", ref:"Prov 22:3", verse:"A prudent man foresees evil and hides himself.", q:"Do I anticipate outcomes and prepare wisely for the future?"}
+];
+
+document.write(data.map((d,i)=>`
+<tr>
+<td>${i+1}</td>
+<td>${d.p}</td>
+<td>${d.ref}</td>
+<td>${d.verse}</td>
+<td>${d.q}</td>
+<td>
+<input type="number" min="1" max="10" id="c${i}" required>
+</td>
+</tr>
+`).join(''));
+</script>
+
+</table>
+
+<div style="text-align:center; margin-top:30px;">
+  <button onclick="calc()" style="padding:15px 40px; font-size:18px; border-radius:8px;">Calculate</button>
+</div>
+
+<div id="result" class="result"></div>
+<div id="encouragement" class="encouragement"></div>
+
+<div class="section">
+<h3>Scoring Guide</h3>
+<ul>
+<li><strong>70–80</strong> → Strong in Prudence</li>
+<li><strong>50–69</strong> → Growing in Prudence</li>
+<li><strong>30–49</strong> → Needs Intentional Development</li>
+<li><strong>8–29</strong> → Requires Focused Attention and Growth</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>Insights</h3>
+<p><strong>Areas to improve, scores below 5 are listed.:</strong></p>
+<ul id="bottom"></ul>
+</div>
+
+<script>
+function calc(){
+let scores=[];
+let total=0;
+
+for(let i=0;i<data.length;i++){
+let input=document.getElementById('c'+i);
+let val=parseInt(input.value);
+
+if(!val || val<1 || val>10){
+alert('Please enter a valid score (1-10) for all fields');
+return;
+}
+
+scores.push({name:data[i].p, val});
+total+=val;
+}
+
+let msg="";
+let cls="";
+let encouragementText="";
+
+if(total>=70){
+msg="You are strong in Prudence and are consistently practicing it.)";
+cls="green";
+encouragementText=`<strong>“The wise shall inherit glory, But shame shall be the legacy of fools.” — Proverbs 3:35</strong><br><br>
+You are walking in wisdom—keep going. Prudence is not a destination but a lifestyle. Continue to remain humble and dependent on God, because sustained wisdom comes from staying teachable. Your life can now become a guide and blessing to others.`;
+}
+else if(total>=50){
+msg="You are still growing in Prudence. You have a good foundation and there is room to mature)";
+cls="yellow";
+encouragementText=`<strong>“But the path of the just is like the shining sun, That shines ever brighter unto the perfect day.” — Proverbs 4:18</strong><br><br>
+You are on the right path. Growth in prudence is progressive—what matters is consistency. Keep building on what you’ve started. As you stay faithful in small decisions, clarity and wisdom will increase steadily.`;
+}
+else if(total>=30){
+msg="You would do well to intentionally develop Prudence";
+cls="red";
+encouragementText=`<strong>“Apply your heart to instruction And your ears to words of knowledge.” — Proverbs 23:12</strong><br><br>
+This is a season to be intentional. Prudence can be learned and developed. Lean into instruction, seek counsel, and slow down your decision-making process. As you pursue wisdom deliberately, transformation will follow.`;
+}
+else{
+msg="A little more focused attention and practise will help you grow in Prudence.";
+cls="red";
+encouragementText=`<strong>“For the Lord gives wisdom; From His mouth come knowledge and understanding.” — Proverbs 2:6</strong><br><br>
+This is not a place of discouragement, but of beginning. God is ready to give wisdom generously. Start with a desire to learn, a willingness to change, and a commitment to seek Him daily. Even small steps toward wisdom can lead to significant life change.`;
+}
+
+result.className="result "+cls;
+result.innerHTML=`Total: ${total}/80 <br> ${msg}`;
+encouragement.innerHTML=encouragementText;
+
+scores.sort((a,b)=>b.val-a.val);
+
+top.innerHTML = scores.slice(0,2).map(s=>s.name+" ("+s.val+")").join(", ");
+let weakAreas = scores.filter(s => s.val < 5);
+if(weakAreas.length === 0){
+  bottom.innerHTML = "None";
+} else {
+  bottom.innerHTML = weakAreas.map(s=>{
+    let item = data.find(d => d.p === s.name);
+    return `<li><strong>${s.name} (${s.val})</strong> - ${item.verse}</li>`;
+  }).join("");
+}
+}
+</script>
+
+</body>
+</html>
