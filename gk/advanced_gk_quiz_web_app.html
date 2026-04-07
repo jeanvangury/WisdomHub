@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced GK Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 10px; background:#f5f5f5; }
+    h1 { text-align:center; }
+    .top-bar { margin-bottom: 15px; text-align:center; }
+    .question { background:#fff; padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    button { padding:10px 15px; font-size:16px; border:none; border-radius:6px; background:#007bff; color:white; }
+    button:hover { background:#0056b3; }
+    .result { font-weight:bold; margin-top:20px; text-align:center; }
+    .correct-box { background:#e6ffe6; border-left:5px solid green; padding:8px; margin-top:5px; }
+    .wrong-box { background:#ffe6e6; border-left:5px solid red; padding:8px; margin-top:5px; }
+    table { margin-top:20px; width:100%; border-collapse: collapse; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+    @media(max-width:600px){
+      .question { font-size:14px; }
+      button { width:100%; margin-top:10px; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Advanced GK Quiz</h1>
+
+<div class="top-bar">
+  Name: <input type="text" id="username" placeholder="Enter your name"> 
+  <div id="timer">Time: 00:00</div>
+</div>
+
+<form id="quizForm"></form>
+
+<div style="text-align:center;">
+  <button onclick="submitQuiz()">Submit</button>
+</div>
+
+<div class="result" id="result"></div>
+
+<h2>Your Scores</h2>
+<table>
+  <thead>
+    <tr><th>Name</th><th>Score</th><th>Time</th><th>Grade</th></tr>
+  </thead>
+  <tbody id="scoreBody"></tbody>
+</table>
+
+<script>
+// Timer
+let seconds = 0;
+const timerEl = document.getElementById("timer");
+const timerInterval = setInterval(() => {
+  seconds++;
+  const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const secs = String(seconds % 60).padStart(2, '0');
+  timerEl.innerText = `Time: ${mins}:${secs}`;
+}, 1000);
+
+// Shuffle helpers
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+function shuffleOptions(question) {
+  const optionsWithIndex = question.options.map((opt, i) => ({ opt, i }));
+  shuffleArray(optionsWithIndex);
+  question.options = optionsWithIndex.map(o => o.opt);
+  question.a = optionsWithIndex.findIndex(o => o.i === question.a);
+}
+
+// More descriptive quiz data
+let quizData = [
+  {q:"In India, the 'Basic Structure Doctrine' established by the Supreme Court ensures that which authority cannot alter the fundamental framework of the Constitution?", options:["The Judiciary through judicial review","The Parliament even through constitutional amendments","The President through ordinances","The Election Commission through electoral reforms"], a:1},
+
+  {q:"In India, which constitutional body is primarily responsible for recommending how tax revenues should be shared between the Union and the States?", options:["NITI Aayog which focuses on policy planning","Finance Commission constituted periodically","GST Council which manages indirect taxes","Reserve Bank of India regulating monetary policy"], a:1},
+
+  {q:"In India, the term 'disinvestment' is most accurately understood as:", options:["The government selling part of its equity in public sector enterprises","An increase in public expenditure to boost growth","Reduction in direct taxes to encourage investment","Receiving foreign aid for development projects"], a:0},
+
+  {q:"In India’s current economic structure, which sector contributes the largest share to the Gross Domestic Product (GDP)?", options:["Agriculture and allied activities","Manufacturing and industrial production","Services sector including IT, banking, and telecom","Mining and natural resource extraction"], a:2},
+
+  {q:"In India, the Anti-Defection Law, aimed at preventing political defections by legislators, is contained in which Schedule of the Constitution?", options:["Eighth Schedule dealing with languages","Ninth Schedule protecting certain laws","Tenth Schedule dealing with defections","Twelfth Schedule related to municipalities"], a:2},
+
+  {q:"In India, which state has the longest coastline, contributing significantly to maritime trade and fisheries?", options:["Maharashtra with major ports like Mumbai","Andhra Pradesh along the eastern coast","Gujarat with extensive western coastline","Tamil Nadu with both historical and modern ports"], a:2},
+
+  {q:"In India, the only active volcano (Barren Island) is located in which region?", options:["Lakshadweep islands in the Arabian Sea","Andaman & Nicobar Islands in the Bay of Bengal","Sikkim in the Himalayan region","Ladakh in the trans-Himalayan zone"], a:1},
+
+  {q:"In India, which river is historically known as the 'Sorrow of Bihar' due to its frequent flooding and shifting course?", options:["The Ganga, the main river system","The Kosi, known for unpredictable behavior","The Son, a tributary of the Ganga","The Gandak, another Himalayan river"], a:1},
+
+  {q:"In India, the Aravalli Range plays an important environmental role primarily because it:", options:["Is the youngest fold mountain system","Acts as a barrier influencing desert expansion","Contains the highest peak in India","Forms a natural divide between north and south India"], a:1},
+
+  {q:"In India, one of the highest motorable roads in the world, Umling La, is located in which region?", options:["Himachal Pradesh near Rohtang","Ladakh region in high Himalayas","Kashmir valley near Zoji La","Sikkim near Nathula Pass"], a:1},
+
+  {q:"India’s Chandrayaan-3 mission achieved a historic landing near which part of the Moon?", options:["Equatorial region","North polar region","South polar region","Far side of the Moon"], a:2},
+
+  {q:"Which country recently joined NATO, marking a significant geopolitical shift in Europe?", options:["Sweden","Ukraine","Finland","Austria"], a:0},
+
+  {q:"The G20 Summit held in 2023 was hosted by which country?", options:["Indonesia","India","Brazil","Italy"], a:1},
+
+  {q:"Which core technology underpins most modern generative AI systems like chatbots and text generators?", options:["Blockchain distributed ledgers","Quantum computing systems","Large Language Models trained on vast data","Edge computing for local processing"], a:2},
+
+  {q:"The India-Middle East-Europe Economic Corridor (IMEC) is primarily intended to enhance what aspect of global interaction?", options:["Military cooperation","Trade and connectivity","Cultural exchange","Space exploration"], a:1},
+
+  {q:"According to recent scientific consensus, which river is often considered the longest in the world?", options:["Amazon River","Nile River","Yangtze River","Mississippi River"], a:0},
+
+  {q:"Which country has the highest number of time zones due to its overseas territories?", options:["Russia","United States","France","China"], a:2},
+
+  {q:"The Dead Sea is geographically located between which two regions?", options:["Egypt and Sudan","Jordan and Israel","Turkey and Iran","Greece and Italy"], a:1},
+
+  {q:"The 'Ring of Fire' is a region best known for what characteristic?", options:["Ocean currents","Frequent earthquakes and volcanoes","Desertification zones","Ancient trade routes"], a:1},
+
+  {q:"Which is the largest desert in the world when all types (including cold deserts) are considered?", options:["Sahara","Arabian","Antarctic","Gobi"], a:2},
+
+  {q:"Satya Nadella is widely credited with transforming Microsoft by focusing on which strategic area?", options:["Windows-only ecosystem","Cloud computing and Azure","Social media platforms","Mobile phone manufacturing"], a:1},
+
+  {q:"Volodymyr Zelenskyy, before becoming President of Ukraine, was primarily known as a:", options:["Military general","Lawyer","Comedian and actor","Economist"], a:2},
+
+  {q:"Jensen Huang, CEO of NVIDIA, is closely linked with the growth of which technological domain?", options:["Social media","Electric vehicles","AI computing using GPUs","E-commerce logistics"], a:2},
+
+  {q:"Sundar Pichai currently serves as the CEO of which global technology company?", options:["Microsoft","Apple","Google","IBM"], a:2},
+
+  {q:"Greta Thunberg is globally recognized for her activism in which area?", options:["Space exploration","Climate change awareness","Artificial intelligence","Global trade"], a:1}
+];
+
+quizData.forEach(q => shuffleOptions(q));
+shuffleArray(quizData);
+
+const form = document.getElementById("quizForm");
+quizData.forEach((item, index) => {
+  const div = document.createElement("div");
+  div.classList.add("question");
+  div.innerHTML = `<b>Q${index+1}. ${item.q}</b><br>` +
+    item.options.map((opt, i) =>
+      `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`
+    ).join("") + `<div id="feedback${index}"></div>`;
+  form.appendChild(div);
+});
+
+function loadScores(){
+  const scores = JSON.parse(localStorage.getItem("quizScores") || "[]");
+  const body = document.getElementById("scoreBody");
+  body.innerHTML = "";
+  scores.forEach(s => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${s.name}</td><td>${s.score}</td><td>${s.time}</td><td>${s.grade}</td>`;
+    body.appendChild(row);
+  });
+}
+loadScores();
+
+function submitQuiz() {
+  clearInterval(timerInterval);
+  let score = 0;
+  quizData.forEach((item, index) => {
+    const answer = document.querySelector(`input[name=q${index}]:checked`);
+    const feedback = document.getElementById(`feedback${index}`);
+    if (answer && parseInt(answer.value) === item.a) {
+      score++;
+      feedback.innerHTML = `<div class='correct-box'>✔ Correct</div>`;
+    } else {
+      feedback.innerHTML = `<div class='wrong-box'>✘ Correct answer: ${item.options[item.a]}</div>`;
+    }
+  });
+
+  const name = document.getElementById("username").value || "Player";
+
+  let grade = "";
+  if (score > 20) grade = "Excellent";
+  else if (score > 15) grade = "Good";
+  else if (score > 5) grade = "No worries, your interests are elsewhere";
+  else grade = "Time to brush up!";
+
+  const time = timerEl.innerText.replace("Time: ","");
+
+  document.getElementById("result").innerText = `${name}, Score: ${score}/${quizData.length} | Time: ${time} | Grade: ${grade}`;
+
+  const scores = JSON.parse(localStorage.getItem("quizScores") || "[]");
+  scores.unshift({name, score:`${score}/${quizData.length}`, time, grade});
+  localStorage.setItem("quizScores", JSON.stringify(scores.slice(0,10)));
+
+  loadScores();
+}
+</script>
+
+</body>
+</html>
