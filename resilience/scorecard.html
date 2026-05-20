@@ -103,6 +103,10 @@
       "Even when life feels uncertain, I am able to trust God and continue forward.",
       "After an emotional setback, I am able to regain stability and move forward.",
       "Hard experiences have helped me grow in maturity and perspective."
+	  "I am able to accept reality honestly instead of denying difficult situations."
+	  "During hardship, I seek support rather than trying to carry everything alone."
+	  "Setbacks have taught me patience and perseverance."
+	  "Even after failure or disappointment, I am willing to try again."
     ];
 
     const form = document.getElementById('quizForm');
@@ -149,17 +153,17 @@
       let reflection = '';
       let scripture = '';
 
-      if (total <= 32) {
+      if (total <= 40) {
         category = 'Surviving the Storm';
         reflection = 'Difficult situations may easily overwhelm you right now.';
         scripture = 'Psalm 34:4 — “I sought the LORD, and He heard me, And delivered me from all my fears.”';
       }
-      else if (total <= 48) {
+      else if (total <= 60) {
         category = 'Regaining Stability';
         reflection = 'You are learning healthier ways to respond to adversity.';
         scripture = 'Exodus 14:14 — “The LORD will fight for you, and you shall hold your peace.”';
       }
-      else if (total <= 64) {
+      else if (total <= 80) {
         category = 'Growing Through Difficulty';
         reflection = 'Challenges are strengthening your resilience and perspective.';
         scripture = 'Romans 5:3 — “Tribulation produces perseverance.”';
