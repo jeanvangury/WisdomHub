@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,10 +106,10 @@
   "I am able to accept reality honestly instead of denying difficult situations.",
   "During hardship, I seek support rather than trying to carry everything alone.",
   "Setbacks have taught me patience and perseverance.",
-  "Even after failure or disappointment, I am willing to try again.",
+  "Even after failure or disappointment, I am willing to try again."
 ];
 
-const reverseScored = [0, 2, 4, 6, 8, 10, 12, ];
+const reverseScored = [0, 2, 4, 6, 8, 10, 12];
 
     const form = document.getElementById('quizForm');
 
@@ -186,9 +187,10 @@ total += score;
 
       resultDiv.innerHTML = `
         <h2>Your Score: ${total}/100</h2>
-		 <p>
-		 Note: This score is not a label. It is a snapshot of how you currently respond to adversity.
-		  </p>
+        <p>
+          Note: This score is not a label. It is a snapshot of how you currently respond to adversity.
+        </p>
+
         <h3>${category}</h3>
         <p>${reflection}</p>
 
@@ -198,7 +200,10 @@ total += score;
         </div>
       `;
 
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   </script>
 
