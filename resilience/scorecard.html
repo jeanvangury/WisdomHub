@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Things Go Wrong — Resilience Scorecard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+
+    h1, h2 {
+      color: #222;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .options label {
+      margin-right: 12px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #222;
+      color: white;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .scripture {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #f0f0f0;
+      border-left: 4px solid #444;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>When Things Go Wrong — Resilience Scorecard</h1>
+
+  <p>
+    For each statement, rate yourself from:
+  </p>
+
+  <ul>
+    <li><strong>1</strong> = Rarely true</li>
+    <li><strong>2</strong> = Sometimes true</li>
+    <li><strong>3</strong> = Often true</li>
+    <li><strong>4</strong> = Usually true</li>
+    <li><strong>5</strong> = Very true</li>
+  </ul>
+    <p>
+	Be honest. This is not a test of perfection, but a reflection of how you usually respond during difficult seasons.
+	  </p>
+
+  <form id="quizForm"></form>
+
+  <button onclick="calculateScore()">View My Score</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      "When unexpected problems arise, I quickly assume the worst.",
+      "Prayer helps me regain peace during difficult situations.",
+      "I replay painful situations repeatedly in my mind.",
+      "Even during difficult seasons, I continue taking practical steps forward.",
+      "Stress makes it difficult for me to think clearly.",
+      "Scripture gives me strength and perspective during hardship.",
+      "I tend to withdraw from people when I am struggling.",
+      "I can remain calm even when situations feel uncertain.",
+      "I become harsh, reactive, or irritable when under pressure.",
+      "I believe difficult seasons can still produce growth and purpose.",
+      "Repeated setbacks make me feel helpless or emotionally drained.",
+      "I can admit mistakes and learn from them without becoming bitter.",
+      "When things go wrong, I tend to blame others, circumstances, or myself.",
+      "Even when life feels uncertain, I am able to trust God and continue forward.",
+      "After an emotional setback, I am able to regain stability and move forward.",
+      "Hard experiences have helped me grow in maturity and perspective."
+    ];
+
+    const form = document.getElementById('quizForm');
+
+    questions.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+
+      let html = `<p><strong>${index + 1}. ${q}</strong></p><div class="options">`;
+
+      for (let i = 1; i <= 5; i++) {
+        html += `
+          <label>
+            <input type="radio" name="q${index}" value="${i}"> ${i}
+          </label>
+        `;
+      }
+
+      html += '</div>';
+      div.innerHTML = html;
+      form.appendChild(div);
+    });
+
+    function calculateScore() {
+      let total = 0;
+      let unanswered = [];
+
+      for (let i = 0; i < questions.length; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+
+        if (!selected) {
+          unanswered.push(i + 1);
+        } else {
+          total += parseInt(selected.value);
+        }
+      }
+
+      if (unanswered.length > 0) {
+        alert('Please answer all questions before viewing your score.');
+        return;
+      }
+
+      let category = '';
+      let reflection = '';
+      let scripture = '';
+
+      if (total <= 32) {
+        category = 'Surviving the Storm';
+        reflection = 'Difficult situations may easily overwhelm you right now.';
+        scripture = 'Psalm 34:4 — “I sought the LORD, and He heard me, And delivered me from all my fears.”';
+      }
+      else if (total <= 48) {
+        category = 'Regaining Stability';
+        reflection = 'You are learning healthier ways to respond to adversity.';
+        scripture = 'Exodus 14:14 — “The LORD will fight for you, and you shall hold your peace.”';
+      }
+      else if (total <= 64) {
+        category = 'Growing Through Difficulty';
+        reflection = 'Challenges are strengthening your resilience and perspective.';
+        scripture = 'Romans 5:3 — “Tribulation produces perseverance.”';
+      }
+      else {
+        category = 'Steady Through the Storm';
+        reflection = 'You show emotional and spiritual resilience during difficult seasons.';
+        scripture = 'Psalm 91:16 — “With long life I will satisfy him, And show him My salvation.”';
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      resultDiv.innerHTML = `
+        <h2>Your Score: ${total}/80</h2>
+        <h3>${category}</h3>
+        <p>${reflection}</p>
+
+        <div class="scripture">
+          <strong>Suggested Scripture:</strong><br>
+          ${scripture}
+        </div>
+      `;
+
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
+
