@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +76,7 @@
     <li><strong>5</strong> = Very true</li>
   </ul>
     <p>
-	Be honest. This is not a test of perfection, but a reflection of how you usually respond during difficult seasons.
+	Be honest. This is not a test of perfection, but a reflection of how you usually respond during difficult seasons. This scorecard is designed for reflection and self-awareness, not as a clinical psychological assessment.
 	  </p>
 
   <form id="quizForm"></form>
@@ -86,27 +87,29 @@
 
   <script>
     const questions = [
-      "When unexpected problems arise, I quickly assume the worst.",
-      "Prayer helps me regain peace during difficult situations.",
-      "I replay painful situations repeatedly in my mind.",
-      "Even during difficult seasons, I continue taking practical steps forward.",
-      "Stress makes it difficult for me to think clearly.",
-      "Scripture gives me strength and perspective during hardship.",
-      "I tend to withdraw from people when I am struggling.",
-      "I can remain calm even when situations feel uncertain.",
-      "I become harsh, reactive, or irritable when under pressure.",
-      "I believe difficult seasons can still produce growth and purpose.",
-      "Repeated setbacks make me feel helpless or emotionally drained.",
-      "I can admit mistakes and learn from them without becoming bitter.",
-      "When things go wrong, I tend to blame others, circumstances, or myself.",
-      "Even when life feels uncertain, I am able to trust God and continue forward.",
-      "After an emotional setback, I am able to regain stability and move forward.",
-      "Hard experiences have helped me grow in maturity and perspective."
-	  "I am able to accept reality honestly instead of denying difficult situations."
-	  "During hardship, I seek support rather than trying to carry everything alone."
-	  "Setbacks have taught me patience and perseverance."
-	  "Even after failure or disappointment, I am willing to try again."
-    ];
+  "When unexpected problems arise, I quickly assume the worst.",
+  "Prayer helps me regain peace during difficult situations.",
+  "I replay painful situations repeatedly in my mind.",
+  "Even during difficult seasons, I continue taking practical steps forward.",
+  "Stress makes it difficult for me to think clearly.",
+  "Scripture gives me strength and perspective during hardship.",
+  "I tend to withdraw from people when I am struggling.",
+  "I can remain calm even when situations feel uncertain.",
+  "I become harsh, reactive, or irritable when under pressure.",
+  "I believe difficult seasons can still produce growth and purpose.",
+  "Repeated setbacks make me feel helpless or emotionally drained.",
+  "I can admit mistakes and learn from them without becoming bitter.",
+  "When things go wrong, I tend to blame others, circumstances, or myself.",
+  "Even when life feels uncertain, I am able to trust God and continue forward.",
+  "After an emotional setback, I am able to regain stability and move forward.",
+  "Hard experiences have helped me grow in maturity and perspective.",
+  "I am able to accept reality honestly instead of denying difficult situations.",
+  "During hardship, I seek support rather than trying to carry everything alone.",
+  "Setbacks have taught me patience and perseverance.",
+  "Even after failure or disappointment, I am willing to try again."
+];
+
+const reverseScored = [0, 2, 4, 6, 8, 10, 12, ];
 
     const form = document.getElementById('quizForm');
 
@@ -139,7 +142,13 @@
         if (!selected) {
           unanswered.push(i + 1);
         } else {
-          total += parseInt(selected.value);
+          let score = parseInt(selected.value);
+
+        if (reverseScored.includes(i)) {
+    score = 6 - score;
+}
+
+total += score;
         }
       }
 
@@ -177,7 +186,7 @@
       resultDiv.style.display = 'block';
 
       resultDiv.innerHTML = `
-        <h2>Your Score: ${total}/80</h2>
+        <h2>Your Score: ${total}/100</h2>
 		 <p>
 		 Note: This score is not a label. It is a snapshot of how you currently respond to adversity.
 		  </p>
@@ -196,4 +205,3 @@
 
 </body>
 </html>
-
