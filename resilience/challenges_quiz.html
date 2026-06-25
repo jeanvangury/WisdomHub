@@ -45,7 +45,7 @@ button.option-btn:hover{background:#d6e3f3}
 <h4>Your Strength Profile</h4>
 <div class="chart-wrap"><canvas id="profileChart"></canvas></div>
 <p style="font-size:.9em;color:#666;">The larger and more balanced the shape, the greater your overall resilience during challenges.</p>
- <p style="font-size:0.95em;color:#555;line-height:1.5;">
+<p style="font-size:0.95em;color:#555;line-height:1.5;">
 This chart is a snapshot of how you currently respond to challenges. 
 Your strongest areas reveal strengths you can build on, while lower areas highlight opportunities for growth. 
 Remember: resilience is not something you either have or don't have. It is developed through faith, experience, and perseverance.
@@ -56,9 +56,10 @@ Remember: resilience is not something you either have or don't have. It is devel
 <p><strong>Perseverance:</strong> <span id="resignation"></span></p>
 </div>
 
+
 <div class="score-box"><h4>Your Greatest Strength</h4><p id="greatestStrength"></p></div>
 <div class="score-box"><h4>Your Challenge Archetype</h4><p id="archetype"></p></div>
-<div class="score-box"><h4>Growth Focus</h4><p id="growthFocus"></p></div>
+<div class="score-box"><h4>Your Next Growth Step</h4><p id="growthFocus"></p></div>
 
 <button class="restart" onclick="location.reload()">Take Quiz Again</button>
 </div>
@@ -201,10 +202,10 @@ function showResults(){
  Object.keys(scores).forEach(k=>{if(scores[k]<scores[lowestKey]) lowestKey=k;});
 
  const growthDescriptions={
-  "Choose Restraint":"Practice responding rather than reacting when emotions run high.",
-  "Take the Next Step":"Focus on action instead of worrying about every possible outcome.",
-  "Don't Stay Down":"Build resilience by continuing forward after setbacks.",
-  "Strengthen Your Foundation":"Develop habits that increase emotional stability and confidence."
+  "Choose Restraint":"When emotions are high, pause before speaking or acting.",
+  "Take the Next Step":"Focus on the next small action you can take instead of worrying about everything at once.",
+  "Don't Stay Down":"After a setback, get back up and keep moving forward.",
+  "Strengthen Your Foundation":"Build habits that help you stay calm, confident, and resilient."
  };
 
  document.getElementById("growthFocus").innerHTML=`<strong>${lowestKey}</strong><br>${growthDescriptions[lowestKey]}`;
