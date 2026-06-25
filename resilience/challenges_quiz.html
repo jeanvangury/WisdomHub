@@ -59,7 +59,7 @@ Remember: resilience is not something you either have or don't have. It is devel
 
 <div class="score-box"><h4>Your Greatest Strength</h4><p id="greatestStrength"></p></div>
 <div class="score-box"><h4>Your Challenge Archetype</h4><p id="archetype"></p></div>
-<div class="score-box"><h4>Your Next Growth Step</h4><p id="growthFocus"></p></div>
+<div class="score-box"><h4>Growth Focus</h4><p id="growthFocus"></p></div>
 
 <button class="restart" onclick="location.reload()">Take Quiz Again</button>
 </div>
@@ -177,8 +177,8 @@ function showResults(){
  profileChart=new Chart(document.getElementById("profileChart"),{
   type:"radar",
   data:{
-   labels:["Stability","Emotional Control","Confidence","Perseverance"],
-   datasets:[{data:[stability,anger,panic,resignation],fill:true}]
+   labels:["Emotional Control","Confidence","Perseverance","Stability"],
+   datasets:[{data:[anger,panic,resignation,stability],fill:true}]
   },
   options:{
    responsive:true,maintainAspectRatio:false,
