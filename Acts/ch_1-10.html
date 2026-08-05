@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acts 1–10 Bible Quiz (Advanced)</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;margin:0;padding:30px}
+.container{max-width:850px;margin:auto;background:#fff;padding:30px;border-radius:10px;box-shadow:0 0 12px rgba(0,0,0,.15)}
+h1{text-align:center;color:#2c3e50}
+#progress{margin-top:15px;color:#666;font-weight:bold}
+.question{margin-top:25px;font-size:22px;font-weight:bold}
+.option{display:block;width:100%;margin:12px 0;padding:14px;font-size:17px;border:2px solid #bbb;border-radius:8px;background:#fff;cursor:pointer;text-align:left}
+.option:hover{background:#eef5ff}
+.correct{background:#28a745!important;color:#fff;border-color:#28a745}
+.wrong{background:#dc3545!important;color:#fff;border-color:#dc3545}
+button{margin-top:20px;padding:12px 24px;font-size:17px;border:none;border-radius:6px;cursor:pointer}
+#nextBtn{background:#007bff;color:#fff}
+#restartBtn{background:#28a745;color:#fff}
+#score{text-align:center;font-size:28px;margin-top:30px;font-weight:bold}
+#reference{display:none;margin-top:18px;padding:15px;background:#eef8ff;border-left:5px solid #007bff}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Acts 1–10 Bible Quiz</h1>
+<div id="progress"></div>
+<div id="quiz">
+<div id="question" class="question"></div>
+<div id="answers"></div>
+<div id="reference"></div>
+<button id="nextBtn" onclick="nextQuestion()" style="display:none;">Next Question</button>
+</div>
+<div id="score"></div>
+<button id="restartBtn" onclick="restartQuiz()" style="display:none;">Restart Quiz</button>
+</div>
+
+<script>
+const quiz=[
+{q:"Before choosing Matthias, Peter quoted which two Psalms concerning Judas?",a:[["Psalm 22 and Psalm 23",false],["Psalm 91 and Psalm 110",false],["Psalm 69 and Psalm 109",true],["Psalm 2 and Psalm 8",false]],ref:"Acts 1:20"},
+{q:"According to Peter's sermon at Pentecost, David foresaw whose resurrection?",a:[["Moses",false],["Elijah",false],["Christ",true],["John",false]],ref:"Acts 2:25–31"},
+{q:"Why were Jews from many nations able to understand the apostles on Pentecost?",a:[["Everyone understood Hebrew",false],["The apostles used translators",false],["Each heard them in his own language",true],["Peter interpreted for everyone",false]],ref:"Acts 2:6–11"},
+{q:"Which prophet did Peter quote to explain Pentecost?",a:[["Isaiah",false],["Ezekiel",false],["Joel",true],["Zechariah",false]],ref:"Acts 2:16–21"},
+{q:"Which was NOT one of the four activities of the early church in Acts 2:42?",a:[["The apostles' teaching",false],["Fellowship",false],["Breaking of bread",false],["Evangelistic crusades",true]],ref:"Acts 2:42"},
+{q:"At what hour did Peter and John go to the Temple to pray?",a:[["Sixth hour",false],["Third hour",false],["Ninth hour",true],["Twelfth hour",false]],ref:"Acts 3:1"},
+{q:"What was the name of the gate where the lame man sat?",a:[["Eastern Gate",false],["Golden Gate",false],["Beautiful Gate",true],["Sheep Gate",false]],ref:"Acts 3:2"},
+{q:"Peter explained that the lame man was healed through:",a:[["Peter's faith",false],["The man's faith alone",false],["Faith in the name of Jesus",true],["Prayer of the apostles",false]],ref:"Acts 3:16"},
+{q:"Which two failed movements did Gamaliel mention?",a:[["Barabbas and Judas Iscariot",false],["Theudas and Judas the Galilean",true],["Simon and Elymas",false],["Herod and Pilate",false]],ref:"Acts 5:36–37"},
+{q:"Why did the apostles rejoice after being flogged?",a:[["They escaped prison",false],["The church grew",false],["They were counted worthy to suffer for Jesus",true],["They received gifts",false]],ref:"Acts 5:41"},
+{q:"Stephen was accused of speaking against:",a:[["Rome and Caesar",false],["Moses and the Temple",true],["Peter and John",false],["The Prophets",false]],ref:"Acts 6:13–14"},
+{q:"Who refused to be called the son of Pharaoh's daughter?",a:[["Joseph",false],["Moses",true],["Samuel",false],["Joshua",false]],ref:"Acts 7:23–24"},
+{q:"Before dying, Stephen saw:",a:[["Twelve angels",false],["Moses and Elijah",false],["Jesus standing at God's right hand",true],["The New Jerusalem",false]],ref:"Acts 7:55–56"},
+{q:"Why was Simon the sorcerer rebuked?",a:[["Practicing magic",false],["Refusing baptism",false],["Trying to buy God's gift",true],["Opposing Philip",false]],ref:"Acts 8:18–23"},
+{q:"Philip asked the Ethiopian official:",a:[["Do you believe in God?",false],["Where are you travelling?",false],["Do you understand what you are reading?",true],["Have you been baptized?",false]],ref:"Acts 8:30"},
+{q:"What happened after the Ethiopian eunuch was baptized?",a:[["Philip returned with him",false],["His servants were baptized",false],["The Spirit caught Philip away",true],["An angel appeared",false]],ref:"Acts 8:39–40"},
+{q:"How did Ananias first address Saul?",a:[["Rabbi Saul",false],["Apostle Saul",false],["Brother Saul",true],["Son of Abraham",false]],ref:"Acts 9:17"},
+{q:"What was Saul doing during the three days after meeting Jesus?",a:[["Preaching",false],["Travelling",false],["Fasting and praying",true],["Studying",false]],ref:"Acts 9:9–11"},
+{q:"What was the result of Peter raising Tabitha?",a:[["Herod believed",false],["A church was built",false],["Many believed in the Lord",true],["Peter became High Priest",false]],ref:"Acts 9:42"},
+{q:"Why did Peter hesitate to visit Cornelius?",a:[["He was wealthy",false],["He was a Roman soldier",false],["Jewish custom discouraged association with Gentiles",true],["Peter feared arrest",false]],ref:"Acts 10:28"},
+{q:"Which statement was repeated three times in Peter's vision?",a:[["Do not fear",false],["Repent and believe",false],["What God has cleansed you must not call common",true],["Follow Me",false]],ref:"Acts 10:15–16"},
+{q:"Who recognized that Gentiles had received the Holy Spirit before baptism?",a:[["James",false],["Barnabas",false],["Peter and the Jewish believers",true],["Philip",false]],ref:"Acts 10:44–47"},
+{q:"According to Acts 10:38, Jesus went about:",a:[["Teaching only in synagogues",false],["Healing only Israelites",false],["Doing good and healing all oppressed by the devil",true],["Building the Temple",false]],ref:"Acts 10:38"}
+];
+let current=0,score=0;
+function loadQuestion(){
+document.getElementById("progress").textContent=`Question ${current+1} of ${quiz.length}`;
+document.getElementById("nextBtn").style.display="none";
+document.getElementById("reference").style.display="none";
+document.getElementById("reference").innerHTML="";
+let q=quiz[current];
+question.textContent=q.q;
+answers.innerHTML="";
+q.a.forEach((item,i)=>{
+let b=document.createElement("button");
+b.className="option"; b.textContent=item[0];
+b.onclick=()=>{
+document.querySelectorAll(".option").forEach(x=>x.disabled=true);
+if(item[1]){b.classList.add("correct");score++;}else{
+b.classList.add("wrong");
+document.querySelectorAll(".option")[q.a.findIndex(x=>x[1])].classList.add("correct");
+}
+reference.style.display="block";
+reference.innerHTML="<strong>📖 Biblical Reference:</strong> "+q.ref;
+nextBtn.style.display="inline-block";
+};
+answers.appendChild(b);
+});
+}
+function nextQuestion(){current++; if(current<quiz.length){loadQuestion();}else{
+quiz.style.display="none";
+score.innerHTML=`🎉 You scored<br><br><span style="font-size:48px;color:#28a745">${window.score} / ${quizDataLength??0}</span>`;
+}}
+const quizDataLength=quiz.length;
+function nextQuestion(){current++;if(current<quiz.length){loadQuestion();}else{
+document.getElementById("quiz").style.display="none";
+document.getElementById("score").innerHTML=`🎉 You scored<br><br><span style="font-size:48px;color:#28a745">${score} / ${quiz.length}</span>`;
+restartBtn.style.display="inline-block";
+}}
+function restartQuiz(){current=0;score=0;document.getElementById("quiz").style.display="block";document.getElementById("score").innerHTML="";restartBtn.style.display="none";loadQuestion();}
+loadQuestion();
+</script>
+</body>
+</html>
