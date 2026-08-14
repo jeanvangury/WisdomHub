@@ -1,0 +1,60 @@
+
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1 Corinthians Ch. 8 & 9</title>
+    <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.35em;margin:18px 0}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    </style></head><body><div class="card">
+    <h1>📖 1 Corinthians Ch. 8 & 9</h1><div id="progress"></div><div id="question" class="q"></div><div id="answers"></div>
+    <div id="info"></div><button id="next" style="display:none">Next Question</button><div id="result"></div><button id="restart">Play Again</button>
+    </div>
+    <script>
+    let quiz=[
+      {"q": "Paul says knowledge puffs up, but what builds up?", "answers": [{"text": "More rules", "correct": false}, {"text": "More food", "correct": false}, {"text": "Love", "correct": true}, {"text": "More debate", "correct": false}], "ref": "1 Corinthians 8:1", "verse": "\u201cKnowledge puffs up, but love builds up.\u201d", "life": "Knowing the right answer is not enough; love is what actually helps people grow."},
+      {"q": "What does Paul say about food offered to idols?", "answers": [{"text": "Every idol is a lesser god we must also honor", "correct": false}, {"text": "An idol is nothing, and there is one God the Father and one Lord Jesus Christ", "correct": true}, {"text": "Christians must never eat any meat at all", "correct": false}, {"text": "The temple priests decide what is true about God", "correct": false}], "ref": "1 Corinthians 8:4\u20136", "verse": "\u201cWe know that an idol is nothing at all in the world and that there is no God but one.\u201d", "life": "There is only one God; other so-called gods have no real claim on us."},
+      {"q": "Why do some believers still struggle with food offered to idols?", "answers": [{"text": "They have not studied enough Greek", "correct": false}, {"text": "Their conscience is weak and they still think of the food as offered to an idol", "correct": true}, {"text": "Paul forbade all marketplace food", "correct": false}, {"text": "They were never allowed to eat with others", "correct": false}], "ref": "1 Corinthians 8:7", "verse": "\u201cSome people are still so accustomed to idols that when they eat sacrificial food they think of it as having been sacrificed to a god, and since their conscience is weak, it is defiled.\u201d", "life": "Not everyone is at the same place in faith; be patient with a weaker conscience."},
+      {"q": "What does Paul say food does for our standing with God?", "answers": [{"text": "The right diet brings us near to God", "correct": false}, {"text": "Skipping meals makes us more spiritual", "correct": false}, {"text": "Food does not bring us near to God; we are no worse if we do not eat and no better if we do", "correct": true}, {"text": "Only meat offered in the temple is holy", "correct": false}], "ref": "1 Corinthians 8:8", "verse": "\u201cBut food does not bring us near to God; we are no worse if we do not eat, and no better if we do.\u201d", "life": "What we eat does not make us closer to God; our heart and love for others do."},
+      {"q": "What warning does Paul give about Christian freedom?", "answers": [{"text": "Use your freedom to prove you are stronger than others", "correct": false}, {"text": "Be careful that your freedom does not become a stumbling block to the weak", "correct": true}, {"text": "Freedom means you never have to think about anyone else", "correct": false}, {"text": "Only church leaders have true freedom", "correct": false}], "ref": "1 Corinthians 8:9", "verse": "\u201cBe careful, however, that the exercise of your rights does not become a stumbling block to the weak.\u201d", "life": "Just because you can do something does not mean you should, if it trips someone else up."},
+      {"q": "If you wound a weak believer's conscience, whom does Paul say you sin against?", "answers": [{"text": "Only the church elders", "correct": false}, {"text": "Only yourself", "correct": false}, {"text": "Christ", "correct": true}, {"text": "The temple of idols", "correct": false}], "ref": "1 Corinthians 8:12", "verse": "\u201cWhen you sin against them in this way and wound their weak conscience, you sin against Christ.\u201d", "life": "Hurting a brother or sister in the faith is not a small thing; it is sin against Christ."},
+      {"q": "What does Paul say he will do if food causes a brother or sister to stumble?", "answers": [{"text": "Eat only on feast days", "correct": false}, {"text": "Ask them to grow up and stop worrying", "correct": false}, {"text": "Never eat meat again, so that he will not cause them to fall", "correct": true}, {"text": "Leave Corinth immediately", "correct": false}], "ref": "1 Corinthians 8:13", "verse": "\u201cTherefore, if what I eat causes my brother or sister to fall into sin, I will never eat meat again, so that I will not cause them to fall.\u201d", "life": "Love is willing to give up even good things so another person does not fall."},
+      {"q": "What right does Paul say those who preach the gospel should have?", "answers": [{"text": "The right to rule over every church as kings", "correct": false}, {"text": "The right to receive their living from the gospel", "correct": true}, {"text": "The right to skip serving others", "correct": false}, {"text": "The right to demand honor from unbelievers", "correct": false}], "ref": "1 Corinthians 9:4\u20135, 14", "verse": "\u201cThe Lord has commanded that those who preach the gospel should receive their living from the gospel.\u201d", "life": "It is right to support those who serve by preaching, even though Paul often chose not to insist on that."},
+      {"q": "Why did Paul not use his right to be supported?", "answers": [{"text": "So as not to hinder the gospel of Christ", "correct": true}, {"text": "Because he did not believe he was an apostle", "correct": false}, {"text": "Because the law forbade it", "correct": false}, {"text": "Because he was too proud to receive help", "correct": false}], "ref": "1 Corinthians 9:12", "verse": "\u201cBut we did not use this right. On the contrary, we put up with anything rather than hinder the gospel of Christ.\u201d", "life": "Sometimes love means not claiming a right you truly have, so nothing gets in the way of the gospel."},
+      {"q": "How does Paul say we should run, and why does he discipline his body?", "answers": [{"text": "Run casually, because the prize is automatic", "correct": false}, {"text": "Run in such a way as to get the prize; he disciplines his body so that he will not be disqualified", "correct": true}, {"text": "Run only when others are watching", "correct": false}, {"text": "Train the body so that faith no longer matters", "correct": false}], "ref": "1 Corinthians 9:24\u201327", "verse": "\u201cRun in such a way as to get the prize.\u201d", "life": "Faith is not drifting; it takes discipline, like an athlete who wants to finish well."}
+    ];
+    function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
+    shuffle(quiz);quiz.forEach(q=>shuffle(q.answers));
+    let i=0,score=0;
+    const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+    function load(){
+    p.textContent=`Question ${i+1} of ${quiz.length}`;
+    qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+    quiz[i].answers.forEach(ans=>{
+    let b=document.createElement('button');b.className='opt';b.textContent=ans.text;
+    b.onclick=()=>{
+    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    if(ans.correct){b.classList.add('correct');score++;}else{b.classList.add('wrong');document.querySelectorAll('.opt').forEach((x,k)=>{if(quiz[i].answers[k].correct)x.classList.add('correct');});}
+    info.style.display='block';
+    info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
+    next.style.display='inline-block';
+    };
+    ael.appendChild(b);
+    });
+    }
+    next.onclick=()=>{i++;if(i<quiz.length)load();else{
+    document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+    result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+    <h3>Challenge for This Week</h3>
+    <ul><li>Choose love over being “right” when someone is weaker in faith.</li><li>Watch whether your freedom could trip someone else up.</li><li>Serve without insisting on your rights.</li><li>Pick one lesson from 1 Corinthians 8–9 and live it this week.</li><li>Run your faith like it matters (discipline, not drifting).</li></ul>`;
+    restart.style.display='inline-block';
+    }};
+    restart.onclick=()=>location.reload();
+    load();
+    </script></body></html>

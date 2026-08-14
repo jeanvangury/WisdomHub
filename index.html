@@ -5,152 +5,413 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WisdomHub</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f7fa;
-      text-align: center;
+    :root {
+      --page: #f6f4f0;
+      --card: #ffffff;
+      --ink: #1a1a1a;
+      --muted: #6b6560;
+      --navy: #1e3a5f;
+      --gold: #c4a35a;
+      --border: #e6e1d8;
+      --scripture: #1e3a5f;
+      --growth: #a15c3e;
+      --gk: #3d7a73;
     }
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-    }
-    h1 { margin: 0; }
 
-    .container { margin-top: 40px; }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 72px 24px 40px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--navy);
+    }
+
+    .hero .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .hero .rule {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      border: 0;
+      margin: 22px auto 0;
+    }
+
+    .jump-nav {
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      font-size: 0.92rem;
+    }
+
+    .jump-nav a {
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .jump-nav a:hover {
+      border-bottom-color: var(--gold);
+    }
+
+    .jump-nav a:focus-visible {
+      outline: 2px solid var(--navy);
+      outline-offset: 3px;
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 8px 24px 64px;
+    }
+
+    .section {
+      margin-top: 48px;
+      scroll-margin-top: 24px;
+    }
+
+    .section h2 {
+      margin: 0 0 20px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-narrow {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: calc((100% - 40px) / 3);
+    }
 
     .card {
-      display: inline-block;
-      margin: 15px;
-      width: 260px;
-      height: 160px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-      color: white;
-      vertical-align: top;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 22px 24px;
+      min-height: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
-    .card:hover { transform: translateY(-5px); }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(30, 58, 95, 0.08);
+      border-color: #d8d1c6;
+    }
 
-    .proverbs { background: #27ae60; }
-    .romans { background: #2980b9; }
-    .gk { background: #de7bc1; }
-    .john { background: #f97820; }
-	.resilience { background: #810707; }
-	.challenges { background: #AEDAA2; }
-	.Acts { background: #FBD637; }
-    .card-content {
-      padding: 20px;
+    .card:focus-visible {
+      outline: 2px solid var(--navy);
+      outline-offset: 3px;
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .scripture .icon {
+      background: rgba(30, 58, 95, 0.1);
+      color: var(--scripture);
+    }
+
+    .growth .icon {
+      background: rgba(161, 92, 62, 0.12);
+      color: var(--growth);
+    }
+
+    .gk .icon {
+      background: rgba(61, 122, 115, 0.12);
+      color: var(--gk);
     }
 
     .card h3 {
-      margin: 0 0 10px 0;
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      flex: 1;
+    }
+
+    .card .cta {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--navy);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .card:hover .cta {
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     footer {
-      margin-top: 40px;
-      padding: 15px;
-      font-size: 14px;
-      color: #777;
+      text-align: center;
+      padding: 8px 24px 40px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-narrow {
+        grid-template-columns: minmax(0, 1fr);
+        max-width: calc((100% - 20px) / 2);
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-narrow {
+        max-width: none;
+      }
+
+      main {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card,
+      .card:hover {
+        transition: none;
+        transform: none;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Welcome to WisdomHub</h1>
-    <p>Grow in knowledge, wisdom, and understanding</p>
+  <header class="hero">
+    <h1>WisdomHub</h1>
+    <p class="subtitle">Grow in knowledge, wisdom, and understanding</p>
+    <hr class="rule">
+    <nav aria-label="Sections">
+      <ul class="jump-nav">
+        <li><a href="#scripture">Scripture</a></li>
+        <li><a href="#personal-growth">Personal growth</a></li>
+        <li><a href="#general-knowledge">General knowledge</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <div class="container">
+  <main>
+    <section class="section" id="scripture">
+      <h2>Scripture</h2>
+      <div class="grid">
+        <a href="proverbs/index.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Proverbs: Prudence</h3>
+          <p>View your scorecard on prudence</p>
+          <span class="cta">View →</span>
+        </a>
 
-    <a href="proverbs/index.html" class="card proverbs">
-      <div class="card-content">
-        <h3>📖 Proverbs: Prudence</h3>
-        <p>View your scorecard on Prudence</p>
-      </div>
-    </a>
+        <a href="romans/index.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Romans Quiz 1</h3>
+          <p>Start your first quiz</p>
+          <span class="cta">Start →</span>
+        </a>
 
-    <a href="romans/index.html" class="card romans">
-      <div class="card-content">
-        <h3>📖 Romans Quiz 1</h3>
-        <p>Start your first quiz</p>
-      </div>
-    </a>
+        <a href="romans/quiz2.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Romans Quiz 2</h3>
+          <p>Take the second quiz</p>
+          <span class="cta">Start →</span>
+        </a>
 
-    <a href="romans/quiz2.html" class="card romans">
-      <div class="card-content">
-        <h3>📖 Romans Quiz 2</h3>
-        <p>Take the second quiz</p>
-      </div>
-    </a>
+        <a href="john/john_quiz.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>John Quiz 1</h3>
+          <p>Begin the first Gospel of John quiz</p>
+          <span class="cta">Start →</span>
+        </a>
 
-    <a href="gk/advanced_gk_quiz_web_app.html" class="card gk">
-      <div class="card-content">
-        <h3>📝 General Knowledge Quiz</h3>
-        <p>Take the General Knowledge Quiz</p>
-      </div>
-    </a>
-	
-    <a href="john/john_quiz.html" class="card john">
-      <div class="card-content">
-        <h3>📖 John Quiz 1</h3>
-        <p>Start</p>
-      </div>
-    </a>
-	
-	   <a href="john/john_quiz2.html" class="card john">
-      <div class="card-content">
-        <h3>📖 John Quiz 2</h3>
-        <p>Start</p>
-      </div>
-    </a>
+        <a href="john/john_quiz2.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>John Quiz 2</h3>
+          <p>Continue with the second John quiz</p>
+          <span class="cta">Start →</span>
+        </a>
 
-	  <a href="Acts/19_questions.html" class="card Acts">
-      <div class="card-content">
-        <h3>📖 Acts Quiz 1</h3>
-        <p>Start</p>
+        <a href="Acts/19_questions.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Acts Quiz 1</h3>
+          <p>Quiz on Acts chapter 19</p>
+          <span class="cta">Start →</span>
+        </a>
+
+        <a href="Acts/ch_1-10.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Acts Quiz 2</h3>
+          <p>Quiz on Acts chapters 1–10</p>
+          <span class="cta">Start →</span>
+        </a>
+
+        <a href="1Corinthians/1-7_questions.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>1 Corinthians Ch. 1–7</h3>
+          <p>A quiz on chapters 1–7</p>
+          <span class="cta">Start →</span>
+        </a>
+
+        <a href="1Corinthians/8-9_questions.html" class="card scripture">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>1 Corinthians Ch. 8 &amp; 9</h3>
+          <p>Quiz on chapters 8 and 9</p>
+          <span class="cta">Start →</span>
+        </a>
       </div>
-    </a>
-	  
-    <a href="Acts/ch_1-10.html" class="card Acts">
-      <div class="card-content">
-        <h3>📖 Acts Quiz 2</h3>
-        <p>Start</p>
+    </section>
+
+    <section class="section" id="personal-growth">
+      <h2>Personal growth</h2>
+      <div class="grid">
+        <a href="resilience/scorecard.html" class="card growth">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          </span>
+          <h3>Resilience 20 Q Scorecard</h3>
+          <p>20-question resilience scorecard</p>
+          <span class="cta">View →</span>
+        </a>
+
+        <a href="resilience/scorecard_10 questions.html" class="card growth">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          </span>
+          <h3>Resilience 10 Q Scorecard</h3>
+          <p>Shorter 10-question scorecard</p>
+          <span class="cta">View →</span>
+        </a>
+
+        <a href="resilience/analysis_scorecard.html" class="card growth">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          </span>
+          <h3>How Do You Respond Under Pressure?</h3>
+          <p>See how you respond under pressure</p>
+          <span class="cta">Start →</span>
+        </a>
+
+        <a href="resilience/challenges_quiz.html" class="card growth">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          </span>
+          <h3>How Do You Face Challenges? 20 Q</h3>
+          <p>20 questions on facing challenges</p>
+          <span class="cta">Start →</span>
+        </a>
       </div>
-    </a>
-	
-	  <a href="resilience/scorecard.html" class="card resilience">
-      <div class="card-content">
-        <h3>📝 Resilience 20 Q Scorecard </h3>
-        <p>Start</p>
+    </section>
+
+    <section class="section" id="general-knowledge">
+      <h2>General knowledge</h2>
+      <div class="grid grid-narrow">
+        <a href="gk/advanced_gk_quiz_web_app.html" class="card gk">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+          </span>
+          <h3>General Knowledge Quiz</h3>
+          <p>Take the general knowledge quiz</p>
+          <span class="cta">Start →</span>
+        </a>
       </div>
-    </a>
-	  
-	  <a href="resilience/scorecard_10 questions.html" class="card resilience">
-      <div class="card-content">
-        <h3>📝 Resilience 10 Q Scorecard </h3>
-        <p>Start</p>
-      </div>
-    </a>
- 
-	  <a href="resilience/analysis_scorecard.html" class="card challenges">
-      <div class="card-content">
-        <h3>📝 How Do You Respond Under Pressure?</h3>
-        <p>Start</p>
-      </div>
-    </a>
- 
-   <a href="resilience/challenges_quiz.html" class="card challenges">
-      <div class="card-content">
-        <h3>📝 How Do You Face Challenges? 20 Q</h3>
-        <p>Start</p>
-      </div>
-    </a>
-	
+    </section>
+  </main>
+
   <footer>
     <p>© 2026 WisdomHub</p>
   </footer>
