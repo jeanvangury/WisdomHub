@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Will You Fare in a Challenge?</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0;padding:0}
+.container{max-width:700px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.1)}
+h1{text-align:center}
+.progress-container{width:100%;background:#ddd;border-radius:20px;margin-bottom:20px}
+.progress-bar{height:12px;width:0%;background:#4caf50;border-radius:20px;transition:.3s}
+.question-number{color:#666;margin-bottom:10px}
+.question{font-size:1.3rem;margin-bottom:25px}
+.options{display:flex;flex-direction:column;gap:10px}
+button.option-btn,.restart{padding:12px;border:none;border-radius:8px;cursor:pointer}
+button.option-btn{background:#e8edf3;font-size:1rem}
+button.option-btn:hover{background:#d6e3f3}
+.result{display:none}
+.score-box{background:#f5f5f5;padding:15px;margin-top:20px;border-radius:8px}
+.restart{margin-top:20px;background:#4caf50;color:#fff}
+.chart-wrap{height:450px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>How Will You Fare in a Challenge?</h1>
+
+<div id="quiz">
+<div class="progress-container"><div id="progressBar" class="progress-bar"></div></div>
+<div id="questionNumber" class="question-number"></div>
+<div id="questionText" class="question"></div>
+<div class="options" id="options"></div>
+</div>
+
+<div id="result" class="result">
+<h2>Your Results</h2>
+<h3 id="resultTitle"></h3>
+<p id="resultDescription"></p>
+
+<div class="score-box"><strong>Total Score:</strong> <span id="totalScore"></span></div>
+
+<div class="score-box">
+<h4>Your Strength Profile</h4>
+<div class="chart-wrap"><canvas id="profileChart"></canvas></div>
+<p style="font-size:1em;color:#555;line-height:1.5;">
+<strong>What This Chart Means:</strong><br>
+Each point represents one aspect of resilience. The farther a point extends from the center, the stronger that area tends to be. Smaller areas simply highlight skills that can be strengthened over time.
+</p>
+<p style="font-size:0.95em;color:#555;line-height:1.5;">
+This chart is a snapshot of how you currently respond to challenges. 
+Your strongest areas reveal strengths you can build on, while lower areas highlight opportunities for growth. 
+Remember: resilience is not something you either have or don't have. It is developed through faith, experience, and perseverance.
+</p>
+<p><strong>Stability:</strong> <span id="stability"></span></p>
+<p><strong>Emotional Control:</strong> <span id="anger"></span></p>
+<p><strong>Confidence Under Pressure:</strong> <span id="panic"></span></p>
+<p><strong>Perseverance:</strong> <span id="resignation"></span></p>
+</div>
+
+
+<div class="score-box"><h4>Your Greatest Strength</h4><p id="greatestStrength"></p></div>
+<div class="score-box"><h4>Your Challenge Archetype</h4><p id="archetype"></p></div>
+<div class="score-box"><h4>Your Next Growth Step</h4><p id="growthFocus"></p></div>
+
+<button class="restart" onclick="location.reload()">Take Quiz Again</button>
+</div>
+</div>
+
+<script>
+const questions=[
+"When something unexpected goes wrong, I stay calm long enough to think clearly.",
+"I immediately imagine the worst possible outcome.",
+"I can accept reality even when I don't like it.",
+"My emotions usually control my first response to a crisis.",
+"I look for the next practical step instead of freezing.",
+"When treated unfairly, I become critical of everyone around me.",
+"I can disagree without becoming combative.",
+"I tend to expect the worst from people after being hurt.",
+"I hold onto resentment for a long time.",
+"I can choose restraint even when I feel justified in fighting back.",
+"In a crisis, I focus on what I can control.",
+"I become overwhelmed by 'what if' scenarios.",
+"I can take action even when I don't have all the answers.",
+"Fear often stops me from making decisions.",
+"I am able to regain perspective after a setback.",
+"After repeated setbacks, I still believe improvement is possible.",
+"I sometimes feel like giving up entirely.",
+"I keep moving forward even when progress feels slow.",
+"I can ask others for help when I need it.",
+"Even during difficulties, I can find reasons to be grateful."
+];
+
+const reverseQuestions=[1,3,5,7,8,11,13,16];
+let currentQuestion=0, answers=[], profileChart=null;
+
+function loadQuestion(){
+ document.getElementById("questionNumber").innerHTML=`Question ${currentQuestion+1} of ${questions.length}`;
+ document.getElementById("progressBar").style.width=((currentQuestion)/questions.length)*100+"%";
+ document.getElementById("questionText").textContent=questions[currentQuestion];
+ const options=document.getElementById("options");
+ options.innerHTML="";
+ ["1 - Never","2 - Rarely","3 - Sometimes","4 - Often","5 - Almost Always"].forEach((label,i)=>{
+   const btn=document.createElement("button");
+   btn.className="option-btn";
+   btn.textContent=label;
+   btn.onclick=()=>saveAnswer(i+1);
+   options.appendChild(btn);
+ });
+}
+
+function saveAnswer(score){
+ answers.push(score);
+ currentQuestion++;
+ currentQuestion<questions.length ? loadQuestion() : showResults();
+}
+
+function adjustedScore(index,value){
+ return reverseQuestions.includes(index) ? 6-value : value;
+}
+
+function scoreLabel(score){
+ if(score>=21) return "Strong";
+ if(score>=16) return "Healthy";
+ if(score>=11) return "Moderate";
+ return "Needs Attention";
+}
+
+function showResults(){
+ let total=0;
+ const adjusted=answers.map((a,i)=>{const s=adjustedScore(i,a); total+=s; return s;});
+
+ document.getElementById("quiz").style.display="none";
+ document.getElementById("result").style.display="block";
+ document.getElementById("totalScore").innerText=total;
+
+ let title="", description="";
+ if(total>=85){title="Resilient Overcomer"; description="You demonstrate strong hope, confidence, and resilience during difficult seasons.";}
+ else if(total>=65){title="Growing Through Challenges"; description="You have a healthy foundation but still experience occasional fear, frustration, or discouragement.";}
+ else if(total>=45){title="Stuck in Reaction Mode"; description="Challenges tend to trigger emotional reactions that may keep you trapped longer than necessary.";}
+ else {title="At Risk of Giving Up"; description="Challenges may currently feel overwhelming and affect your confidence and resilience.";}
+
+ document.getElementById("resultTitle").innerText=title;
+ document.getElementById("resultDescription").innerText=description;
+
+ const stability=adjusted.slice(0,5).reduce((a,b)=>a+b,0);
+ const anger=adjusted.slice(5,10).reduce((a,b)=>a+b,0);
+ const panic=adjusted.slice(10,15).reduce((a,b)=>a+b,0);
+ const resignation=adjusted.slice(15,20).reduce((a,b)=>a+b,0);
+
+ document.getElementById("stability").innerText=`${scoreLabel(stability)} (${stability}/25)`;
+ document.getElementById("anger").innerText=`${scoreLabel(anger)} (${anger}/25)`;
+ document.getElementById("panic").innerText=`${scoreLabel(panic)} (${panic}/25)`;
+ document.getElementById("resignation").innerText=`${scoreLabel(resignation)} (${resignation}/25)`;
+
+ const dimensions={stability,anger,panic,resignation};
+ const strongest=Object.keys(dimensions).reduce((a,b)=>dimensions[a]>dimensions[b]?a:b);
+
+ const strengthLabels={
+  stability:"Remaining calm under pressure",
+  anger:"Emotional determination",
+  panic:"Confidence under pressure",
+  resignation:"Perseverance and endurance"
+ };
+ document.getElementById("greatestStrength").innerText=strengthLabels[strongest];
+
+ let archetype="";
+ switch(strongest){
+  case "stability": archetype="🏗️ Steady Builder — You tend to remain calm and grounded when facing difficulties."; break;
+  case "anger": archetype="⚔️ Determined Fighter — You push through challenges with determination, though emotions can sometimes influence your reactions."; break;
+  case "panic": archetype="🚀 Courageous Mover — You take action even when circumstances are uncertain."; break;
+  case "resignation": archetype="🚶 Persistent Traveler — Your greatest strength is perseverance."; break;
+ }
+ document.getElementById("archetype").innerText=archetype;
+
+ const fontSize=window.innerWidth<600?14:20;
+ if(profileChart) profileChart.destroy();
+
+ profileChart=new Chart(document.getElementById("profileChart"),{
+  type:"radar",
+  data:{
+   labels:["Emotional Control","Confidence","Perseverance","Stability"],
+   datasets:[{data:[anger,panic,resignation,stability],fill:true}]
+  },
+  options:{
+   responsive:true,maintainAspectRatio:false,
+   scales:{r:{
+    min:0,max:25,
+    ticks:{stepSize:5,font:{size:fontSize-2}},
+    pointLabels:{font:{size:fontSize,weight:"bold"}}
+   }},
+   plugins:{legend:{display:false}}
+  }
+ });
+
+ const scores={
+  "Choose Restraint":anger,
+  "Take the Next Step":panic,
+  "Don't Stay Down":resignation,
+  "Strengthen Your Foundation":stability
+ };
+
+ let lowestKey=Object.keys(scores)[0];
+ Object.keys(scores).forEach(k=>{if(scores[k]<scores[lowestKey]) lowestKey=k;});
+
+ const growthDescriptions={
+  "Choose Restraint":"When emotions are high, pause before speaking or acting.",
+  "Take the Next Step":"Focus on the next small action you can take instead of worrying about everything at once.",
+  "Don't Stay Down":"After a setback, get back up and keep moving forward.",
+  "Strengthen Your Foundation":"Build habits that help you stay calm, confident, and resilient."
+ };
+
+ document.getElementById("growthFocus").innerHTML=`<strong>${lowestKey}</strong><br>${growthDescriptions[lowestKey]}`;
+}
+
+loadQuestion();
+</script>
+</body>
+</html>

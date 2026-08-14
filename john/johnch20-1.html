@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>John 20 Quiz</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    line-height: 1.6;
+  }
+
+  h1 { text-align: center; }
+
+  .question { margin-bottom: 20px; }
+
+  .option {
+    display: block;
+    padding: 6px;
+    border-radius: 5px;
+    margin: 4px 0;
+  }
+
+  .correct { background-color: #d4edda; }   /* green */
+  .incorrect { background-color: #f8d7da; } /* red */
+
+  .explanation {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #444;
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  .result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>📖 John 20 Quiz</h1>
+<p><em>Test your understanding (NKJV)</em></p>
+
+<form id="quizForm">
+
+<!-- Q1 -->
+<div class="question">
+<p>1. What does Mary Magdalene’s statement reveal about her understanding of the empty tomb?</p>
+<label class="option"><input type="radio" name="q1" value="A"> She fully believed in the resurrection</label>
+<label class="option"><input type="radio" name="q1" value="B"> She assumed grave robbery had occurred</label>
+<label class="option"><input type="radio" name="q1" value="C"> She believed Jesus had ascended immediately</label>
+<label class="option"><input type="radio" name="q1" value="D"> She thought the tomb was mistaken</label>
+<div class="explanation" id="e1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question">
+<p>2. Why is the description of the grave clothes significant?</p>
+<label class="option"><input type="radio" name="q2" value="A"> It fulfilled a prophecy</label>
+<label class="option"><input type="radio" name="q2" value="B"> It indicated haste</label>
+<label class="option"><input type="radio" name="q2" value="C"> It suggested an orderly, non-human intervention</label>
+<label class="option"><input type="radio" name="q2" value="D"> It proved prior visits</label>
+<div class="explanation" id="e2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question">
+<p>3. What is the deeper significance of Jesus calling Mary by name?</p>
+<label class="option"><input type="radio" name="q3" value="A"> She couldn’t see clearly</label>
+<label class="option"><input type="radio" name="q3" value="B"> Cultural greeting</label>
+<label class="option"><input type="radio" name="q3" value="C"> Personal revelation leading to recognition</label>
+<label class="option"><input type="radio" name="q3" value="D"> Alert others</label>
+<div class="explanation" id="e3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question">
+<p>4. What is the significance of “Peace be with you”?</p>
+<label class="option"><input type="radio" name="q4" value="A"> Common greeting only</label>
+<label class="option"><input type="radio" name="q4" value="B"> Addresses fear and restores relationship</label>
+<label class="option"><input type="radio" name="q4" value="C"> Ends ministry</label>
+<label class="option"><input type="radio" name="q4" value="D"> Directed only to Peter</label>
+<div class="explanation" id="e4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question">
+<p>5. What is the theological meaning of Jesus breathing on the disciples?</p>
+<label class="option"><input type="radio" name="q5" value="A"> No deeper meaning</label>
+<label class="option"><input type="radio" name="q5" value="B"> Replacement for Pentecost</label>
+<label class="option"><input type="radio" name="q5" value="C"> Echo of creation and new spiritual life</label>
+<label class="option"><input type="radio" name="q5" value="D"> Limited apostolic sign</label>
+<div class="explanation" id="e5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question">
+<p>6. What does the delay before Thomas sees Jesus emphasize?</p>
+<label class="option"><input type="radio" name="q6" value="A"> Thomas was less important</label>
+<label class="option"><input type="radio" name="q6" value="B"> Proof is always required</label>
+<label class="option"><input type="radio" name="q6" value="C"> Tension between doubt and confession</label>
+<label class="option"><input type="radio" name="q6" value="D"> Fixed appearance timing</label>
+<div class="explanation" id="e6"></div>
+</div>
+
+<button type="button" onclick="submitQuiz()">Submit</button>
+
+</form>
+
+<div class="result" id="result"></div>
+
+<script>
+const answers = {
+  q1: "B",
+  q2: "C",
+  q3: "C",
+  q4: "B",
+  q5: "C",
+  q6: "C"
+};
+
+const explanations = {
+  q1: "Mary assumed the body was taken (John 20:2).",
+  q2: "Order suggests resurrection, not theft.",
+  q3: "Recognition came through relationship.",
+  q4: "Jesus addresses fear and restores peace.",
+  q5: "Echoes Genesis—new creation life.",
+  q6: "Thomas moves from doubt to confession."
+};
+
+function submitQuiz() {
+  let score = 0;
+
+  for (let q in answers) {
+    let selected = document.querySelector(`input[name="${q}"]:checked`);
+    let options = document.querySelectorAll(`input[name="${q}"]`);
+    let exp = document.getElementById("e" + q[1]);
+
+    options.forEach(opt => {
+      let label = opt.parentElement;
+      label.classList.remove("correct", "incorrect");
+
+      if (opt.value === answers[q]) {
+        label.classList.add("correct");
+      }
+
+      if (selected && opt.checked && opt.value !== answers[q]) {
+        label.classList.add("incorrect");
+      }
+    });
+
+    if (selected && selected.value === answers[q]) {
+      score++;
+    }
+
+    exp.innerHTML = explanations[q];
+  }
+
+  document.getElementById("result").innerHTML =
+    `Score: ${score}/6 <br><br> “Blessed are those who have not seen and yet have believed.” — John 20:29 (NKJV)`;
+}
+</script>
+
+</body>
+</html>

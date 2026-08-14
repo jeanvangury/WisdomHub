@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gospel of John Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .question-count {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .question {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    .option:hover {
+      background: #f0f0f0;
+    }
+
+    .correct {
+      background: #d4edda !important;
+      border-color: #28a745;
+    }
+
+    .wrong {
+      background: #f8d7da !important;
+      border-color: #dc3545;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+    }
+
+    .score-screen {
+      text-align: center;
+    }
+
+    .restart-btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gospel of John Quiz</h1>
+    <div class="question-count" id="question-count"></div>
+    <div id="quiz-container">
+      <div class="question" id="question"></div>
+      <div id="options"></div>
+      <button class="next-btn" id="next-btn">Next Question</button>
+    </div>
+
+    <div class="score-screen" id="score-screen" style="display:none;">
+      <h2>Quiz Complete!</h2>
+      <h3 id="final-score"></h3>
+      <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Who were the first two disciples to follow Jesus after hearing John the Baptist speak? (John 1:35–40)",
+        options: ["Peter and Andrew", "Andrew and another disciple", "James and John", "Philip and Nathanael"],
+        answer: "Andrew and another disciple"
+      },
+      {
+        question: "What statement did Jesus make after cleansing the temple? (John 2:19)",
+        options: [
+          "Destroy this temple, and in three days I will raise it up.",
+          "My house shall be called a house of prayer.",
+          "Repent, for the kingdom is at hand.",
+          "The Father seeks true worshipers."
+        ],
+        answer: "Destroy this temple, and in three days I will raise it up."
+      },
+      {
+        question: "What comparison did Jesus use to describe the lifting up of the Son of Man? (John 3:14)",
+        options: [
+          "Noah’s ark",
+          "Moses lifting up the serpent",
+          "Elijah calling fire from heaven",
+          "David defeating Goliath"
+        ],
+        answer: "Moses lifting up the serpent"
+      },
+      {
+        question: "Which mountain did the Samaritan woman mention in her conversation with Jesus? (John 4:20)",
+        options: ["Mount Carmel", "Mount Sinai", "Mount Gerizim", "Mount Zion"],
+        answer: "Mount Gerizim"
+      },
+      {
+        question: "On what day did Jesus heal the man at Bethesda, causing controversy? (John 5:9–10)",
+        options: ["Passover", "Sabbath", "Feast of Tabernacles", "Pentecost"],
+        answer: "Sabbath"
+      },
+      {
+        question: "What food did the boy have before Jesus fed the five thousand? (John 6:9)",
+        options: ["Five loaves and two fish", "Seven loaves and three fish", "Bread and honey", "Manna and quail"],
+        answer: "Five loaves and two fish"
+      },
+      {
+        question: "What did Jesus say would flow from within the one who believes in Him? (John 7:38)",
+        options: ["Rivers of living water", "Streams of mercy", "Oil and wine", "Fire from heaven"],
+        answer: "Rivers of living water"
+      },
+      {
+        question: "What did Jesus write on the ground when the woman caught in adultery was brought to Him? (John 8:6)",
+        options: [
+          "The Ten Commandments",
+          "The sins of the accusers",
+          "Scripture verses",
+          "The Gospel does not say"
+        ],
+        answer: "The Gospel does not say"
+      },
+      {
+        question: "What question did Jesus ask the man born blind after healing him? (John 9:35)",
+        options: [
+          "What do you want Me to do for you?",
+          "Do you believe in the Son of God?",
+          "Will you follow Me?",
+          "Do you love Me?"
+        ],
+        answer: "Do you believe in the Son of God?"
+      },
+      {
+        question: "What does Jesus say the thief comes to do? (John 10:10)",
+        options: ["Teach and guide", "Steal, kill, and destroy", "Test believers", "Scatter the sheep"],
+        answer: "Steal, kill, and destroy"
+      },
+      {
+        question: "What did Thomas say after hearing Lazarus was dead? (John 11:16)",
+        options: [
+          "Lord, if You had been here…",
+          "Let us also go, that we may die with Him.",
+          "Surely this sickness is not unto death.",
+          "I believe You are the Christ."
+        ],
+        answer: "Let us also go, that we may die with Him."
+      },
+      {
+        question: "What kind of branch did the crowd use when Jesus entered Jerusalem? (John 12:13)",
+        options: ["Olive branches", "Palm branches", "Fig branches", "Cedar branches"],
+        answer: "Palm branches"
+      },
+      {
+        question: "Which disciple leaned on Jesus’ bosom at supper? (John 13:23)",
+        options: ["Peter", "Thomas", "John", "Andrew"],
+        answer: "John"
+      },
+      {
+        question: "What promise did Jesus give regarding His Father’s house? (John 14:2)",
+        options: [
+          "I will build My church.",
+          "I go to prepare a place for you.",
+          "You will inherit the earth.",
+          "You will judge the twelve tribes."
+        ],
+        answer: "I go to prepare a place for you."
+      },
+      {
+        question: "What does Jesus call His disciples in John 15:15?",
+        options: ["Servants only", "Friends", "Witnesses", "Brothers"],
+        answer: "Friends"
+      },
+      {
+        question: "What did Jesus say the Holy Spirit would do? (John 16:13)",
+        options: [
+          "Speak on His own authority",
+          "Glorify Himself",
+          "Guide believers into all truth",
+          "Replace the apostles"
+        ],
+        answer: "Guide believers into all truth"
+      },
+      {
+        question: "For whom did Jesus specifically pray in John 17:20?",
+        options: ["Israel only", "The Pharisees", "Future believers", "Roman rulers"],
+        answer: "Future believers"
+      },
+      {
+        question: "Who denied Jesus three times? (John 18:17, 25–27)",
+        options: ["Thomas", "Judas", "Peter", "Nathanael"],
+        answer: "Peter"
+      },
+      {
+        question: "What did Jesus say just before He died? (John 19:30)",
+        options: [
+          "Father, forgive them.",
+          "Into Your hands I commit My spirit.",
+          "It is finished.",
+          "My God, why have You forsaken Me?"
+        ],
+        answer: "It is finished."
+      },
+      {
+        question: "Who first saw the risen Jesus near the tomb? (John 20:14–16)",
+        options: ["Peter", "John", "Mary Magdalene", "Thomas"],
+        answer: "Mary Magdalene"
+      },
+      {
+        question: "What did Jesus provide for the disciples on the shore after His resurrection? (John 21:9–13)",
+        options: ["Bread and fish", "Wine and lamb", "Honey and figs", "Manna and water"],
+        answer: "Bread and fish"
+      },
+      {
+        question: "Which feast is most frequently mentioned in the Gospel of John?",
+        options: ["Passover", "Pentecost", "Purim", "Day of Atonement"],
+        answer: "Passover"
+      },
+      {
+        question: "Which disciple said, 'Can anything good come out of Nazareth?' (John 1:46)",
+        options: ["Andrew", "Philip", "Nathanael", "Thomas"],
+        answer: "Nathanael"
+      },
+      {
+        question: "According to John 1:17, what came through Jesus Christ?",
+        options: ["Judgment and wrath", "Grace and truth", "Wisdom and knowledge", "Power and authority"],
+        answer: "Grace and truth"
+      },
+      {
+        question: "What miracle caused many leaders to decide that Jesus must die? (John 11:45–53)",
+        options: [
+          "Walking on water",
+          "Healing the blind man",
+          "Feeding the five thousand",
+          "Raising Lazarus from the dead"
+        ],
+        answer: "Raising Lazarus from the dead"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const questionCountEl = document.getElementById('question-count');
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+
+      questionCountEl.innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+      questionEl.innerText = q.question;
+      optionsEl.innerHTML = '';
+      nextBtn.style.display = 'none';
+
+      q.options.forEach(option => {
+        const button = document.createElement('button');
+        button.innerText = option;
+        button.classList.add('option');
+
+        button.onclick = () => selectAnswer(button, option, q.answer);
+
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function selectAnswer(button, selected, correct) {
+      const buttons = document.querySelectorAll('.option');
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+
+        if (btn.innerText === correct) {
+          btn.classList.add('correct');
+        }
+      });
+
+      if (selected !== correct) {
+        button.classList.add('wrong');
+      } else {
+        score++;
+      }
+
+      nextBtn.style.display = 'inline-block';
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    };
+
+    function showScore() {
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('score-screen').style.display = 'block';
+      document.getElementById('final-score').innerText = `You scored ${score} out of ${questions.length}`;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+
+      document.getElementById('quiz-container').style.display = 'block';
+      document.getElementById('score-screen').style.display = 'none';
+
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

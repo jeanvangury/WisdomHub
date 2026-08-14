@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gospel of John Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .question-count {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .question {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    .option:hover {
+      background: #f0f0f0;
+    }
+
+    .correct {
+      background: #d4edda !important;
+      border-color: #28a745;
+    }
+
+    .wrong {
+      background: #f8d7da !important;
+      border-color: #dc3545;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+    }
+
+    .score-screen {
+      text-align: center;
+    }
+
+    .restart-btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gospel of John Quiz</h1>
+    <div class="question-count" id="question-count"></div>
+    <div id="quiz-container">
+      <div class="question" id="question"></div>
+      <div id="options"></div>
+      <button class="next-btn" id="next-btn">Next Question</button>
+    </div>
+
+    <div class="score-screen" id="score-screen" style="display:none;">
+      <h2>Quiz Complete!</h2>
+      <h3 id="final-score"></h3>
+      <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What title did John the Baptist use when he first saw Jesus?",
+        options: ["Son of David", "The Lamb of God", "Messiah", "King of Israel"],
+        answer: "The Lamb of God"
+      },
+      {
+        question: "What did Jesus turn into wine at Cana?",
+        options: ["Milk", "Oil", "Water", "Juice"],
+        answer: "Water"
+      },
+      {
+        question: "What must happen for a person to see the kingdom of God?",
+        options: ["Be baptized", "Be born again", "Fast", "Keep the Law"],
+        answer: "Be born again"
+      },
+      {
+        question: "What did Jesus offer the Samaritan woman?",
+        options: ["Living water", "Bread", "Healing", "Gold"],
+        answer: "Living water"
+      },
+      {
+        question: "How many years had the man at Bethesda been infirm?",
+        options: ["18", "25", "38", "40"],
+        answer: "38"
+      },
+      {
+        question: "How many baskets were left after feeding the five thousand?",
+        options: ["7", "10", "12", "14"],
+        answer: "12"
+      },
+      {
+        question: "What invitation did Jesus give at the feast?",
+        options: ["Follow Me", "Come to Me and drink", "Repent", "Pray always"],
+        answer: "Come to Me and drink"
+      },
+      {
+        question: "What did Jesus say before 'Before Abraham was, I AM'?",
+        options: ["Verily, verily", "Most assuredly, I say to you", "Listen carefully", "Take heed"],
+        answer: "Most assuredly, I say to you"
+      },
+      {
+        question: "What did Jesus use to anoint the blind man’s eyes?",
+        options: ["Oil", "Clay made with saliva", "Water", "Dust"],
+        answer: "Clay made with saliva"
+      },
+      {
+        question: "What does the Good Shepherd do for the sheep?",
+        options: ["Builds houses", "Gives His life", "Makes them rich", "Feeds them daily"],
+        answer: "Gives His life"
+      },
+      {
+        question: "What is the shortest verse in the Bible?",
+        options: ["Jesus wept", "God is love", "Pray always", "Fear not"],
+        answer: "Jesus wept"
+      },
+      {
+        question: "Who objected to Mary anointing Jesus’ feet?",
+        options: ["Peter", "Thomas", "Judas Iscariot", "Philip"],
+        answer: "Judas Iscariot"
+      },
+      {
+        question: "What act of service did Jesus do at the Last Supper?",
+        options: ["Preached", "Healed", "Washed feet", "Served fish"],
+        answer: "Washed feet"
+      },
+      {
+        question: "Who is the way, the truth, and the life?",
+        options: ["Peter", "Moses", "Jesus", "John"],
+        answer: "Jesus"
+      },
+      {
+        question: "What must believers do to bear fruit?",
+        options: ["Fast daily", "Abide in Jesus", "Travel", "Pray loudly"],
+        answer: "Abide in Jesus"
+      },
+      {
+        question: "What name did Jesus give to the Helper?",
+        options: ["Spirit of Truth", "Comforter", "Holy Spirit", "All of the above"],
+        answer: "All of the above"
+      },
+      {
+        question: "What is eternal life according to Jesus?",
+        options: ["Living forever", "Knowing God and Jesus Christ", "Doing good works", "Going to church"],
+        answer: "Knowing God and Jesus Christ"
+      },
+      {
+        question: "What happened to Malchus during Jesus’ arrest?",
+        options: ["He fainted", "His ear was cut off", "He ran away", "He denied Jesus"],
+        answer: "His ear was cut off"
+      },
+      {
+        question: "What inscription was placed above Jesus on the cross?",
+        options: ["King of Glory", "Jesus of Nazareth, King of the Jews", "Son of God", "Holy One"],
+        answer: "Jesus of Nazareth, King of the Jews"
+      },
+      {
+        question: "Who entered the empty tomb first?",
+        options: ["John", "Peter", "Thomas", "Andrew"],
+        answer: "Peter"
+      },
+      {
+        question: "What question did Jesus ask Peter three times?",
+        options: ["Will you follow Me?", "Do you believe?", "Do you love Me?", "Will you preach?"],
+        answer: "Do you love Me?"
+      },
+      {
+        question: "Which is NOT an 'I AM' statement?",
+        options: ["Bread of Life", "True Vine", "Chief Cornerstone", "Light of the World"],
+        answer: "Chief Cornerstone"
+      },
+      {
+        question: "Which miracle was the final sign before the crucifixion?",
+        options: ["Walking on water", "Raising Lazarus", "Healing blind man", "Water to wine"],
+        answer: "Raising Lazarus"
+      },
+      {
+        question: "Why did John write this Gospel?",
+        options: ["To record history", "To preserve culture", "That people may believe Jesus is the Christ", "To teach Rome"],
+        answer: "That people may believe Jesus is the Christ"
+      },
+      {
+        question: "Who is the Word in John 1?",
+        options: ["Moses", "John the Baptist", "Jesus", "An angel"],
+        answer: "Jesus"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const questionCountEl = document.getElementById('question-count');
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+
+      questionCountEl.innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+      questionEl.innerText = q.question;
+      optionsEl.innerHTML = '';
+      nextBtn.style.display = 'none';
+
+      q.options.forEach(option => {
+        const button = document.createElement('button');
+        button.innerText = option;
+        button.classList.add('option');
+
+        button.onclick = () => selectAnswer(button, option, q.answer);
+
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function selectAnswer(button, selected, correct) {
+      const buttons = document.querySelectorAll('.option');
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+
+        if (btn.innerText === correct) {
+          btn.classList.add('correct');
+        }
+      });
+
+      if (selected !== correct) {
+        button.classList.add('wrong');
+      } else {
+        score++;
+      }
+
+      nextBtn.style.display = 'inline-block';
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    };
+
+    function showScore() {
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('score-screen').style.display = 'block';
+      document.getElementById('final-score').innerText = `You scored ${score} out of ${questions.length}`;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+
+      document.getElementById('quiz-container').style.display = 'block';
+      document.getElementById('score-screen').style.display = 'none';
+
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

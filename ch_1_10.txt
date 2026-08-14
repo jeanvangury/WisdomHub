@@ -1,0 +1,209 @@
+const quizData = [
+{
+question: "Before choosing Matthias, Peter quoted which two Psalms concerning Judas?",
+answers: [
+{ text: "Psalm 22 and Psalm 23", correct: false },
+{ text: "Psalm 91 and Psalm 110", correct: false },
+{ text: "Psalm 69 and Psalm 109", correct: true },
+{ text: "Psalm 2 and Psalm 8", correct: false }
+]
+},
+{
+question: "According to Peter's sermon at Pentecost, David foresaw whose resurrection?",
+answers: [
+{ text: "Moses'", correct: false },
+{ text: "Elijah's", correct: false },
+{ text: "Christ's", correct: true },
+{ text: "John's", correct: false }
+]
+},
+{
+question: "Why were Jews from many nations able to understand the apostles on the Day of Pentecost?",
+answers: [
+{ text: "Everyone suddenly understood Hebrew.", correct: false },
+{ text: "The apostles used translators.", correct: false },
+{ text: "Each heard them speaking in his own language.", correct: true },
+{ text: "Peter interpreted for everyone.", correct: false }
+]
+},
+{
+question: "Which prophet did Peter quote to explain the events of Pentecost?",
+answers: [
+{ text: "Isaiah", correct: false },
+{ text: "Ezekiel", correct: false },
+{ text: "Joel", correct: true },
+{ text: "Zechariah", correct: false }
+]
+},
+{
+question: "Which of these was NOT one of the four activities devoted to by the early church in Acts 2:42?",
+answers: [
+{ text: "The apostles' teaching", correct: false },
+{ text: "Fellowship", correct: false },
+{ text: "Breaking of bread", correct: false },
+{ text: "Evangelistic crusades", correct: true }
+]
+},
+{
+question: "At what hour did Peter and John go to the temple to pray?",
+answers: [
+{ text: "Sixth hour", correct: false },
+{ text: "Third hour", correct: false },
+{ text: "Ninth hour", correct: true },
+{ text: "Twelfth hour", correct: false }
+]
+},
+{
+question: "What was the name of the gate where the lame man was sitting?",
+answers: [
+{ text: "Eastern Gate", correct: false },
+{ text: "Golden Gate", correct: false },
+{ text: "Beautiful Gate", correct: true },
+{ text: "Sheep Gate", correct: false }
+]
+},
+{
+question: "Peter explained that the lame man was healed through:",
+answers: [
+{ text: "Peter's faith", correct: false },
+{ text: "The man's faith alone", correct: false },
+{ text: "Faith in the name of Jesus", correct: true },
+{ text: "The prayers of the apostles", correct: false }
+]
+},
+{
+question: "Which two failed movements did Gamaliel mention before the Sanhedrin?",
+answers: [
+{ text: "Barabbas and Judas Iscariot", correct: false },
+{ text: "Theudas and Judas the Galilean", correct: true },
+{ text: "Simon and Elymas", correct: false },
+{ text: "Herod and Pilate", correct: false }
+]
+},
+{
+question: "Why did the apostles rejoice after being flogged?",
+answers: [
+{ text: "They escaped prison.", correct: false },
+{ text: "The church had grown.", correct: false },
+{ text: "They were counted worthy to suffer for Jesus' name.", correct: true },
+{ text: "They received financial gifts.", correct: false }
+]
+},
+{
+question: "Stephen was accused of speaking against which two things?",
+answers: [
+{ text: "Rome and Caesar", correct: false },
+{ text: "Moses and the Temple", correct: true },
+{ text: "Peter and John", correct: false },
+{ text: "The Prophets and Kings", correct: false }
+]
+},
+{
+question: "During Stephen's speech, who refused to be called the son of Pharaoh's daughter?",
+answers: [
+{ text: "Joseph", correct: false },
+{ text: "Moses", correct: true },
+{ text: "Samuel", correct: false },
+{ text: "Joshua", correct: false }
+]
+},
+{
+question: "What did Stephen see immediately before he died?",
+answers: [
+{ text: "Twelve angels", correct: false },
+{ text: "Moses and Elijah", correct: false },
+{ text: "Jesus standing at the right hand of God", correct: true },
+{ text: "The New Jerusalem", correct: false }
+]
+},
+{
+question: "Why did Peter rebuke Simon the sorcerer?",
+answers: [
+{ text: "He practiced magic.", correct: false },
+{ text: "He refused baptism.", correct: false },
+{ text: "He thought God's gift could be purchased with money.", correct: true },
+{ text: "He opposed Philip.", correct: false }
+]
+},
+{
+question: "Before explaining Isaiah, what question did Philip ask the Ethiopian official?",
+answers: [
+{ text: "Do you believe in God?", correct: false },
+{ text: "Where are you travelling?", correct: false },
+{ text: "Do you understand what you are reading?", correct: true },
+{ text: "Have you been baptized?", correct: false }
+]
+},
+{
+question: "What happened immediately after the Ethiopian eunuch was baptized?",
+answers: [
+{ text: "He returned with Philip to Jerusalem.", correct: false },
+{ text: "Philip baptized his servants.", correct: false },
+{ text: "The Spirit of the Lord caught Philip away.", correct: true },
+{ text: "An angel appeared to both men.", correct: false }
+]
+},
+{
+question: "How did Ananias address Saul when they first met?",
+answers: [
+{ text: "Rabbi Saul", correct: false },
+{ text: "Apostle Saul", correct: false },
+{ text: "Brother Saul", correct: true },
+{ text: "Son of Abraham", correct: false }
+]
+},
+{
+question: "What was Saul doing during the three days after meeting Jesus on the road to Damascus?",
+answers: [
+{ text: "Preaching in Damascus", correct: false },
+{ text: "Travelling to Jerusalem", correct: false },
+{ text: "Fasting and praying", correct: true },
+{ text: "Studying under Gamaliel", correct: false }
+]
+},
+{
+question: "What was the result of Peter raising Tabitha (Dorcas) from the dead?",
+answers: [
+{ text: "Herod believed.", correct: false },
+{ text: "A church was immediately established.", correct: false },
+{ text: "Many believed in the Lord.", correct: true },
+{ text: "Peter became high priest.", correct: false }
+]
+},
+{
+question: "Why did Peter hesitate to visit Cornelius?",
+answers: [
+{ text: "Cornelius was a Roman soldier.", correct: false },
+{ text: "Cornelius was wealthy.", correct: false },
+{ text: "Jewish custom discouraged close association with Gentiles.", correct: true },
+{ text: "Peter feared arrest.", correct: false }
+]
+},
+{
+question: "Which statement was repeated three times in Peter's vision?",
+answers: [
+{ text: "Do not fear.", correct: false },
+{ text: "Repent and believe.", correct: false },
+{ text: "What God has cleansed you must not call common.", correct: true },
+{ text: "Follow Me.", correct: false }
+]
+},
+{
+question: "Who recognized that the Gentiles had received the Holy Spirit before baptism?",
+answers: [
+{ text: "James", correct: false },
+{ text: "Barnabas", correct: false },
+{ text: "Peter and the Jewish believers with him", correct: true },
+{ text: "Philip", correct: false }
+]
+},
+{
+question: "According to Peter in Acts 10:38, Jesus went about:",
+answers: [
+{ text: "Teaching only in synagogues.", correct: false },
+{ text: "Healing only Israelites.", correct: false },
+{ text: "Doing good and healing all oppressed by the devil.", correct: true },
+{ text: "Building the temple.", correct: false }
+]
+}
+];

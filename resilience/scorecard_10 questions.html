@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When Things Go Wrong — Scorecard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 950px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+      background: #f7f7f7;
+      color: #222;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .question {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .question p {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .scale {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: #2d6cdf;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 30px auto;
+    }
+
+    button:hover {
+      background: #1f54b3;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #eef4ff;
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #2d6cdf;
+      color: white;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #666;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>When Things Go Wrong</h1>
+  <h2>Personal Response Scorecard</h2>
+  <div class="card">
+  <h2>Suggested Scoring Scale</h2>
+
+  <table>
+    <tr>
+      <th>Score</th>
+      <th>Meaning</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Strongly Disagree</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Disagree</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Neutral</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Agree</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Strongly Agree</td>
+    </tr>
+  </table>
+</div>
+
+  <div class="card">
+
+    <div id="questions"></div>
+
+    <button onclick="calculateScore()">Calculate My Score</button>
+
+    <div id="result"></div>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "1. When unexpected problems arise, I quickly assume the worst.",
+        reverse: true
+      },
+      {
+        text: "2. Prayer helps me regain peace during difficult situations.",
+        reverse: false
+      },
+      {
+        text: "3. Even during difficult seasons, I continue taking practical steps forward.",
+        reverse: false
+      },
+      {
+        text: "4. Stress makes it difficult for me to think clearly.",
+        reverse: true
+      },
+      {
+        text: "5. I can remain calm even when situations feel uncertain.",
+        reverse: false
+      },
+      {
+        text: "6. I become harsh, reactive, or irritable when under pressure.",
+        reverse: true
+      },
+      {
+        text: "7. I believe difficult seasons can still produce growth and purpose.",
+        reverse: false
+      },
+      {
+        text: "8. Even when life feels uncertain, I am able to trust God and continue forward.",
+        reverse: false
+      },
+      {
+        text: "9. After an emotional setback, I am able to regain stability and move forward.",
+        reverse: false
+      },
+      {
+        text: "10. Even after failure or disappointment, I am willing to try again.",
+        reverse: false
+      }
+    ];
+
+    const container = document.getElementById("questions");
+
+    questions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+
+      let radios = "";
+
+      for (let i = 1; i <= 5; i++) {
+        radios += `
+          <label>
+            <input type="radio" name="q${index}" value="${i}">
+            ${i}
+          </label>
+        `;
+      }
+
+      div.innerHTML = `
+        <p>${q.text}</p>
+        <div class="scale">
+          ${radios}
+        </div>
+      `;
+
+      container.appendChild(div);
+    });
+
+    function calculateScore() {
+
+      let total = 0;
+
+      for (let i = 0; i < questions.length; i++) {
+
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+
+        if (!selected) {
+          alert("Please answer all questions.");
+          return;
+        }
+
+        let value = parseInt(selected.value);
+
+        // Reverse scoring
+        if (questions[i].reverse) {
+          value = 6 - value;
+        }
+
+        total += value;
+      }
+
+      const percentage = Math.round((total / 50) * 100);
+
+      let grade = "";
+      let interpretation = "";
+
+      if (percentage >= 85) {
+        grade = "Steadfast";
+        interpretation = "You remain grounded, hopeful, and forward-moving even during difficult seasons.";
+      } else if (percentage >= 70) {
+        grade = "Strong and Stable";
+        interpretation = "You generally handle challenges well, though certain pressures may still affect you deeply.";
+      } else if (percentage >= 55) {
+        grade = "Growing Through Difficulty";
+        interpretation = "You are learning to process hardship in healthier and wiser ways.";
+      } else if (percentage >= 40) {
+        grade = "Easily Shaken";
+        interpretation = "Difficult situations often affect your peace, thinking, or ability to move forward.";
+      } else {
+        grade = "Emotionally Overwhelmed";
+        interpretation = "Ongoing pressure or discouragement may be draining your emotional and spiritual strength.";
+      }
+
+      document.getElementById("result").style.display = "block";
+
+      document.getElementById("result").innerHTML = `
+        <h2>Your Score: ${percentage}/100</h2>
+
+        <table>
+          <tr>
+            <th>Grade</th>
+            <th>Interpretation</th>
+          </tr>
+          <tr>
+            <td><strong>${grade}</strong></td>
+            <td>${interpretation}</td>
+          </tr>
+        </table>
+
+        <p class="note">
+          This scorecard is intended for reflection and personal growth.
+          Difficult seasons reveal both strengths and areas that still need healing and growth.
+        </p>
+      `;
+    }
+  </script>
+
+</body>
+</html>

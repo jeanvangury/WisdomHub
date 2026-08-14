@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acts Teen Quiz</title>
+<style>
+body{font-family:Arial;background:#eef2f7;padding:20px}.box{max-width:800px;margin:auto;background:#fff;padding:24px;border-radius:10px}
+.opt{display:block;width:100%%;margin:10px 0;padding:12px;text-align:left}.correct{background:#28a745;color:#fff}.wrong{background:#dc3545;color:#fff}
+#note{display:none;background:#eef8ff;border-left:4px solid #007bff;padding:12px;margin:16px 0}
+</style></head><body><div class="box">
+<h2>Acts 1–10 Teen Bible Quiz</h2><div id="prog"></div><h3 id="q"></h3><div id="ans"></div><div id="note"></div>
+<button id="next" style="display:none">Next Question</button><div id="result"></div>
+</div>
+<script>
+const quiz=[{"q": "Before Jesus ascended into heaven, what did He tell His disciples to do?", "a": [{"t": "Return to Galilee", "c": false}, {"t": "Build churches", "c": false}, {"t": "Wait in Jerusalem for the Holy Spirit", "c": true}, {"t": "Choose new apostles", "c": false}], "ref": "Acts 1:4\u20135", "verse": "\u201cDo not leave Jerusalem, but wait for the gift My Father promised...\u201d"}, {"q": "Why did the disciples choose Matthias?", "a": [{"t": "Because he was Peter's brother", "c": false}, {"t": "Because he was the best speaker", "c": false}, {"t": "Because he had seen Jesus after the resurrection", "c": false}, {"t": "Because he had been with Jesus from John's baptism until the ascension and God chose him", "c": true}], "ref": "Acts 1:21\u201326", "verse": "\u201c...the lot fell to Matthias...\u201d"}, {"q": "When the Holy Spirit came on Pentecost, what amazed the crowd?", "a": [{"t": "Fire fell from heaven.", "c": false}, {"t": "The apostles became invisible.", "c": false}, {"t": "Everyone heard God's message in their own language.", "c": true}, {"t": "The Temple shook.", "c": false}], "ref": "Acts 2:6\u20138", "verse": "\u201cEach one heard them speaking in his own language.\u201d"}];
+let idx=0,score=0;
+const prog=document.getElementById('prog'),q=document.getElementById('q'),ans=document.getElementById('ans'),note=document.getElementById('note'),next=document.getElementById('next'),result=document.getElementById('result');
+function load(){
+prog.textContent='Question '+(idx+1)+' of '+quiz.length;
+q.textContent=quiz[idx].q;ans.innerHTML='';note.style.display='none';note.innerHTML='';next.style.display='none';
+quiz[idx].a.forEach((o,i)=>{
+const b=document.createElement('button');b.className='opt';b.textContent=o.t;
+b.onclick=function(){
+document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+if(o.c){b.classList.add('correct');score++;}else{
+b.classList.add('wrong');
+document.querySelectorAll('.opt').forEach((x,j)=>{if(quiz[idx].a[j].c)x.classList.add('correct');});
+}
+note.style.display='block';
+note.innerHTML='<b>📖 '+quiz[idx].ref+'</b><br><br><em>'+quiz[idx].verse+'</em>';
+next.style.display='inline-block';
+};
+ans.appendChild(b);
+});
+}
+next.onclick=function(){
+idx++;
+if(idx<quiz.length){load();}
+else{
+prog.style.display='none';q.style.display='none';ans.style.display='none';note.style.display='none';next.style.display='none';
+result.innerHTML='<h2>You scored '+score+' / '+quiz.length+'</h2><p><b>Challenge:</b> Ask God to help you obey Him courageously this week.</p>';
+}
+};
+load();
+</script></body></html>
