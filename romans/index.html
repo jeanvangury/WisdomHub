@@ -30,6 +30,23 @@ body { font-family: Arial; padding:20px; max-width:800px; margin:auto; }
 
 button { padding:10px 15px; font-size:16px; }
 
+.home-btn {
+  display: inline-block;
+  margin-top: 12px;
+  margin-left: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1e3a5f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.home-btn:hover { opacity: 0.92; }
+
 #result {
   font-size:20px;
   font-weight:bold;
@@ -322,7 +339,7 @@ else{
 document.getElementById("result").innerText=message;
 
 document.getElementById("retakeContainer").innerHTML=
-`<br><button onclick="location.reload()">Retake Quiz</button>`;
+`<br><button onclick="location.reload()">Retake Quiz</button> <a class="home-btn" href="../index.html">WisdomHub</a>`;
 }
 
 </script>

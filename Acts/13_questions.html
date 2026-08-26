@@ -11,8 +11,8 @@
     #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
     #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
     #restart{background:#2eaf4a;display:none}
-    .home-link{display:block;margin-top:18px;color:#2d7ef7;font-weight:600;text-decoration:none}
-    .home-link:hover{text-decoration:underline}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
     </style></head><body><div class="card">
     <h1>📖 Acts Ch 13</h1><div id="progress"></div><div id="question" class="q"></div><div id="answers"></div>
     <div id="info"></div><button id="next" style="display:none">Next Question</button><div id="result"></div><button id="restart">Play Again</button>
@@ -55,7 +55,7 @@
     result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
     <h3>Challenge for This Week</h3>
     <ul><li>Ask the Holy Spirit to show you the work He has set apart for you.</li><li>Share the gospel even when someone tries to shut the door.</li><li>Remember that justification comes through Jesus, not performance.</li><li>When rejected, keep going\u2014and choose joy in the Spirit.</li><li>Pick one lesson from Acts 13 and live it this week.</li></ul>
-    <p><a class="home-link" href="../index.html">Back to WisdomHub</a></p>`;
+    <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
     restart.style.display='inline-block';
     }};
     restart.onclick=()=>location.reload();

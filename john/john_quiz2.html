@@ -92,16 +92,22 @@
       font-size: 16px;
     }
 
-    .home-link {
-      display: block;
+    .home-btn {
+      display: inline-block;
       margin-top: 18px;
-      color: #2d7ef7;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+      background: #1e3a5f;
+      color: #fff;
+      font-size: 16px;
       font-weight: 600;
+      cursor: pointer;
       text-decoration: none;
     }
 
-    .home-link:hover {
-      text-decoration: underline;
+    .home-btn:hover {
+      opacity: 0.92;
     }
   </style>
 </head>
@@ -119,7 +125,7 @@
       <h2>Quiz Complete!</h2>
       <h3 id="final-score"></h3>
       <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
-      <p><a class="home-link" href="../index.html">Back to WisdomHub</a></p>
+      <p><a class="home-btn" href="../index.html">WisdomHub</a></p>
     </div>
   </div>
 

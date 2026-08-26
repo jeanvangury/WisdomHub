@@ -121,6 +121,61 @@
     #personal-growth h2 { color: var(--growth); }
     #general-knowledge h2 { color: var(--gk); }
 
+    .book-tabs {
+      margin-bottom: 20px;
+    }
+
+    .tab-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 20px;
+      padding: 0;
+      list-style: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-list button {
+      appearance: none;
+      border: 1px solid transparent;
+      border-bottom: none;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      margin-bottom: -1px;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .tab-list button:hover {
+      color: var(--scripture);
+      background: #e8eef5;
+    }
+
+    .tab-list button[aria-selected="true"] {
+      color: var(--scripture);
+      background: #e8eef5;
+      border-color: var(--border);
+      border-bottom-color: #e8eef5;
+    }
+
+    .tab-list button:focus-visible {
+      outline: 2px solid var(--scripture);
+      outline-offset: 2px;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.is-active {
+      display: block;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -311,96 +366,124 @@
   <main>
     <section class="section" id="scripture">
       <h2><img src="assets/icons/scripture.png" alt="" width="36" height="36"> Scripture</h2>
-      <div class="grid">
-        <a href="proverbs/index.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Proverbs: Prudence</h3>
-          <p>View your scorecard on prudence</p>
-          <span class="cta">View →</span>
-        </a>
+      <div class="book-tabs">
+        <ul class="tab-list" role="tablist" aria-label="Bible books">
+          <li role="presentation"><button type="button" role="tab" id="tab-acts" aria-controls="panel-acts" aria-selected="true">Acts</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-corinthians" aria-controls="panel-corinthians" aria-selected="false" tabindex="-1">Corinthians</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-john" aria-controls="panel-john" aria-selected="false" tabindex="-1">John</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-proverbs" aria-controls="panel-proverbs" aria-selected="false" tabindex="-1">Proverbs</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-romans" aria-controls="panel-romans" aria-selected="false" tabindex="-1">Romans</button></li>
+        </ul>
 
-        <a href="romans/index.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Romans Quiz 1</h3>
-          <p>Start your first quiz</p>
-          <span class="cta">Start →</span>
-        </a>
+        <div class="tab-panel is-active" role="tabpanel" id="panel-acts" aria-labelledby="tab-acts">
+          <div class="grid">
+            <a href="Acts/19_questions.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Acts Quiz 1</h3>
+              <p>Chs. 1-10: 20 Questions</p>
+              <span class="cta">Start →</span>
+            </a>
 
-        <a href="romans/quiz2.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Romans Quiz 2</h3>
-          <p>Take the second quiz</p>
-          <span class="cta">Start →</span>
-        </a>
+            <a href="Acts/ch_1-10.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Acts Quiz 2</h3>
+              <p>Quiz on Acts chapters 1–10</p>
+              <span class="cta">Start →</span>
+            </a>
 
-        <a href="john/john_quiz.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>John Quiz 1</h3>
-          <p>Begin the first Gospel of John quiz</p>
-          <span class="cta">Start →</span>
-        </a>
+            <a href="Acts/13_questions.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Acts Ch 13</h3>
+              <p>10-question quiz on Acts chapter 13</p>
+              <span class="cta">Start →</span>
+            </a>
+          </div>
+        </div>
 
-        <a href="john/john_quiz2.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>John Quiz 2</h3>
-          <p>Continue with the second John quiz</p>
-          <span class="cta">Start →</span>
-        </a>
+        <div class="tab-panel" role="tabpanel" id="panel-corinthians" aria-labelledby="tab-corinthians" hidden>
+          <div class="grid">
+            <a href="1Corinthians/1-7_questions.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>1 Corinthians Ch. 1–7</h3>
+              <p>A quiz on chapters 1–7: 20 questions</p>
+              <span class="cta">Start →</span>
+            </a>
 
-        <a href="Acts/19_questions.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Acts Quiz 1</h3>
-          <p>Chs. 1-10: 20 Questions</p>
-          <span class="cta">Start →</span>
-        </a>
+            <a href="1Corinthians/8-9_questions.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>1 Corinthians Ch. 8 &amp; 9</h3>
+              <p>Quiz on chapters 8 and 9</p>
+              <span class="cta">Start →</span>
+            </a>
+          </div>
+        </div>
 
-        <a href="Acts/ch_1-10.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Acts Quiz 2</h3>
-          <p>Quiz on Acts chapters 1–10</p>
-          <span class="cta">Start →</span>
-        </a>
+        <div class="tab-panel" role="tabpanel" id="panel-john" aria-labelledby="tab-john" hidden>
+          <div class="grid">
+            <a href="john/john_quiz.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>John Quiz 1</h3>
+              <p>Begin the first Gospel of John quiz</p>
+              <span class="cta">Start →</span>
+            </a>
 
-        <a href="Acts/13_questions.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>Acts Ch 13</h3>
-          <p>10-question quiz on Acts chapter 13</p>
-          <span class="cta">Start →</span>
-        </a>
+            <a href="john/john_quiz2.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>John Quiz 2</h3>
+              <p>Continue with the second John quiz</p>
+              <span class="cta">Start →</span>
+            </a>
+          </div>
+        </div>
 
-        <a href="1Corinthians/1-7_questions.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>1 Corinthians Ch. 1–7</h3>
-          <p>A quiz on chapters 1–7: 20 questions</p>
-          <span class="cta">Start →</span>
-        </a>
+        <div class="tab-panel" role="tabpanel" id="panel-proverbs" aria-labelledby="tab-proverbs" hidden>
+          <div class="grid">
+            <a href="proverbs/index.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Proverbs: Prudence</h3>
+              <p>View your scorecard on prudence</p>
+              <span class="cta">View →</span>
+            </a>
+          </div>
+        </div>
 
-        <a href="1Corinthians/8-9_questions.html" class="card scripture">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
-          </span>
-          <h3>1 Corinthians Ch. 8 &amp; 9</h3>
-          <p>Quiz on chapters 8 and 9</p>
-          <span class="cta">Start →</span>
-        </a>
+        <div class="tab-panel" role="tabpanel" id="panel-romans" aria-labelledby="tab-romans" hidden>
+          <div class="grid">
+            <a href="romans/index.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Romans Quiz 1</h3>
+              <p>Start your first quiz</p>
+              <span class="cta">Start →</span>
+            </a>
+
+            <a href="romans/quiz2.html" class="card scripture">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+              </span>
+              <h3>Romans Quiz 2</h3>
+              <p>Take the second quiz</p>
+              <span class="cta">Start →</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -463,6 +546,65 @@
   <footer>
     <p>© 2026 WisdomHub</p>
   </footer>
+
+  <script>
+    (function () {
+      var tabList = document.querySelector("#scripture .tab-list");
+      if (!tabList) return;
+
+      var tabs = Array.prototype.slice.call(tabList.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll("#scripture .tab-panel"));
+
+      function activateTab(nextTab) {
+        tabs.forEach(function (tab) {
+          var selected = tab === nextTab;
+          tab.setAttribute("aria-selected", selected ? "true" : "false");
+          tab.tabIndex = selected ? 0 : -1;
+        });
+
+        panels.forEach(function (panel) {
+          var match = panel.id === nextTab.getAttribute("aria-controls");
+          panel.classList.toggle("is-active", match);
+          if (match) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.setAttribute("hidden", "");
+          }
+        });
+      }
+
+      tabList.addEventListener("click", function (event) {
+        var tab = event.target.closest('[role="tab"]');
+        if (!tab || !tabList.contains(tab)) return;
+        activateTab(tab);
+      });
+
+      tabList.addEventListener("keydown", function (event) {
+        var current = document.activeElement;
+        if (!current || current.getAttribute("role") !== "tab") return;
+
+        var index = tabs.indexOf(current);
+        if (index < 0) return;
+
+        var nextIndex = index;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        tabs[nextIndex].focus();
+        activateTab(tabs[nextIndex]);
+      });
+    })();
+  </script>
 
 </body>
 </html>
