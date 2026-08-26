@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Climate Current Affairs Quiz</title>
+    <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.2em;margin:18px 0;line-height:1.45}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
+    </style></head><body><div class="card">
+    <h1>🌍 Climate Current Affairs Quiz</h1>
+    <div id="progress"></div><div id="question" class="q"></div><div id="answers"></div>
+    <div id="info"></div><button id="next" style="display:none">Next Question</button><div id="result"></div><button id="restart">Play Again</button>
+    </div>
+    <script>
+    let quiz=[
+      {"q": "Which country hosted the COP30 UN climate conference in 2025?", "answers": [{"text": "Egypt", "correct": false}, {"text": "United Arab Emirates", "correct": false}, {"text": "Azerbaijan", "correct": false}, {"text": "Brazil", "correct": true}], "ref": "COP30", "fact": "Brazil hosted COP30 in 2025, continuing the annual UN climate conference series."},
+      {"q": "COP30 in 2025 was held in which Brazilian city?", "answers": [{"text": "Rio de Janeiro", "correct": false}, {"text": "São Paulo", "correct": false}, {"text": "Brasília", "correct": false}, {"text": "Belém", "correct": true}], "ref": "COP30", "fact": "COP30 took place in Belém, in Brazil’s Amazon region."},
+      {"q": "What does the acronym COP stand for in the annual UN climate conference COP30?", "answers": [{"text": "Climate Organization for the Planet", "correct": false}, {"text": "Conference of the Parties", "correct": true}, {"text": "Committee of Planetary Nations", "correct": false}, {"text": "Council on Planetary Change", "correct": false}], "ref": "UNFCCC", "fact": "COP means Conference of the Parties—the decision-making body of the UN climate convention."},
+      {"q": "Which clean-energy technology has become one of the world's fastest-growing sources of new electricity generation in recent years?", "answers": [{"text": "Solar power", "correct": true}, {"text": "Diesel generation", "correct": false}, {"text": "Coal power", "correct": false}, {"text": "Peat power", "correct": false}], "ref": "Clean energy", "fact": "Solar power has surged globally and is among the fastest-growing sources of new electricity generation."},
+      {"q": "India has set a target of achieving what installed renewable energy capacity by 2030, as part of its climate and energy ambitions?", "answers": [{"text": "750 GW", "correct": false}, {"text": "1,000 GW", "correct": false}, {"text": "500 GW", "correct": true}, {"text": "250 GW", "correct": false}], "ref": "India 2030", "fact": "India aims for 500 GW of non-fossil / renewable capacity by 2030 as part of its climate and energy goals."},
+      {"q": "Which greenhouse gas is the largest contributor to human-caused warming overall?", "answers": [{"text": "Nitrogen", "correct": false}, {"text": "Carbon dioxide", "correct": true}, {"text": "Oxygen", "correct": false}, {"text": "Argon", "correct": false}], "ref": "Greenhouse gases", "fact": "Carbon dioxide (CO₂) is the largest overall contributor to human-caused warming."},
+      {"q": "What is the main purpose of the Paris Agreement?", "answers": [{"text": "To phase out all international air travel", "correct": false}, {"text": "To limit global warming and strengthen climate action", "correct": true}, {"text": "To ban all fossil fuels immediately", "correct": false}, {"text": "To create a global carbon tax with one fixed rate", "correct": false}], "ref": "Paris Agreement", "fact": "The Paris Agreement seeks to limit global warming and strengthen climate action worldwide."},
+      {"q": "Which term describes the process of removing carbon dioxide from the atmosphere and storing it for a long period?", "answers": [{"text": "Carbon acceleration", "correct": false}, {"text": "Climate dilution", "correct": false}, {"text": "Solar conversion", "correct": false}, {"text": "Carbon capture and removal", "correct": true}], "ref": "Carbon removal", "fact": "Carbon capture and removal takes CO₂ out of the atmosphere (or point sources) and stores it long term."},
+      {"q": "Why is the Amazon rainforest especially important in global climate discussions?", "answers": [{"text": "It is almost entirely covered by glaciers", "correct": false}, {"text": "It contains major carbon stores and influences the climate system", "correct": true}, {"text": "It is the world's largest desert", "correct": false}, {"text": "It produces most of the world's electricity", "correct": false}], "ref": "Amazon", "fact": "The Amazon holds vast carbon stores and helps regulate the climate, which is why it features so often in climate talks."},
+      {"q": "What does the climate term 'net zero' generally mean?", "answers": [{"text": "Using only solar energy", "correct": false}, {"text": "Balancing greenhouse-gas emissions with removals", "correct": true}, {"text": "Stopping all industrial activity", "correct": false}, {"text": "Producing zero greenhouse gases", "correct": false}], "ref": "Net zero", "fact": "Net zero means balancing remaining greenhouse-gas emissions with equivalent removals from the atmosphere."}
+    ];
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        let j=Math.floor(Math.random()*(i+1));
+        let t=a[i];a[i]=a[j];a[j]=t;
+      }
+      return a;
+    }
+    shuffle(quiz);
+    let i=0,score=0;
+    const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+    function load(){
+    p.textContent=`Question ${i+1} of ${quiz.length}`;
+    qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+    shuffle(quiz[i].answers);
+    quiz[i].answers.forEach(ans=>{
+    let b=document.createElement('button');b.className='opt';b.textContent=ans.text;
+    b.onclick=()=>{
+    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    if(ans.correct){b.classList.add('correct');score++;}else{b.classList.add('wrong');document.querySelectorAll('.opt').forEach((x,k)=>{if(quiz[i].answers[k].correct)x.classList.add('correct');});}
+    info.style.display='block';
+    info.innerHTML=`<b>📗 ${quiz[i].ref}</b><hr><b>💡 Did you know?</b> ${quiz[i].fact}`;
+    next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+    next.style.display='inline-block';
+    };
+    ael.appendChild(b);
+    });
+    }
+    next.onclick=()=>{i++;if(i<quiz.length)load();else{
+    document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+    let badge,comment;
+    if(score>=8){
+      badge="🌍 Climate Champion";
+      comment="You’re locked in on today’s climate agenda—from COP venues to net zero. Keep leading the conversation!";
+    }else if(score>=5){
+      badge="📰 Newsroom Ready";
+      comment="Solid current-affairs instincts! A little more reading on climate headlines and you’ll be briefing the room.";
+    }else{
+      badge="🌱 Climate Curious";
+      comment="Every expert starts with the headlines. Keep following COP updates and climate news—you’re on your way!";
+    }
+    result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+    <h3>${badge}</h3>
+    <p>${comment}</p>
+    <h3>Challenge for This Week</h3>
+    <ul><li>Read one recent COP or Paris Agreement news story.</li><li>Check India’s renewable-energy progress toward 2030.</li><li>Explain “net zero” to a friend in one sentence.</li><li>Notice one clean-energy story in your local news.</li></ul>
+    <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
+    restart.style.display='inline-block';
+    }};
+    restart.onclick=()=>location.reload();
+    load();
+    </script></body></html>
