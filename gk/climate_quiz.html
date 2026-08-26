@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pop Culture x Climate Action Quiz</title>
+    <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    .credit{text-align:center;color:#666;font-size:0.9rem;margin:-8px 0 8px}
+    .credit a{color:#2d7ef7}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.2em;margin:18px 0;line-height:1.45}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
+    </style></head><body><div class="card">
+    <h1>🌍 Pop Culture x Climate Action Quiz</h1>
+    <p class="credit">Questions adapted from <a href="https://www.climateaction.live/climate-quiz/" target="_blank" rel="noopener">ClimateActionLive</a></p>
+    <div id="progress"></div><div id="question" class="q"></div><div id="answers"></div>
+    <div id="info"></div><button id="next" style="display:none">Next Question</button><div id="result"></div><button id="restart">Play Again</button>
+    </div>
+    <script>
+    let quiz=[
+      {"q": "Don’t Look Up is a film starring Leonardo DiCaprio, Jennifer Lawrence, Timothée Chalamet, Cate Blanchett, and Meryl Streep. The movie's central ‘catastrophic event’ is an allegory for threats arising from climate change. What event are the protagonists trying to warn everyone about, that they believe will destroy human civilisation (just like climate change)?", "answers": [{"text": "Super Volcano eruption", "correct": false}, {"text": "Giant Tsunami", "correct": false}, {"text": "Comet impact", "correct": true}, {"text": "Mega Earthquake", "correct": false}], "ref": "Easy to tough", "fact": "In Don’t Look Up, scientists try to warn the world about a comet headed for Earth—an allegory for ignored climate warnings."},
+      {"q": "By what acronym is The Health and Environment Alliance, that connects environmental issues such as air pollution, toxic chemicals, and climate change to public health known as?", "answers": [{"text": "THAEA", "correct": false}, {"text": "THE", "correct": false}, {"text": "HEAL", "correct": true}, {"text": "HEA", "correct": false}], "ref": "Easy to tough", "fact": "HEAL stands for the Health and Environment Alliance, which links pollution, chemicals, and climate change to public health."},
+      {"q": "Bong Joon-ho’s film Okja follows a girl trying to save a genetically modified “super pig” from a corporation. What is the name given to genetically modifying livestock to produce valuable human medicines in their milk, blood, or eggs?", "answers": [{"text": "Factory Farming", "correct": false}, {"text": "Pharming", "correct": true}, {"text": "Biogenics", "correct": false}, {"text": "Medicloning", "correct": false}], "ref": "Easy to tough", "fact": "“Pharming” blends pharmaceutical and farming: animals are genetically modified to produce medicines in milk, blood, or eggs."},
+      {"q": "The Sunrise Movement is a youth-led U.S. climate movement strongly associated with campaigning for which political and economic climate programme?", "answers": [{"text": "Marshall Plan", "correct": false}, {"text": "Space Race", "correct": false}, {"text": "Kyoto Protocol only", "correct": false}, {"text": "Green New Deal", "correct": true}], "ref": "Easy to tough", "fact": "The Sunrise Movement is closely tied to advocacy for a Green New Deal in the United States."},
+      {"q": "In the 2013 post-apocalyptic action thriller film Snowpiercer a failed attempt to stop global warming causes the Earth to freeze causing a Snowball Earth. What climate intervention idea does this refer to?", "answers": [{"text": "Sequestration", "correct": false}, {"text": "Earth Strike", "correct": false}, {"text": "Energy Transition", "correct": false}, {"text": "Geoengineering", "correct": true}], "ref": "Easy to tough", "fact": "Snowpiercer imagines a failed climate intervention that freezes the planet—pointing to the risks of geoengineering."},
+      {"q": "Sea ice reflects a lot of sunlight back into space. When it melts, darker ocean water absorbs more heat, causing further warming. What is this feedback linked to?", "answers": [{"text": "Photosynthesis", "correct": false}, {"text": "Biomagnification", "correct": false}, {"text": "Albedo effect", "correct": true}, {"text": "Nitrogen fixation", "correct": false}], "ref": "Boss level", "fact": "Albedo is how reflective a surface is. Melting bright ice exposes dark water, which absorbs more heat—a warming feedback."},
+      {"q": "The IPCC uses scenarios and pathways to explore possible climate futures. Which term refers to pathways showing how society might develop in terms of population, inequality, energy use, and economics?", "answers": [{"text": "GDPs", "correct": false}, {"text": "CFCs", "correct": false}, {"text": "PM2.5s", "correct": false}, {"text": "SSPs", "correct": true}], "ref": "Boss level", "fact": "SSPs are Shared Socioeconomic Pathways—scenarios of how society might evolve and shape climate futures."},
+      {"q": "Mangroves, seagrasses, and salt marshes are important because they store large amounts of carbon in coastal ecosystems. What is this carbon commonly called?", "answers": [{"text": "Grey carbon", "correct": false}, {"text": "Red carbon", "correct": false}, {"text": "Blue carbon", "correct": true}, {"text": "White carbon", "correct": false}], "ref": "Boss level", "fact": "Blue carbon is carbon stored in coastal and marine ecosystems such as mangroves, seagrasses, and salt marshes."},
+      {"q": "A country’s NDC under the Paris Agreement is its official climate action plan, including emissions reduction and adaptation goals. What does NDC stand for?", "answers": [{"text": "Net Deforestation Count", "correct": false}, {"text": "Natural Disaster Code", "correct": false}, {"text": "New Development Charter", "correct": false}, {"text": "Nationally Determined Contribution", "correct": true}], "ref": "Boss level", "fact": "NDC means Nationally Determined Contribution—each country’s pledged climate plan under the Paris Agreement."},
+      {"q": "Climate scientists often use “radiative forcing” to compare factors that warm or cool Earth. What does positive radiative forcing mean?", "answers": [{"text": "More oxygen is being produced by forests", "correct": false}, {"text": "More rainfall is being absorbed by soil", "correct": false}, {"text": "More heat is escaping to space, causing cooling", "correct": false}, {"text": "More energy is entering or being retained in Earth’s climate system", "correct": true}], "ref": "Boss level", "fact": "Positive radiative forcing means Earth’s climate system is gaining or retaining more energy—leading to warming."}
+    ];
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        let j=Math.floor(Math.random()*(i+1));
+        let t=a[i];a[i]=a[j];a[j]=t;
+      }
+      return a;
+    }
+    shuffle(quiz);
+    let i=0,score=0;
+    const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+    function load(){
+    p.textContent=`Question ${i+1} of ${quiz.length}`;
+    qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+    shuffle(quiz[i].answers);
+    quiz[i].answers.forEach(ans=>{
+    let b=document.createElement('button');b.className='opt';b.textContent=ans.text;
+    b.onclick=()=>{
+    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    if(ans.correct){b.classList.add('correct');score++;}else{b.classList.add('wrong');document.querySelectorAll('.opt').forEach((x,k)=>{if(quiz[i].answers[k].correct)x.classList.add('correct');});}
+    info.style.display='block';
+    info.innerHTML=`<b>📗 ${quiz[i].ref}</b><hr><b>💡 Did you know?</b> ${quiz[i].fact}`;
+    next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+    next.style.display='inline-block';
+    };
+    ael.appendChild(b);
+    });
+    }
+    next.onclick=()=>{i++;if(i<quiz.length)load();else{
+    document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+    let badge,comment;
+    if(score>=8){
+      badge="🌍 Climate Champion";
+      comment="You’re a climate-action superstar! You know your movies, acronyms, and your planet too!";
+    }else if(score>=5){
+      badge="🎬 Eco Enthusiast";
+      comment="Pretty cool! You’ve got a good climate-action vibe. A little more eco-knowledge and you’ll be a pro!";
+    }else{
+      badge="🌱 Climate Curious";
+      comment="Every hero starts somewhere! Keep exploring, keep learning, and let’s give Planet Earth a better sequel!";
+    }
+    result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+    <h3>${badge}</h3>
+    <p>${comment}</p>
+    <h3>Challenge for This Week</h3>
+    <ul><li>Learn one climate term you got wrong and share it with someone.</li><li>Look up your country’s NDC under the Paris Agreement.</li><li>Notice one local example of blue carbon or albedo in nature docs or news.</li><li>Take one small climate-positive action this week.</li></ul>
+    <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
+    restart.style.display='inline-block';
+    }};
+    restart.onclick=()=>location.reload();
+    load();
+    </script></body></html>
