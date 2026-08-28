@@ -288,7 +288,7 @@ export default function GospelOfJohnQuiz() {
                   ${!showResult ? "hover:bg-slate-50" : ""}
                 `}
               >
-                {option}
+                <b>{String.fromCharCode(65 + index)}.</b> {option}
               </button>
             );
           })}

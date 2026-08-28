@@ -271,7 +271,7 @@ div.id=`qbox${index}`;
 
 let html=`<p>${index+1}. ${item.q}</p>`;
 item.options.forEach((opt,i)=>{
-html+=`<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
+html+=`<label><input type="radio" name="q${index}" value="${i}"> <b>${String.fromCharCode(65+i)}.</b> ${opt}</label><br>`;
 });
 
 div.innerHTML=html;

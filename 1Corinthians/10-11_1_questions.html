@@ -57,7 +57,9 @@
     qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
     shuffle(quiz[i].answers);
     quiz[i].answers.forEach((ans, idx)=>{
-    let b=document.createElement('button');b.className='opt';b.textContent=letters[idx]+'. '+ans.text;
+    let b=document.createElement('button');b.className='opt';
+    let letter=document.createElement('b');letter.textContent=letters[idx]+'. ';
+    b.appendChild(letter);b.appendChild(document.createTextNode(ans.text));
     b.onclick=()=>{
     document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
     if(ans.correct){b.classList.add('correct');score++;}else{b.classList.add('wrong');document.querySelectorAll('.opt').forEach((x,k)=>{if(quiz[i].answers[k].correct)x.classList.add('correct');});}

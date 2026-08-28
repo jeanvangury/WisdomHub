@@ -317,10 +317,14 @@
       optionsEl.innerHTML = '';
       nextBtn.style.display = 'none';
 
-      q.options.forEach(option => {
+      q.options.forEach((option, idx) => {
         const button = document.createElement('button');
-        button.innerText = option;
         button.classList.add('option');
+        button.dataset.option = option;
+        const letter = document.createElement('b');
+        letter.textContent = String.fromCharCode(65 + idx) + '. ';
+        button.appendChild(letter);
+        button.appendChild(document.createTextNode(option));
 
         button.onclick = () => selectAnswer(button, option, q.answer);
 
@@ -334,7 +338,7 @@
       buttons.forEach(btn => {
         btn.disabled = true;
 
-        if (btn.innerText === correct) {
+        if (btn.dataset.option === correct) {
           btn.classList.add('correct');
         }
       });

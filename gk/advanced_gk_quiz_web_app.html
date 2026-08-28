@@ -134,7 +134,7 @@ quizData.forEach((item, index) => {
   div.classList.add("question");
   div.innerHTML = `<b>Q${index+1}. ${item.q}</b><br>` +
     item.options.map((opt, i) =>
-      `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`
+      `<label><input type="radio" name="q${index}" value="${i}"> <b>${String.fromCharCode(65+i)}.</b> ${opt}</label><br>`
     ).join("") + `<div id="feedback${index}"></div>`;
   form.appendChild(div);
 });

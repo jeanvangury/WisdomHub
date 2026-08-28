@@ -18,7 +18,9 @@ function load(){
 prog.textContent='Question '+(idx+1)+' of '+quiz.length;
 q.textContent=quiz[idx].q;ans.innerHTML='';note.style.display='none';note.innerHTML='';next.style.display='none';
 quiz[idx].a.forEach((o,i)=>{
-const b=document.createElement('button');b.className='opt';b.textContent=o.t;
+const b=document.createElement('button');b.className='opt';
+const letter=document.createElement('b');letter.textContent=String.fromCharCode(65+i)+'. ';
+b.appendChild(letter);b.appendChild(document.createTextNode(o.t));
 b.onclick=function(){
 document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
 if(o.c){b.classList.add('correct');score++;}else{

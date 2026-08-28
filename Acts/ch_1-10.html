@@ -74,7 +74,9 @@ question.textContent=q.q;
 answers.innerHTML="";
 q.a.forEach((item,i)=>{
 let b=document.createElement("button");
-b.className="option"; b.textContent=item[0];
+b.className="option";
+let letter=document.createElement("b");letter.textContent=String.fromCharCode(65+i)+". ";
+b.appendChild(letter);b.appendChild(document.createTextNode(item[0]));
 b.onclick=()=>{
 document.querySelectorAll(".option").forEach(x=>x.disabled=true);
 if(item[1]){b.classList.add("correct");score++;}else{

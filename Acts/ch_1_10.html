@@ -382,13 +382,16 @@ let answers=document.getElementById("answers");
 
 answers.innerHTML="";
 
-q.a.forEach(item=>{
+q.a.forEach((item, idx)=>{
 
 let btn=document.createElement("button");
 
 btn.className="option";
 
-btn.innerHTML=item[0];
+let letter=document.createElement("b");
+letter.textContent=String.fromCharCode(65+idx)+". ";
+btn.appendChild(letter);
+btn.appendChild(document.createTextNode(item[0]));
 
 btn.onclick=function(){
 
