@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Proverbs Quiz 3: Ten Themes</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.35em;margin:18px 0}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
+    .scorecard{width:100%;border-collapse:collapse;margin:18px 0 8px;font-size:16px}
+    .scorecard th,.scorecard td{border:1px solid #d5dde6;padding:10px 12px;text-align:left}
+    .scorecard th{background:#e9eefc;color:#234}
+    .scorecard td:nth-child(2),.scorecard td:nth-child(3){text-align:center;font-weight:700;white-space:nowrap}
+    .band-good{background:#d4edda;color:#155724}
+    .band-avg{background:#fff3cd;color:#856404}
+    .band-weak{background:#f8d7da;color:#721c24}
+    .legend{color:#555;font-size:14px;margin:0 0 18px}
+    .legend b.good{color:#155724}.legend b.avg{color:#856404}.legend b.weak{color:#721c24}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📖 Proverbs Quiz 3</h1>
+    <p style="text-align:center;color:#666;margin-top:-8px">Wisdom, speech, pride, work, wealth, family, friendship, anger, justice, and the fear of the Lord</p>
+    <div id="progress"></div>
+    <div id="question" class="q"></div>
+    <div id="answers"></div>
+    <div id="info"></div>
+    <button id="next" style="display:none">Next Question</button>
+    <div id="result"></div>
+    <button id="restart">Play Again</button>
+  </div>
+<script>
+let quiz=[
+  {"q": "According to Proverbs 9:9, what happens when you give instruction to a wise person?", "answers": [{"text": "He will be still wiser; teach a just man, and he will increase in learning", "correct": true}, {"text": "He will scoff, because correction always turns a wise man into a fool", "correct": false}, {"text": "He will fall, because a prating fool cannot receive commands", "correct": false}, {"text": "He will bear it alone, because wisdom is never shared with others", "correct": false}], "ref": "Proverbs 9:9", "verse": "\u201cGive instruction to a wise man, and he will be still wiser; Teach a just man, and he will increase in learning.\u201d", "life": "Wisdom is not a finished diploma; the wise stay hungry for teaching."},
+  {"q": "What contrast does Proverbs 10:8 draw between the wise and the fool?", "answers": [{"text": "The wise in heart will receive commands, but a prating fool will fall", "correct": true}, {"text": "The wise in heart will store up silver, but a prating fool will rule", "correct": false}, {"text": "The wise in heart will hide themselves, but a prating fool will be still wiser", "correct": false}, {"text": "The wise in heart will despise instruction, but a prating fool will receive commands", "correct": false}], "ref": "Proverbs 10:8", "verse": "\u201cThe wise in heart will receive commands, But a prating fool will fall.\u201d", "life": "Folly talks past correction; wisdom is first a listening heart."},
+  {"q": "Proverbs 9:12 says you will live with the outcome of your choice. What is the contrast?", "answers": [{"text": "If you are wise, you are wise for yourself; if you scoff, you will bear it alone", "correct": true}, {"text": "If you are wise, the scoffer will share your reward; if you scoff, the wise will bear it for you", "correct": false}, {"text": "If you are wise, you will never be rebuked; if you scoff, you will increase in learning", "correct": false}, {"text": "If you are wise, you will fall with the prating fool; if you scoff, you will receive commands", "correct": false}], "ref": "Proverbs 9:12", "verse": "\u201cIf you are wise, you are wise for yourself, And if you scoff, you will bear it alone.\u201d", "life": "No one can outsource the fruit of wisdom or the cost of scoffing."},
+  {"q": "What contrast does Proverbs 15:7 draw about how knowledge is shared?", "answers": [{"text": "The lips of the wise disperse knowledge, but the heart of the fool does not do so", "correct": true}, {"text": "The lips of the wise conceal knowledge, but the heart of the fool pours forth foolishness", "correct": false}, {"text": "The lips of the wise restrain every word, but the heart of the fool increases learning", "correct": false}, {"text": "The lips of the wise exalt folly, but the heart of the fool uses knowledge rightly", "correct": false}], "ref": "Proverbs 15:7", "verse": "\u201cThe lips of the wise disperse knowledge, But the heart of the fool does not do so.\u201d", "life": "Wisdom does not hoard what others need; fools can sit on truth and never pass it on."},
+  {"q": "According to Proverbs 15:2, how does the wise person use the tongue?", "answers": [{"text": "The tongue of the wise uses knowledge rightly, but the mouth of fools pours forth foolishness", "correct": true}, {"text": "The tongue of the wise pours forth foolishness, but the mouth of fools uses knowledge rightly", "correct": false}, {"text": "The tongue of the wise conceals every word, but the mouth of fools increases learning", "correct": false}, {"text": "The tongue of the wise makes wrath known at once, but the mouth of fools covers shame", "correct": false}], "ref": "Proverbs 15:2", "verse": "\u201cThe tongue of the wise uses knowledge rightly, But the mouth of fools pours forth foolishness.\u201d", "life": "Knowledge unused or dumped without care is not wisdom; speak what ought to be said."},
+  {"q": "Proverbs 16:21 links prudence with speech. What does sweetness of the lips do?", "answers": [{"text": "It increases learning", "correct": true}, {"text": "It conceals knowledge until harvest", "correct": false}, {"text": "It pours forth foolishness in the gates", "correct": false}, {"text": "It makes a fool still wiser without instruction", "correct": false}], "ref": "Proverbs 16:21", "verse": "\u201cThe wise in heart will be called prudent, And sweetness of the lips increases learning.\u201d", "life": "Kind, clear speech is not flattery; it helps people actually receive what you say."},
+  {"q": "What follows pride, according to Proverbs 11:2?", "answers": [{"text": "Shame; but with the humble is wisdom", "correct": true}, {"text": "Honor; but with the humble is folly", "correct": false}, {"text": "Riches; but with the humble is poverty", "correct": false}, {"text": "Safety; but with the humble is destruction", "correct": false}], "ref": "Proverbs 11:2", "verse": "\u201cWhen pride comes, then comes shame; But with the humble is wisdom.\u201d", "life": "Pride is not a shortcut to greatness; it is the door shame walks through."},
+  {"q": "What does Proverbs 27:2 teach about self-exaltation?", "answers": [{"text": "Let another man praise you, and not your own mouth; a stranger, and not your own lips", "correct": true}, {"text": "Let your own mouth praise you first, so that a stranger will later agree", "correct": false}, {"text": "Let the king praise you in the presence of princes, and then exalt yourself", "correct": false}, {"text": "Let a friend conceal your praise, because open rebuke is better than honor", "correct": false}], "ref": "Proverbs 27:2", "verse": "\u201cLet another man praise you, and not your own mouth; A stranger, and not your own lips.\u201d", "life": "Honor that you award yourself is counterfeit; wait for another voice."},
+  {"q": "In the king’s presence, what does Proverbs 25:6–7 warn you not to do?", "answers": [{"text": "Exalt yourself, or stand in the place of the great; it is better to be told, “Come up here”", "correct": true}, {"text": "Humble yourself, because the king always seats the proud at his right hand", "correct": false}, {"text": "Wait to be invited down, because self-promotion is how a throne is established", "correct": false}, {"text": "Praise your own lips, so that the king will put you among the great at once", "correct": false}], "ref": "Proverbs 25:6–7", "verse": "\u201cDo not exalt yourself in the presence of the king, And do not stand in the place of the great; For it is better that he say to you, \u2018Come up here,\u2019 Than that you should be put lower in the presence of the prince.\u201d", "life": "Pushing for the high seat often ends in a public demotion; let honor be given, not grabbed."},
+  {"q": "In the ant lesson, what follows “a little sleep, a little slumber, a little folding of the hands”?", "answers": [{"text": "Poverty comes on you like a prowler, and your need like an armed man", "correct": true}, {"text": "The diligent will be put to forced labor, and the lazy will stand before kings", "correct": false}, {"text": "Riches make themselves wings and fly away like an eagle toward heaven", "correct": false}, {"text": "Idle chatter leads to plenty, because rest is better than harvest", "correct": false}], "ref": "Proverbs 6:9–11", "verse": "\u201cA little sleep, a little slumber, A little folding of the hands to sleep\u2014 So shall your poverty come on you like a prowler, And your need like an armed man.\u201d", "life": "Laziness rarely arrives as a crisis; it accumulates in small delays until need breaks in."},
+  {"q": "What contrast does Proverbs 10:4 draw about the hand?", "answers": [{"text": "He who has a slack hand becomes poor, but the hand of the diligent makes rich", "correct": true}, {"text": "He who has a slack hand will rule, but the hand of the diligent is put to forced labor", "correct": false}, {"text": "He who has a slack hand gathers by labor, but the hand of the diligent is diminished", "correct": false}, {"text": "He who has a slack hand stands before kings, but the hand of the diligent chatters", "correct": false}], "ref": "Proverbs 10:4", "verse": "\u201cHe who has a slack hand becomes poor, But the hand of the diligent makes rich.\u201d", "life": "Poverty is not always mysterious; sometimes it is the fruit of a loose grip on work."},
+  {"q": "According to Proverbs 14:23, what leads only to poverty?", "answers": [{"text": "Idle chatter", "correct": true}, {"text": "All labor", "correct": false}, {"text": "Scattering generously", "correct": false}, {"text": "Gathering by honest labor", "correct": false}], "ref": "Proverbs 14:23", "verse": "\u201cIn all labor there is profit, But idle chatter leads only to poverty.\u201d", "life": "Talk without work feels productive; Proverbs calls it a path to empty hands."},
+  {"q": "What does Proverbs 13:11 say about wealth gained by dishonesty?", "answers": [{"text": "It will be diminished, but he who gathers by labor will increase", "correct": true}, {"text": "It will increase, but he who gathers by labor will be diminished", "correct": false}, {"text": "It will stand before kings, but honest labor leads only to poverty", "correct": false}, {"text": "It will make itself wings only if you scatter more than is right", "correct": false}], "ref": "Proverbs 13:11", "verse": "\u201cWealth gained by dishonesty will be diminished, But he who gathers by labor will increase.\u201d", "life": "Shortcuts look rich; honest gathering is the increase that lasts."},
+  {"q": "After warning against overworking to be rich, what does Proverbs 23:5 say riches do?", "answers": [{"text": "They make themselves wings and fly away like an eagle toward heaven", "correct": true}, {"text": "They come on you like a prowler and remain like an armed man", "correct": false}, {"text": "They exalt a nation, but sin is a reproach to any people", "correct": false}, {"text": "They establish the land by justice, unless you receive bribes", "correct": false}], "ref": "Proverbs 23:4–5", "verse": "\u201cDo not overwork to be rich; Because of your own understanding, cease! Will you set your eyes on that which is not? For riches certainly make themselves wings; They fly away like an eagle toward heaven.\u201d", "life": "Craving wealth as the goal is chasing something that can leave overnight."},
+  {"q": "What paradox does Proverbs 11:24 teach about generosity and withholding?", "answers": [{"text": "There is one who scatters, yet increases more; and one who withholds more than is right, but it leads to poverty", "correct": true}, {"text": "There is one who scatters, yet becomes poor; and one who withholds, yet increases more", "correct": false}, {"text": "There is one who scatters dishonestly, yet his wealth will never be diminished", "correct": false}, {"text": "There is one who withholds more than is right, yet the Lord will establish his throne forever", "correct": false}], "ref": "Proverbs 11:24", "verse": "\u201cThere is one who scatters, yet increases more; And there is one who withholds more than is right, But it leads to poverty.\u201d", "life": "Open-handed people often thrive; clenched fists can empty a life."},
+  {"q": "What does Proverbs 17:1 say is better than a house full of feasting with strife?", "answers": [{"text": "A dry morsel with quietness", "correct": true}, {"text": "A house full of treasure with the proud", "correct": false}, {"text": "A corner of a housetop with a contentious woman", "correct": false}, {"text": "A little sleep, a little slumber, and folded hands", "correct": false}], "ref": "Proverbs 17:1", "verse": "\u201cBetter is a dry morsel with quietness, Than a house full of feasting with strife.\u201d", "life": "Peace at the table is richer than a feast that keeps the family at war."},
+  {"q": "According to Proverbs 19:14, what contrast is drawn between inherited wealth and a prudent wife?", "answers": [{"text": "Houses and riches are an inheritance from fathers, but a prudent wife is from the Lord", "correct": true}, {"text": "A prudent wife is an inheritance from fathers, but houses and riches are from the Lord", "correct": false}, {"text": "Houses and riches come by idle chatter, but a prudent wife is found by overworking to be rich", "correct": false}, {"text": "A prudent wife establishes the land by justice, but houses and riches overthrow it by bribes", "correct": false}], "ref": "Proverbs 19:14", "verse": "\u201cHouses and riches are an inheritance from fathers, But a prudent wife is from the LORD.\u201d", "life": "Family blessing is more than an estate; a wise spouse is a gift God Himself gives."},
+  {"q": "What does Proverbs 1:8–9 say a father’s instruction and a mother’s law become?", "answers": [{"text": "A graceful ornament on your head, and chains about your neck", "correct": true}, {"text": "A city broken down, without walls, if you receive them", "correct": false}, {"text": "Wings like an eagle, so that riches will not fly away", "correct": false}, {"text": "A throne established by bribes in the presence of the prince", "correct": false}], "ref": "Proverbs 1:8–9", "verse": "\u201cMy son, hear the instruction of your father, And do not forsake the law of your mother; For they will be a graceful ornament on your head, And chains about your neck.\u201d", "life": "Wise parental instruction is meant to mark your life outwardly with honor, not just privately with rules."},
+  {"q": "What does Proverbs 12:26 teach about choosing companions?", "answers": [{"text": "The righteous should choose his friends carefully, for the way of the wicked leads them astray", "correct": true}, {"text": "The righteous should keep many friends, for the way of the wicked cannot touch them", "correct": false}, {"text": "The righteous should become surety for every friend, for loyalty is better than caution", "correct": false}, {"text": "The righteous should meddle in every quarrel, for a neighbor’s fight is your own", "correct": false}], "ref": "Proverbs 12:26", "verse": "\u201cThe righteous should choose his friends carefully, For the way of the wicked leads them astray.\u201d", "life": "Friendship is a path, not a hobby; the wrong way will pull you with it."},
+  {"q": "What warning does Proverbs 22:24–25 give about an angry person?", "answers": [{"text": "Make no friendship with an angry man, lest you learn his ways and set a snare for your soul", "correct": true}, {"text": "Make close friendship with an angry man, lest you fail to learn boldness for your soul", "correct": false}, {"text": "Make no friendship with a wise man, lest you learn his ways and lose your own opinion", "correct": false}, {"text": "Make friendship with a furious man, lest your soul never learn to stir up strife", "correct": false}], "ref": "Proverbs 22:24–25", "verse": "\u201cMake no friendship with an angry man, And with a furious man do not go, Lest you learn his ways And set a snare for your soul.\u201d", "life": "Temper is contagious; stay close to rage and you will start setting traps for yourself."},
+  {"q": "Proverbs 26:17 compares meddling in a quarrel that is not yours to what?", "answers": [{"text": "Taking a dog by the ears", "correct": true}, {"text": "Delivering yourself like a gazelle from the hunter", "correct": false}, {"text": "Standing in the place of the great before the king", "correct": false}, {"text": "Scattering yet increasing more", "correct": false}], "ref": "Proverbs 26:17", "verse": "\u201cHe who passes by and meddles in a quarrel not his own Is like one who takes a dog by the ears.\u201d", "life": "Not every fight is yours to enter; some “help” only gets you bitten."},
+  {"q": "What does Proverbs 14:29 say about the person who is slow to wrath?", "answers": [{"text": "He has great understanding, but he who is impulsive exalts folly", "correct": true}, {"text": "He has no walls, but he who is impulsive takes a city", "correct": false}, {"text": "He stirs up strife, but he who is impulsive allays contention", "correct": false}, {"text": "He forces wrath, but he who is impulsive produces butter from milk", "correct": false}], "ref": "Proverbs 14:29", "verse": "\u201cHe who is slow to wrath has great understanding, But he who is impulsive exalts folly.\u201d", "life": "Speed in anger is not strength; it is folly put on display."},
+  {"q": "According to Proverbs 15:18, what does the person who is slow to anger do?", "answers": [{"text": "Allays contention, while a wrathful man stirs up strife", "correct": true}, {"text": "Stirs up strife, while a wrathful man allays contention", "correct": false}, {"text": "Takes a city, while a wrathful man rules his spirit", "correct": false}, {"text": "Produces blood, while a wrathful man churns milk into butter", "correct": false}], "ref": "Proverbs 15:18", "verse": "\u201cA wrathful man stirs up strife, But he who is slow to anger allays contention.\u201d", "life": "Calm is not passivity; it can actually quiet a fight that rage would feed."},
+  {"q": "What does Proverbs 30:33 say the forcing of wrath produces?", "answers": [{"text": "Strife, as surely as churning milk produces butter and wringing the nose produces blood", "correct": true}, {"text": "Peace, as surely as a calm spirit allays contention in the gates", "correct": false}, {"text": "Wisdom, as surely as the humble receive shame and the proud receive learning", "correct": false}, {"text": "Wealth, as surely as a slack hand makes rich and idle chatter brings profit", "correct": false}], "ref": "Proverbs 30:33", "verse": "\u201cFor as the churning of milk produces butter, And wringing the nose produces blood, So the forcing of wrath produces strife.\u201d", "life": "Pushed anger has a predictable product: conflict. Stop churning before blood is drawn."},
+  {"q": "How does a king establish the land, according to Proverbs 29:4?", "answers": [{"text": "By justice; but he who receives bribes overthrows it", "correct": true}, {"text": "By bribes; but he who loves justice overthrows it", "correct": false}, {"text": "By pride; but with the humble is the overthrow of the land", "correct": false}, {"text": "By idle chatter; but the diligent make the land poor", "correct": false}], "ref": "Proverbs 29:4", "verse": "\u201cThe king establishes the land by justice, But he who receives bribes overthrows it.\u201d", "life": "Bought decisions do not stabilize a people; they quietly pull the ground out from under them."},
+  {"q": "What does Proverbs 14:34 say about a nation?", "answers": [{"text": "Righteousness exalts a nation, but sin is a reproach to any people", "correct": true}, {"text": "Riches exalt a nation, but righteousness is a reproach to any people", "correct": false}, {"text": "Bribes exalt a nation, but justice is a reproach to any people", "correct": false}, {"text": "Pride exalts a nation, but the humble are a reproach to any people", "correct": false}], "ref": "Proverbs 14:34", "verse": "\u201cRighteousness exalts a nation, But sin is a reproach to any people.\u201d", "life": "National greatness in Proverbs is moral, not merely economic or military."},
+  {"q": "Why is it an abomination for kings to commit wickedness, according to Proverbs 16:12?", "answers": [{"text": "Because a throne is established by righteousness", "correct": true}, {"text": "Because a throne is established by bribes and by sifting out the poor", "correct": false}, {"text": "Because a throne is established by pride, and shame must come later", "correct": false}, {"text": "Because a throne is established by idle chatter in the gates", "correct": false}], "ref": "Proverbs 16:12", "verse": "\u201cIt is an abomination for kings to commit wickedness, For a throne is established by righteousness.\u201d", "life": "Authority that will not be righteous is already rotting, however secure it looks."},
+  {"q": "What does Proverbs 31:30 say will last when charm and beauty do not?", "answers": [{"text": "A woman who fears the Lord shall be praised; charm is deceitful and beauty is passing", "correct": true}, {"text": "A woman who conceals knowledge shall be praised; charm is better than the fear of the Lord", "correct": false}, {"text": "A woman who overworks to be rich shall be praised; beauty establishes the land by justice", "correct": false}, {"text": "A woman who exalts herself before the king shall be praised; pride is an ornament of grace", "correct": false}], "ref": "Proverbs 31:30", "verse": "\u201cCharm is deceitful and beauty is passing, But a woman who fears the LORD, she shall be praised.\u201d", "life": "Appearance fades; a life marked by reverence for God is what Proverbs says should be honored."},
+  {"q": "Proverbs 9:10 pairs the fear of the Lord with what further statement?", "answers": [{"text": "The knowledge of the Holy One is understanding", "correct": true}, {"text": "The knowledge of silver and gold is understanding", "correct": false}, {"text": "The knowledge of the scoffer is understanding", "correct": false}, {"text": "The knowledge of the angry man is understanding", "correct": false}], "ref": "Proverbs 9:10", "verse": "\u201cThe fear of the LORD is the beginning of wisdom, And the knowledge of the Holy One is understanding.\u201d", "life": "True understanding is not a technique; it is knowing God."},
+  {"q": "According to Proverbs 8:13, what is the fear of the Lord?", "answers": [{"text": "To hate evil: pride, arrogance, the evil way, and the perverse mouth", "correct": true}, {"text": "To hide evil: covering shame so that nothing wrong is ever named", "correct": false}, {"text": "To fear people: making friendship with an angry man so you learn his ways", "correct": false}, {"text": "To gather riches: setting your eyes on that which is not, until wealth flies away", "correct": false}], "ref": "Proverbs 8:13", "verse": "\u201cThe fear of the LORD is to hate evil; Pride and arrogance and the evil way And the perverse mouth I hate.\u201d", "life": "Reverence for God is not a mood; it shows up as a holy refusal of pride and a crooked tongue."}
+];
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    let t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+shuffle(quiz);
+const sections=[
+  {name:"Wisdom and Folly", refs:["Proverbs 9:9","Proverbs 10:8","Proverbs 9:12"]},
+  {name:"Speech and the Tongue", refs:["Proverbs 15:7","Proverbs 15:2","Proverbs 16:21"]},
+  {name:"Pride and Humility", refs:["Proverbs 11:2","Proverbs 27:2","Proverbs 25:6–7"]},
+  {name:"Diligence and Laziness", refs:["Proverbs 6:9–11","Proverbs 10:4","Proverbs 14:23"]},
+  {name:"Wealth and Poverty", refs:["Proverbs 13:11","Proverbs 23:4–5","Proverbs 11:24"]},
+  {name:"Family and Parenting", refs:["Proverbs 17:1","Proverbs 19:14","Proverbs 1:8–9"]},
+  {name:"Friends and Neighbors", refs:["Proverbs 12:26","Proverbs 22:24–25","Proverbs 26:17"]},
+  {name:"Anger and Self-Control", refs:["Proverbs 14:29","Proverbs 15:18","Proverbs 30:33"]},
+  {name:"Justice and Integrity", refs:["Proverbs 29:4","Proverbs 14:34","Proverbs 16:12"]},
+  {name:"The Fear of the Lord", refs:["Proverbs 31:30","Proverbs 9:10","Proverbs 8:13"]}
+];
+function bandFor(got, total){
+  if(got===total) return {label:"Good", cls:"band-good"};
+  if(got===total-1) return {label:"Average", cls:"band-avg"};
+  return {label:"Weak", cls:"band-weak"};
+}
+function sectionScorecard(){
+  const rows=sections.map(sec=>{
+    const qs=quiz.filter(q=>sec.refs.includes(q.ref));
+    const got=qs.filter(q=>q.got).length;
+    const total=sec.refs.length;
+    const band=bandFor(got,total);
+    return {name:sec.name, got, total, band};
+  });
+  const table=rows.map(r=>`<tr class="${r.band.cls}"><td>${r.name}</td><td>${r.got} / ${r.total}</td><td>${r.band.label}</td></tr>`).join("");
+  const weak=rows.filter(r=>r.band.label==="Weak").map(r=>r.name);
+  const focus=weak.length
+    ? `<p><b>Focus this week:</b> ${weak.join("; ")}.</p>`
+    : `<p><b>Focus this week:</b> Keep walking in the themes that are already strong, and share one insight with someone else.</p>`;
+  return `<h3>Scorecard by theme</h3>
+  <p class="legend"><b class="good">Good</b> = 3/3 &nbsp;·&nbsp; <b class="avg">Average</b> = 2/3 &nbsp;·&nbsp; <b class="weak">Weak</b> = 0–1/3</p>
+  <table class="scorecard">
+    <thead><tr><th>Theme</th><th>Score</th><th>Rating</th></tr></thead>
+    <tbody>${table}</tbody>
+  </table>
+  ${focus}`;
+}
+let i=0,score=0,tries=0;
+const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+const letters=['A','B','C','D'];
+function reveal(){
+  document.querySelectorAll('.opt').forEach((x,k)=>{
+    x.disabled=true;
+    if(quiz[i].answers[k].correct) x.classList.add('correct');
+  });
+  info.style.display='block';
+  info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
+  next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+  next.style.display='inline-block';
+}
+function load(){
+  tries=0;
+  p.textContent=`Question ${i+1} of ${quiz.length}`;
+  qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+  shuffle(quiz[i].answers);
+  quiz[i].answers.forEach((ans, idx)=>{
+    let b=document.createElement('button');b.className='opt';
+    let letter=document.createElement('b');letter.textContent=letters[idx]+'. ';
+    b.appendChild(letter);b.appendChild(document.createTextNode(ans.text));
+    b.onclick=()=>{
+      if(ans.correct){
+        b.classList.add('correct');
+        quiz[i].got=true;
+        score++;
+        reveal();
+      } else {
+        b.classList.add('wrong');
+        b.disabled=true;
+        tries++;
+        if(tries===1){
+          info.style.display='block';
+          info.innerHTML='<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.';
+          next.style.display='none';
+        } else {
+          reveal();
+        }
+      }
+    };
+    ael.appendChild(b);
+  });
+}
+next.onclick=()=>{i++;if(i<quiz.length)load();else{
+  document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+  result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+  ${sectionScorecard()}
+  <h3>Challenge for This Week</h3>
+  <ul>
+    <li>Seek wisdom and hate folly: receive one correction instead of defending yourself.</li>
+    <li>Watch your tongue and your temper: restrain one habitual reaction in speech or anger.</li>
+    <li>Work with open hands: be diligent, generous, and honest in one money or work decision.</li>
+    <li>Honor family and choose friends carefully: repair one relationship or step back from a snare.</li>
+    <li>Fear the Lord in public and private: let reverence show up as humility and integrity.</li>
+  </ul>
+  <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
+  restart.style.display='inline-block';
+}};
+restart.onclick=()=>location.reload();
+load();
+</script>
+</body>
+</html>
