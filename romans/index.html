@@ -273,9 +273,43 @@ let html=`<p>${index+1}. ${item.q}</p>`;
 item.options.forEach((opt,i)=>{
 html+=`<label><input type="radio" name="q${index}" value="${i}"> <b>${String.fromCharCode(65+i)}.</b> ${opt}</label><br>`;
 });
+html+=`<div class="pass-note" id="note${index}"></div>`;
 
 div.innerHTML=html;
 form.appendChild(div);
+});
+
+const qTries = [];
+const qLocked = [];
+const qEarned = [];
+form.addEventListener("change", function(e){
+  if(e.target.type !== "radio") return;
+  const i = parseInt(e.target.name.slice(1), 10);
+  if(qLocked[i]) return;
+  const q = questions[i];
+  const val = parseInt(e.target.value, 10);
+  const box = document.getElementById("qbox"+i);
+  const note = document.getElementById("note"+i);
+  if(val === q.answer){
+    qEarned[i] = true;
+    qLocked[i] = true;
+    box.classList.add("correct");
+    document.querySelectorAll("input[name=q"+i+"]").forEach(inp => inp.disabled = true);
+    note.innerHTML = `<span class="verse">${q.ref} – ${q.verse}</span>`;
+  } else {
+    qTries[i] = (qTries[i] || 0) + 1;
+    e.target.disabled = true;
+    e.target.checked = false;
+    e.target.parentElement.style.opacity = "0.65";
+    if(qTries[i] === 1){
+      note.innerHTML = "<b>Pass this question to the next person.</b> That option is out — someone else should choose from the remaining answers.";
+    } else {
+      qLocked[i] = true;
+      box.classList.add("incorrect");
+      document.querySelectorAll("input[name=q"+i+"]").forEach(inp => inp.disabled = true);
+      note.innerHTML = `<b>Correct Answer:</b> ${q.options[q.answer]}<br><span class="verse">${q.ref} – ${q.verse}</span>`;
+    }
+  }
 });
 
 function submitQuiz(){
@@ -284,34 +318,27 @@ const safeName = (document.getElementById("nameInput")?.value ?? "").trim() || "
 
 let score=0;
 let total=questions.length;
+let unfinished=false;
 
 questions.forEach((q,i)=>{
-const selected=document.querySelector(`input[name=q${i}]:checked`);
 const box=document.getElementById(`qbox${i}`);
-
-if(!selected) return;
-
-const val=parseInt(selected.value);
-
-if(val===q.answer){
-score++;
-box.classList.add("correct");
-}else{
-box.classList.add("incorrect");
-
-const info=document.createElement("div");
-info.className="correct-answer";
-
-info.innerHTML=`
-<b>Correct Answer:</b> ${q.options[q.answer]}<br>
-<span class="verse">${q.ref} – ${q.verse}</span>
-`;
-
-box.appendChild(info);
+if(!qLocked[i]){
+  unfinished=true;
+  return;
 }
-
+if(qEarned[i]){
+  score++;
+  box.classList.add("correct");
+}else{
+  box.classList.add("incorrect");
+}
 document.querySelectorAll(`input[name=q${i}]`).forEach(inp=>inp.disabled=true);
 });
+
+if(unfinished){
+  document.getElementById("result").innerText="Please finish every question (including a second try if the first was wrong) before submitting.";
+  return;
+}
 
 let message=`Your Score: ${score} / ${total}\n\n`;
 

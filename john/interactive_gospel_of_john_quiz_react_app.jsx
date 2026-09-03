@@ -197,19 +197,31 @@ export default function GospelOfJohnQuiz() {
   const [score, setScore] = React.useState(0);
   const [showResult, setShowResult] = React.useState(false);
   const [quizFinished, setQuizFinished] = React.useState(false);
+  const [tries, setTries] = React.useState(0);
+  const [eliminated, setEliminated] = React.useState([]);
 
   const handleAnswer = (option) => {
+    const correct = questions[currentQuestion].answer;
+    if (option === correct) {
+      setSelectedAnswer(option);
+      setShowResult(true);
+      setScore(score + 1);
+      return;
+    }
+    if (tries === 0) {
+      setEliminated([...eliminated, option]);
+      setTries(1);
+      return;
+    }
     setSelectedAnswer(option);
     setShowResult(true);
-
-    if (option === questions[currentQuestion].answer) {
-      setScore(score + 1);
-    }
   };
 
   const nextQuestion = () => {
     setSelectedAnswer("");
     setShowResult(false);
+    setTries(0);
+    setEliminated([]);
 
     if (currentQuestion + 1 < questions.length) {
       setCurrentQuestion(currentQuestion + 1);
@@ -224,6 +236,8 @@ export default function GospelOfJohnQuiz() {
     setScore(0);
     setShowResult(false);
     setQuizFinished(false);
+    setTries(0);
+    setEliminated([]);
   };
 
   if (quizFinished) {
@@ -276,16 +290,18 @@ export default function GospelOfJohnQuiz() {
           {questions[currentQuestion].options.map((option, index) => {
             const isCorrect = option === questions[currentQuestion].answer;
             const isSelected = option === selectedAnswer;
+            const isEliminated = eliminated.includes(option);
 
             return (
               <button
                 key={index}
-                disabled={showResult}
+                disabled={showResult || isEliminated}
                 onClick={() => handleAnswer(option)}
                 className={`p-4 rounded-2xl border text-left transition text-lg
                   ${showResult && isCorrect ? "bg-green-100 border-green-500" : ""}
                   ${showResult && isSelected && !isCorrect ? "bg-red-100 border-red-500" : ""}
-                  ${!showResult ? "hover:bg-slate-50" : ""}
+                  ${isEliminated ? "bg-red-100 border-red-500 opacity-70" : ""}
+                  ${!showResult && !isEliminated ? "hover:bg-slate-50" : ""}
                 `}
               >
                 <b>{String.fromCharCode(65 + index)}.</b> {option}
@@ -293,6 +309,13 @@ export default function GospelOfJohnQuiz() {
             );
           })}
         </div>
+
+        {tries === 1 && !showResult && (
+          <div className="mt-6 p-4 rounded-xl bg-sky-50 border-l-4 border-sky-500">
+            <b>Pass this question to the next person.</b>
+            <div>That option is out. The question is still open — someone else should choose from the remaining answers.</div>
+          </div>
+        )}
 
         {showResult && (
           <div className="mt-8 flex justify-between items-center">

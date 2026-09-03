@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Proverbs Quiz 2: Work, Leadership, Prudence, Godly Counsel</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.35em;margin:18px 0}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📖 Proverbs Quiz 2</h1>
+    <p style="text-align:center;color:#666;margin-top:-8px">Work, Leadership, Prudence, Godly Counsel</p>
+    <div id="progress"></div>
+    <div id="question" class="q"></div>
+    <div id="answers"></div>
+    <div id="info"></div>
+    <button id="next" style="display:none">Next Question</button>
+    <div id="result"></div>
+    <button id="restart">Play Again</button>
+  </div>
+<script>
+let quiz=[
+  {"q": "From “which, having no captain, overseer or ruler,” which of the nine workplace lessons from the ant is being taught?", "answers": [{"text": "Self-motivation (initiative): the ant works without external enforcement", "correct": true}, {"text": "Preparedness: the ant stores resources in seasons of abundance", "correct": false}, {"text": "Time awareness: the ant understands summer, harvest, and winter", "correct": false}, {"text": "Wisdom in smallness: impact does not depend on title or size", "correct": false}], "ref": "Proverbs 6:6–8", "verse": "\u201cGo to the ant, you sluggard! Consider her ways and be wise, Which, having no captain, Overseer or ruler, Provides her supplies in the summer, And gathers her food in the harvest.\u201d", "life": "Take initiative. Seek solutions rather than waiting to be managed."},
+  {"q": "What does Proverbs 12:27 say the lazy person fails to do, in contrast with diligence?", "answers": [{"text": "He does not roast what he took in hunting; diligence extracts full value from effort already begun", "correct": true}, {"text": "He does not hunt at all; diligence starts many projects and leaves them unfinished", "correct": false}, {"text": "He does not sleep in harvest; diligence folds the hands only after the king has been served", "correct": false}, {"text": "He does not commit his works to the Lord; diligence plans the way and then directs the steps", "correct": false}], "ref": "Proverbs 12:27", "verse": "\u201cThe lazy man does not roast what he took in hunting, But diligence is man’s precious possession.\u201d", "life": "Starting is not finishing; laziness wastes even what you have already gained."},
+  {"q": "What contrast does Proverbs 12:24 draw between the diligent and the lazy?", "answers": [{"text": "The hand of the diligent will rule, but the lazy man will be put to forced labor", "correct": true}, {"text": "The hand of the diligent will rest, but the lazy man will stand before kings", "correct": false}, {"text": "The hand of the diligent becomes poor, but the lazy man gathers by labor and increases", "correct": false}, {"text": "The hand of the diligent will chatter, but the lazy man will be put over the harvest", "correct": false}], "ref": "Proverbs 12:24", "verse": "\u201cThe hand of the diligent will rule, But the lazy man will be put to forced labor.\u201d", "life": "Steady work builds trust and authority; idleness eventually puts you under someone else’s command."},
+  {"q": "What does Proverbs 22:29 promise the person who excels in his work?", "answers": [{"text": "He will stand before kings; he will not stand before unknown men", "correct": true}, {"text": "He will stand before unknown men; kings have no need of excellent workers", "correct": false}, {"text": "He will stand in the gates only if a virtuous woman first praises his hands", "correct": false}, {"text": "He will stand before kings only after he overworks to be rich", "correct": false}], "ref": "Proverbs 22:29", "verse": "\u201cDo you see a man who excels in his work? He will stand before kings; He will not stand before unknown men.\u201d", "life": "Excellence is a form of witness: skill done well brings you into rooms influence never buys."},
+  {"q": "Proverbs 16:3 gives the work-and-planning hinge of dependence on God. What does it say?", "answers": [{"text": "Commit your works to the Lord, and your thoughts will be established", "correct": true}, {"text": "Commit your works to the king, and your thoughts will be established", "correct": false}, {"text": "Commit your works to diligence, and the Lord will no longer need to direct your steps", "correct": false}, {"text": "Commit your works to a multitude of counselors, and the ant will no longer need a captain", "correct": false}], "ref": "Proverbs 16:3", "verse": "\u201cCommit your works to the LORD, And your thoughts will be established.\u201d", "life": "Plan seriously, then place the work in God’s hands; established thinking follows surrendered work."},
+  {"q": "What happens “where there is no revelation,” according to Proverbs 29:18?", "answers": [{"text": "The people cast off restraint; but happy is he who keeps the law", "correct": true}, {"text": "The people become diligent; but happy is he who stands before kings", "correct": false}, {"text": "The people hide themselves; but happy is he who pays attention to lies", "correct": false}, {"text": "The people groan under the wicked; but happy is he who receives bribes", "correct": false}], "ref": "Proverbs 29:18", "verse": "\u201cWhere there is no revelation, the people cast off restraint; But happy is he who keeps the law.\u201d", "life": "Leaders owe people a word from God and a clear direction; without vision, restraint collapses."},
+  {"q": "What does Proverbs 20:18 teach about strategy and planning?", "answers": [{"text": "Plans are established by counsel; by wise counsel wage war", "correct": true}, {"text": "Plans are established by haste; by secret counsel wage war", "correct": false}, {"text": "Plans are established by the king’s lips; by divination wage war", "correct": false}, {"text": "Plans are established by revelation; without counsel the people cast off restraint", "correct": false}], "ref": "Proverbs 20:18", "verse": "\u201cPlans are established by counsel; By wise counsel wage war.\u201d", "life": "Even a leader with vision still needs counsel; haste is not faith, and isolation is not strength."},
+  {"q": "If a ruler pays attention to lies, what does Proverbs 29:12 say follows?", "answers": [{"text": "All his servants become wicked", "correct": true}, {"text": "All his servants become wise and begin to sift out the wicked", "correct": false}, {"text": "His throne is established forever because truth still preserves the king", "correct": false}, {"text": "The people rejoice, because a wicked man on the throne still rewards wise servants", "correct": false}], "ref": "Proverbs 29:12", "verse": "\u201cIf a ruler pays attention to lies, All his servants become wicked.\u201d", "life": "A leader’s appetite for flattery or falsehood trains the whole culture beneath him."},
+  {"q": "What does Proverbs 29:14 promise the king who judges the poor with truth?", "answers": [{"text": "His throne will be established forever", "correct": true}, {"text": "His throne will be established by bribes and by sifting out the poor", "correct": false}, {"text": "His throne will last only while the people rejoice under righteous authority", "correct": false}, {"text": "His throne will be preserved by sweetness of lips rather than by justice", "correct": false}], "ref": "Proverbs 29:14", "verse": "\u201cThe king who judges the poor with truth, His throne will be established forever.\u201d", "life": "Compassion with truth is not optional kindness; it is how God steadies a leader’s seat."},
+  {"q": "What must be taken away from before the king if his throne is to be established in righteousness?", "answers": [{"text": "The wicked", "correct": true}, {"text": "The poor who cry for justice", "correct": false}, {"text": "Open rebuke from a faithful friend", "correct": false}, {"text": "Counsel that would restrain a hasty war", "correct": false}], "ref": "Proverbs 25:5", "verse": "\u201cTake away the wicked from before the king, And his throne will be established in righteousness.\u201d", "life": "Leaders must choose their inner circle; ungodly advisers quietly unseat righteous government."},
+  {"q": "The Hebrew sense given for prudence is “to be shrewd, crafty.” How is that applied?", "answers": [{"text": "Wise foresight and strategic thinking before action, which can be used for good or for evil", "correct": true}, {"text": "Skill in godly living that is rooted only in the fear of the Lord", "correct": false}, {"text": "Disciplined thinking that guards conduct and restrains one from every risk", "correct": false}, {"text": "Truth internalized through relationship, the knowledge of the Holy One", "correct": false}], "ref": "Proverbs 1:4; 8:5", "verse": "\u201cTo give prudence to the simple, To the young man knowledge and discretion\u2014\u201d", "life": "Prudence thinks ahead and avoids traps; the same shrewdness must be yoked to righteousness, not to harm."},
+  {"q": "When Proverbs 12:16 says a prudent man “covers shame,” what does that mean in the sermon’s explanation?", "answers": [{"text": "He feels the offense but controls the response: he does not expose or magnify it", "correct": true}, {"text": "He hides his own sin and pretends nothing wrong happened", "correct": false}, {"text": "He immediately makes his wrath known so that dignity is publicly restored", "correct": false}, {"text": "He conceals knowledge from the simple until they have paid for counsel", "correct": false}], "ref": "Proverbs 12:16", "verse": "\u201cA fool’s wrath is known at once, But a prudent man covers shame.\u201d", "life": "Prudence is not a cover-up of sin; it is restraint that protects dignity instead of broadcasting offense."},
+  {"q": "What contrast does Proverbs 12:23 draw between the prudent and fools?", "answers": [{"text": "A prudent man conceals knowledge, but the heart of fools proclaims foolishness", "correct": true}, {"text": "A prudent man proclaims knowledge, but the heart of fools conceals foolishness", "correct": false}, {"text": "A prudent man believes every word, but the heart of fools considers well his steps", "correct": false}, {"text": "A prudent man covers shame, but the heart of fools receives a father’s instruction", "correct": false}], "ref": "Proverbs 12:23", "verse": "\u201cA prudent man conceals knowledge, But the heart of fools proclaims foolishness.\u201d", "life": "Not every true thing must be said at once; fools advertise themselves by how much they cannot hold back."},
+  {"q": "According to Proverbs 14:15, what does a prudent person do?", "answers": [{"text": "Believes everything they hear", "correct": false}, {"text": "Follows their heart", "correct": false}, {"text": "Considers their steps", "correct": true}, {"text": "Ignores other people’s advice", "correct": false}], "ref": "Proverbs 14:15", "verse": "\u201cThe simple believes every word, But the prudent considers well his steps.\u201d", "life": "Gullibility is not faith; prudence examines, weighs outcomes, and then decides."},
+  {"q": "What does a prudent person do when he “foresees evil,” according to Proverbs 22:3?", "answers": [{"text": "He hides himself, but the simple pass on and are punished", "correct": true}, {"text": "He proclaims it in the gates, but the simple hide themselves and are spared", "correct": false}, {"text": "He takes a city, but the simple rule their spirit and are promoted", "correct": false}, {"text": "He pays attention to lies, but the simple establish the throne in righteousness", "correct": false}], "ref": "Proverbs 22:3", "verse": "\u201cA prudent man foresees evil and hides himself, But the simple pass on and are punished.\u201d", "life": "Foresight without action is still folly; the prudent both see danger and step out of its path."},
+  {"q": "What twin results does Proverbs attach to a multitude of counselors?", "answers": [{"text": "Safety, and plans that are established rather than going awry", "correct": true}, {"text": "Forced labor, and plans that lead the hasty surely to plenty", "correct": false}, {"text": "Shame covered, and plans that the simple believe without examining", "correct": false}, {"text": "Joy for counselors of peace, but only if you refuse every other voice", "correct": false}], "ref": "Proverbs 11:14; 15:22", "verse": "\u201cWhere there is no counsel, the people fall; But in the multitude of counselors there is safety.\u201d", "life": "Isolation looks decisive; a wider circle of godly counsel is how plans survive contact with reality."},
+  {"q": "What contrast does Proverbs 12:15 draw between a fool and a wise person regarding counsel?", "answers": [{"text": "The way of a fool is right in his own eyes, but he who heeds counsel is wise", "correct": true}, {"text": "The way of a fool is right in the multitude of counselors, but he who walks alone is wise", "correct": false}, {"text": "The way of a fool is to draw out deep water, but he who conceals knowledge is wise", "correct": false}, {"text": "The way of a fool is to receive instruction, but he who refuses counsel is prudent", "correct": false}], "ref": "Proverbs 12:15", "verse": "\u201cThe way of a fool is right in his own eyes, But he who heeds counsel is wise.\u201d", "life": "Self-confidence is not the same as wisdom; the wise remain correctable."},
+  {"q": "According to Proverbs 12:20, what do counselors of peace have?", "answers": [{"text": "Joy, as they aim at shalom—wholeness and total well-being—for others", "correct": true}, {"text": "Deceit, as they devise evil and then call it hearty counsel", "correct": false}, {"text": "Safety, as a multitude of counselors always agrees with the fool", "correct": false}, {"text": "Shame covered, as they hide offense rather than drawing anything out", "correct": false}], "ref": "Proverbs 12:20", "verse": "\u201cDeceit is in the heart of those who devise evil, But counselors of peace have joy.\u201d", "life": "Counsel that seeks another person’s wholeness produces joy on both sides of the conversation."},
+  {"q": "Proverbs 20:5 says counsel in the heart is like deep water. What does a person of understanding do?", "answers": [{"text": "Draws it out slowly: listening, asking, and patiently bringing hidden thoughts to the surface", "correct": true}, {"text": "Pours his own plans in quickly, because the Lord’s counsel will stand without listening", "correct": false}, {"text": "Conceals the water, because a prudent man does not believe every word in the well", "correct": false}, {"text": "Forces an answer at once, because open rebuke is better than drawing anything out", "correct": false}], "ref": "Proverbs 20:5", "verse": "\u201cCounsel in the heart of man is like deep water, But a man of understanding will draw it out.\u201d", "life": "Good counsel is more well-digging than speech-making: people often need help naming what is already in them."},
+  {"q": "What does Proverbs 19:21 insist about the Lord’s counsel compared with human plans?", "answers": [{"text": "There are many plans in a man’s heart, nevertheless the Lord’s counsel—that will stand", "correct": true}, {"text": "There are many plans in a man’s heart, nevertheless a multitude of counselors will always stand", "correct": false}, {"text": "There are many plans in a man’s heart, nevertheless the king’s heart cannot be turned by the Lord", "correct": false}, {"text": "There are many plans in a man’s heart, nevertheless the simple who pass on will still stand", "correct": false}], "ref": "Proverbs 19:21", "verse": "\u201cThere are many plans in a man’s heart, Nevertheless the LORD’s counsel—that will stand.\u201d", "life": "Seek God’s counsel through His Word, His Spirit, and godly people; His word is the plan that outlasts yours."}
+];
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    let t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+shuffle(quiz);
+let i=0,score=0,tries=0;
+const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+const letters=['A','B','C','D'];
+function reveal(){
+  document.querySelectorAll('.opt').forEach((x,k)=>{
+    x.disabled=true;
+    if(quiz[i].answers[k].correct) x.classList.add('correct');
+  });
+  info.style.display='block';
+  info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
+  next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+  next.style.display='inline-block';
+}
+function load(){
+  tries=0;
+  p.textContent=`Question ${i+1} of ${quiz.length}`;
+  qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+  shuffle(quiz[i].answers);
+  quiz[i].answers.forEach((ans, idx)=>{
+    let b=document.createElement('button');b.className='opt';
+    let letter=document.createElement('b');letter.textContent=letters[idx]+'. ';
+    b.appendChild(letter);b.appendChild(document.createTextNode(ans.text));
+    b.onclick=()=>{
+      if(ans.correct){
+        b.classList.add('correct');
+        score++;
+        reveal();
+      } else {
+        b.classList.add('wrong');
+        b.disabled=true;
+        tries++;
+        if(tries===1){
+          info.style.display='block';
+          info.innerHTML='<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.';
+          next.style.display='none';
+        } else {
+          reveal();
+        }
+      }
+    };
+    ael.appendChild(b);
+  });
+}
+next.onclick=()=>{i++;if(i<quiz.length)load();else{
+  document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+  result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+  <h3>Challenge for This Week</h3>
+  <ul>
+    <li>Work like the ant: take initiative on one task without waiting to be managed.</li>
+    <li>Lead with a clean inner circle: notice whose voice shapes you, and whether it is true.</li>
+    <li>Practice prudence: pause before reacting, and take one preventative step you have been postponing.</li>
+    <li>Seek and give counsel: ask one godly person for advice, and listen more than you speak.</li>
+  </ul>
+  <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
+  restart.style.display='inline-block';
+}};
+restart.onclick=()=>location.reload();
+load();
+</script>
+</body>
+</html>

@@ -35,6 +35,8 @@
       font-size: 14px;
       color: #444;
     }
+    .correct { background-color: #d4edda; }
+    .incorrect { background-color: #f8d7da; }
   </style>
 </head>
 <body>
@@ -122,8 +124,7 @@
 <div class="result" id="result"></div>
 
 <script>
-function submitQuiz() {
-  const answers = {
+const answers = {
     q1: "C",
     q2: "C",
     q3: "C",
@@ -141,23 +142,49 @@ function submitQuiz() {
     q6: "Jesus appeared to Thomas eight days later (John 20:26)."
   };
 
-  let score = 0;
-
-  for (let q in answers) {
-    let selected = document.querySelector(`input[name="${q}"]:checked`);
-    let exp = document.getElementById("e" + q[1]);
-
-    if (selected) {
-      if (selected.value === answers[q]) {
-        score++;
-        exp.innerHTML = "✅ Correct. " + explanations[q];
-      } else {
-        exp.innerHTML = "❌ Incorrect. " + explanations[q];
-      }
+const qTries = {};
+const qLocked = {};
+const qEarned = {};
+document.getElementById("quizForm").addEventListener("change", function(e) {
+  if (e.target.type !== "radio") return;
+  const q = e.target.name;
+  if (qLocked[q]) return;
+  const exp = document.getElementById("e" + q.slice(1));
+  if (e.target.value === answers[q]) {
+    qEarned[q] = true;
+    qLocked[q] = true;
+    document.querySelectorAll('input[name="' + q + '"]').forEach(inp => {
+      inp.disabled = true;
+      if (inp.value === answers[q]) inp.parentElement.classList.add("correct");
+    });
+    exp.innerHTML = "✅ Correct. " + explanations[q];
+  } else {
+    qTries[q] = (qTries[q] || 0) + 1;
+    e.target.disabled = true;
+    e.target.checked = false;
+    e.target.parentElement.classList.add("incorrect");
+    if (qTries[q] === 1) {
+      exp.innerHTML = "<b>Pass this question to the next person.</b> That option is out — someone else should choose from the remaining answers.";
     } else {
-      exp.innerHTML = "⚠️ No answer selected. " + explanations[q];
+      qLocked[q] = true;
+      document.querySelectorAll('input[name="' + q + '"]').forEach(inp => {
+        inp.disabled = true;
+        if (inp.value === answers[q]) inp.parentElement.classList.add("correct");
+      });
+      exp.innerHTML = "❌ Incorrect. " + explanations[q];
     }
   }
+});
+
+function submitQuiz() {
+  for (let q in answers) {
+    if (!qLocked[q]) {
+      document.getElementById("result").innerHTML = "Please finish every question (including a second try if the first was wrong) before submitting.";
+      return;
+    }
+  }
+  let score = 0;
+  for (let q in answers) if (qEarned[q]) score++;
 
   document.getElementById("result").innerHTML =
     `Your Score: ${score}/6 <br><br> “Blessed are those who have not seen and yet have believed.” — John 20:29 (NKJV)`;

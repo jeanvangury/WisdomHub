@@ -63,8 +63,20 @@ const quiz=[
 {q:"Who recognized that Gentiles had received the Holy Spirit before baptism?",a:[["James",false],["Barnabas",false],["Peter and the Jewish believers",true],["Philip",false]],ref:"Acts 10:44–47"},
 {q:"According to Acts 10:38, Jesus went about:",a:[["Teaching only in synagogues",false],["Healing only Israelites",false],["Doing good and healing all oppressed by the devil",true],["Building the Temple",false]],ref:"Acts 10:38"}
 ];
-let current=0,score=0;
+let current=0,score=0,tries=0;
+function reveal(){
+let q=quiz[current];
+document.querySelectorAll(".option").forEach((x,k)=>{
+x.disabled=true;
+if(q.a[k][1]) x.classList.add("correct");
+});
+reference.style.display="block";
+reference.innerHTML="<strong>📖 Biblical Reference:</strong> "+q.ref;
+nextBtn.textContent = (current === quiz.length - 1) ? "See your score." : "Next Question";
+nextBtn.style.display="inline-block";
+}
 function loadQuestion(){
+tries=0;
 document.getElementById("progress").textContent=`Question ${current+1} of ${quiz.length}`;
 document.getElementById("nextBtn").style.display="none";
 document.getElementById("reference").style.display="none";
@@ -78,15 +90,22 @@ b.className="option";
 let letter=document.createElement("b");letter.textContent=String.fromCharCode(65+i)+". ";
 b.appendChild(letter);b.appendChild(document.createTextNode(item[0]));
 b.onclick=()=>{
-document.querySelectorAll(".option").forEach(x=>x.disabled=true);
-if(item[1]){b.classList.add("correct");score++;}else{
+if(item[1]){
+b.classList.add("correct");
+score++;
+reveal();
+} else {
 b.classList.add("wrong");
-document.querySelectorAll(".option")[q.a.findIndex(x=>x[1])].classList.add("correct");
-}
+b.disabled=true;
+tries++;
+if(tries===1){
 reference.style.display="block";
-reference.innerHTML="<strong>📖 Biblical Reference:</strong> "+q.ref;
-nextBtn.textContent = (current === quiz.length - 1) ? "See your score." : "Next Question";
-nextBtn.style.display="inline-block";
+reference.innerHTML="<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.";
+nextBtn.style.display="none";
+} else {
+reveal();
+}
+}
 };
 answers.appendChild(b);
 });

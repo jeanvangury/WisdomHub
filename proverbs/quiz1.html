@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Proverbs Quiz 1: Wisdom, Friendships, Family, Discipline</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#eef3f8;margin:0;padding:24px}
+    .card{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+    h1{text-align:center;color:#234}
+    #progress{font-weight:bold;color:#666}
+    .q{font-size:1.35em;margin:18px 0}
+    .opt{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #bbb;border-radius:8px;background:#fff;text-align:left;font-size:16px;cursor:pointer}
+    .opt:hover{background:#eef6ff}.correct{background:#2eaf4a!important;color:#fff}.wrong{background:#d83b3b!important;color:#fff}
+    #info{display:none;background:#eef8ff;border-left:5px solid #2d7ef7;padding:16px;margin-top:18px;border-radius:6px}
+    #next,#restart{margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#2d7ef7;color:#fff;font-size:16px;cursor:pointer}
+    #restart{background:#2eaf4a;display:none}
+    .home-btn{display:inline-block;margin-top:18px;padding:12px 22px;border:none;border-radius:8px;background:#1e3a5f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none}
+    .home-btn:hover{opacity:.92}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📖 Proverbs Quiz 1</h1>
+    <p style="text-align:center;color:#666;margin-top:-8px">Wisdom, Friendships, Family, Discipline</p>
+    <div id="progress"></div>
+    <div id="question" class="q"></div>
+    <div id="answers"></div>
+    <div id="info"></div>
+    <button id="next" style="display:none">Next Question</button>
+    <div id="result"></div>
+    <button id="restart">Play Again</button>
+  </div>
+<script>
+let quiz=[
+  {"q": "In the opening of Proverbs, the Hebrew root behind “wisdom” is given as “to be skillful.” What does that mean in context?", "answers": [{"text": "Skill in godly living that is rooted in the fear of God", "correct": true}, {"text": "Skill in interpreting dreams and hidden signs from heaven", "correct": false}, {"text": "Skill in winning arguments so that fools are publicly silenced", "correct": false}, {"text": "Skill in accumulating wealth faster than the simple around you", "correct": false}], "ref": "Proverbs 1:1–7; 9:10", "verse": "\u201cThe fear of the LORD is the beginning of knowledge, But fools despise wisdom and instruction.\u201d", "life": "Wisdom is not a clever trick; it is knowing how to live well before God in real decisions."},
+  {"q": "The series lists five key words in Proverbs 1. What Hebrew sense is given for “discretion”?", "answers": [{"text": "To plan or devise: disciplined thinking that guards conduct", "correct": true}, {"text": "To be shrewd or crafty: strategic thinking before you act", "correct": false}, {"text": "To separate or distinguish: seeing what is really going on", "correct": false}, {"text": "To know by experience: truth internalized through relationship", "correct": false}], "ref": "Proverbs 1:4", "verse": "\u201cTo give prudence to the simple, To the young man knowledge and discretion\u2014\u201d", "life": "Discretion is intentional self-governance: you plan your ways so evil does not plan them for you."},
+  {"q": "Proverbs 2 describes a key benefit of godly wisdom as deliverance. How is that deliverance explained?", "answers": [{"text": "Wisdom keeps you out of trouble; you are preserved before you fall into it", "correct": true}, {"text": "Wisdom waits until you fail, then God rescues you from the pit", "correct": false}, {"text": "Wisdom removes every enemy so you never face opposition again", "correct": false}, {"text": "Wisdom guarantees that fools around you will be destroyed first", "correct": false}], "ref": "Proverbs 2:11–12", "verse": "\u201cDiscretion will preserve you; Understanding will keep you, To deliver you from the way of evil, From the man who speaks perverse things.\u201d", "life": "The deepest protection of wisdom is prevention: staying off the path that would have ruined you."},
+  {"q": "In Proverbs 4, what does Solomon (passing on David’s instruction) call wisdom, and what follows if you exalt her?", "answers": [{"text": "The principal thing; she will promote you, bring honor, and give a crown of glory", "correct": true}, {"text": "A useful extra; she will make you wealthy, but only after you first get silver", "correct": false}, {"text": "A private virtue; she will hide you so that no one notices your life", "correct": false}, {"text": "The last thing; she will comfort you after calamity has already come", "correct": false}], "ref": "Proverbs 4:7–9", "verse": "\u201cWisdom is the principal thing; Therefore get wisdom. And in all your getting, get understanding.\u201d", "life": "Treat wisdom as first, not optional; honor and advancement are by-products of making her supreme."},
+  {"q": "Lady Wisdom “has built her house” and “hewn out her seven pillars.” What does that image mean?", "answers": [{"text": "Wisdom’s home is complete, perfect, and divinely full of strength, stability, and permanence", "correct": true}, {"text": "Wisdom built seven temples in Israel so that every tribe could find her", "correct": false}, {"text": "Wisdom’s house lasts only seven years, then must be rebuilt by the simple", "correct": false}, {"text": "Wisdom’s seven pillars are the seven deadly sins she teaches us to hide", "correct": false}], "ref": "Proverbs 9:1", "verse": "\u201cWisdom has built her house, She has hewn out her seven pillars.\u201d", "life": "Wisdom is not a passing fad; she invites you into a life that is strong, stable, and meant to last."},
+  {"q": "What contrast does Proverbs 13:20 draw about the company you keep?", "answers": [{"text": "He who walks with wise men will be wise, but the companion of fools will be destroyed", "correct": true}, {"text": "He who walks with wise men will be rich, but the companion of fools will only be poor", "correct": false}, {"text": "He who walks with kings will be wise, but the companion of servants will be destroyed", "correct": false}, {"text": "He who walks with many friends will be wise, but a man of few friends will be destroyed", "correct": false}], "ref": "Proverbs 13:20", "verse": "\u201cHe who walks with wise men will be wise, But the companion of fools will be destroyed.\u201d", "life": "Friendship is formative: you do not merely spend time with people; you become like them."},
+  {"q": "Proverbs 18:24 distinguishes ordinary friendships from a rare one. What does it say?", "answers": [{"text": "A man who has friends must himself be friendly, but there is a friend who sticks closer than a brother", "correct": true}, {"text": "A man who has friends must keep many of them, but a brother is born only for prosperity", "correct": false}, {"text": "A man who has friends must never rebuke them, but a brother may wound without deceit", "correct": false}, {"text": "A man who has friends must become surety for them, but a brother should refuse the pledge", "correct": false}], "ref": "Proverbs 18:24", "verse": "\u201cA man who has friends must himself be friendly, But there is a friend who sticks closer than a brother.\u201d", "life": "Friendship requires your own warmth, yet God can give a companion whose loyalty outruns even family."},
+  {"q": "If you have become surety for a friend, what does Proverbs 6 tell you to do?", "answers": [{"text": "Deliver yourself like a gazelle from the hunter and a bird from the fowler", "correct": true}, {"text": "Remain pledged, because loyalty to a friend is better than your own safety", "correct": false}, {"text": "Ask the king to cancel the debt, because a ruler’s favor covers the simple", "correct": false}, {"text": "Wait until harvest, because diligence will quietly pay what you promised", "correct": false}], "ref": "Proverbs 6:1–5", "verse": "\u201cDeliver yourself like a gazelle from the hand of the hunter, And like a bird from the hand of the fowler.\u201d", "life": "Unwise financial entanglement is a trap; wisdom is to get out quickly, not to call the snare loyalty."},
+  {"q": "In the Proverbs 23 “relating to different people” list, what is the counsel about a fool?", "answers": [{"text": "Do not waste counsel on a fool, because such a person is going to reject wisdom", "correct": true}, {"text": "Correct a fool often, because open rebuke will always turn him into a friend", "correct": false}, {"text": "Eat freely with a fool, because sharing a table will teach him self-control", "correct": false}, {"text": "Envy a fool’s ease, because his prosperity proves that God has already favored him", "correct": false}], "ref": "Proverbs 23:9", "verse": "\u201cDo not speak in the hearing of a fool, For he will despise the wisdom of your words.\u201d", "life": "Not every ear is worth your counsel; pouring wisdom into a scoffer is not faithfulness, it is waste."},
+  {"q": "Proverbs 18:19 warns about a particular family wound. What does it say?", "answers": [{"text": "A brother offended is harder to win than a strong city, and contentions are like the bars of a castle", "correct": true}, {"text": "A brother offended is easier to win than a stranger, because a brother is born for adversity", "correct": false}, {"text": "A brother offended should be ignored, because meddling in a quarrel is like taking a dog by the ears", "correct": false}, {"text": "A brother offended must himself be friendly, or he will never stick closer than a friend", "correct": false}], "ref": "Proverbs 18:19", "verse": "\u201cA brother offended is harder to win than a strong city, And contentions are like the bars of a castle.\u201d", "life": "Family wounds can fortify into a siege; repair them early, before offense becomes a locked gate."},
+  {"q": "Proverbs 24:3–4 treats “house” as more than a building. What progression does it describe?", "answers": [{"text": "Wisdom builds, understanding establishes, and knowledge fills with precious and pleasant riches", "correct": true}, {"text": "Knowledge builds, wisdom fills, and understanding tears down the house of the wicked", "correct": false}, {"text": "Wealth builds, diligence establishes, and prudence fills the rooms with silver and gold", "correct": false}, {"text": "Discipline builds, self-control establishes, and silence fills the house with quietness", "correct": false}], "ref": "Proverbs 24:3–4", "verse": "\u201cThrough wisdom a house is built, And by understanding it is established; By knowledge the rooms are filled With all precious and pleasant riches.\u201d", "life": "Lasting family, work, and legacy follow God’s order: design first, then stability, then fruitfulness."},
+  {"q": "What wisdom principle is drawn from “prepare your outside work… and afterward build your house”?", "answers": [{"text": "Secure provision first; establish household security and legacy afterward", "correct": true}, {"text": "Build the house first; then the field will automatically become productive", "correct": false}, {"text": "Leave both field and house to chance, because the Lord directs steps without planning", "correct": false}, {"text": "Postpone marriage until you stand before kings, because excellence must come first", "correct": false}], "ref": "Proverbs 24:27", "verse": "\u201cPrepare your outside work, Make it fit for yourself in the field; And afterward build your house.\u201d", "life": "Vision without preparation is foolish; foundation precedes fulfillment in family and in work."},
+  {"q": "The Hebrew chayil, used of an “excellent wife” in Proverbs 12:4, also describes what?", "answers": [{"text": "The virtuous wife of Proverbs 31, and mighty warriors / men of valor", "correct": true}, {"text": "Only physical beauty, which Proverbs 31 says is the true measure of a wife", "correct": false}, {"text": "Only household quietness, because a contentious woman is the opposite of chayil", "correct": false}, {"text": "Only the widow’s boundary, because the Lord establishes her house by this word", "correct": false}], "ref": "Proverbs 12:4; 31:10", "verse": "\u201cAn excellent wife is the crown of her husband, But she who causes shame is like rottenness in his bones.\u201d", "life": "Noble character is strength: the same valor praised in warriors is the worth God praises in a wife."},
+  {"q": "What do Proverbs 13:24 and 19:18 together teach about parenting?", "answers": [{"text": "He who spares the rod hates his son; chasten him while there is hope, and do not set your heart on his destruction", "correct": true}, {"text": "He who uses the rod hates his son; wait until he is grown, then set your heart on his destruction", "correct": false}, {"text": "He who spares the rod loves his son; hope will discipline him without a father’s timely correction", "correct": false}, {"text": "He who rebukes his son should do it in secret, because open rebuke is only for enemies", "correct": false}], "ref": "Proverbs 13:24; 19:18", "verse": "\u201cHe who spares his rod hates his son, But he who loves him disciplines him promptly.\u201d", "life": "Love disciplines while the window is open; delay is not kindness, it is a slow surrender of the child."},
+  {"q": "What specific promise is given concerning the widow in Proverbs 15:25?", "answers": [{"text": "The Lord will destroy the house of the proud, but He will establish the boundary of the widow", "correct": true}, {"text": "The Lord will destroy the house of the proud, but He will fill the widow’s rooms with treasure", "correct": false}, {"text": "The Lord will ignore the proud, but the church must establish the widow’s boundary alone", "correct": false}, {"text": "The Lord will destroy the widow’s house if her sons chase her away in shame", "correct": false}], "ref": "Proverbs 15:25", "verse": "\u201cThe LORD will destroy the house of the proud, But He will establish the boundary of the widow.\u201d", "life": "God personally guards the vulnerable; pride tears houses down, but He stakes out the widow’s ground."},
+  {"q": "What does Proverbs 10:19 teach about discipline in words?", "answers": [{"text": "In the multitude of words sin is not lacking, but he who restrains his lips is wise", "correct": true}, {"text": "In the multitude of words wisdom is increased, but he who restrains his lips is proud", "correct": false}, {"text": "In the multitude of words the simple are taught, but he who restrains his lips conceals knowledge", "correct": false}, {"text": "In the multitude of words strife is ended, but he who restrains his lips stirs up anger", "correct": false}], "ref": "Proverbs 10:19", "verse": "\u201cIn the multitude of words sin is not lacking, But he who restrains his lips is wise.\u201d", "life": "More talking is not more wisdom; restraint is often the first act of self-control."},
+  {"q": "Proverbs 16:32 compares ruling your spirit with military victory. What is the comparison?", "answers": [{"text": "He who is slow to anger is better than the mighty, and he who rules his spirit than he who takes a city", "correct": true}, {"text": "He who is slow to anger is weaker than the mighty, unless he also takes a city for the king", "correct": false}, {"text": "He who is quick to anger is better than the lazy, and he who rules others than he who rules his spirit", "correct": false}, {"text": "He who is slow to wrath allays contention, but he who takes a city must still pay attention to lies", "correct": false}], "ref": "Proverbs 16:32", "verse": "\u201cHe who is slow to anger is better than the mighty, And he who rules his spirit than he who takes a city.\u201d", "life": "Real strength is not conquest of others; it is government of your own temper, impulses, and desires."},
+  {"q": "What image does Proverbs 25:28 use for a person with no rule over his own spirit?", "answers": [{"text": "A city broken down, without walls", "correct": true}, {"text": "A bird trapped in the hand of the fowler", "correct": false}, {"text": "A house shared with a contentious woman", "correct": false}, {"text": "A throne that will not be established in righteousness", "correct": false}], "ref": "Proverbs 25:28", "verse": "\u201cWhoever has no rule over his own spirit Is like a city broken down, without walls.\u201d", "life": "Self-control is a defense system; without it, anything can invade your life."},
+  {"q": "At a ruler’s table, Proverbs 23 warns the person “given to appetite” to put a knife to his throat, and then adds which further warning?", "answers": [{"text": "Do not overwork to be rich; because of your own understanding, cease", "correct": true}, {"text": "Do not underwork in harvest; because the sluggard will stand before unknown men", "correct": false}, {"text": "Do not refuse the ruler’s delicacies; because his favor is toward a wise servant", "correct": false}, {"text": "Do not commit your works to the Lord until the meal is finished and the vow is paid", "correct": false}], "ref": "Proverbs 23:1–4", "verse": "\u201cDo not overwork to be rich; Because of your own understanding, cease!\u201d", "life": "Undisciplined desire is not only about food; craving status and wealth can swallow you just as quickly."},
+  {"q": "The Discipline sermon closes by locating self-control where?", "answers": [{"text": "Among the fruit of the Spirit, which God can empower in us", "correct": true}, {"text": "Among the works of the flesh, which must be managed by the law of Moses alone", "correct": false}, {"text": "Among the gifts of apostleship, given only to those who already rule a city", "correct": false}, {"text": "Among the duties of kings, so ordinary people are not expected to rule their spirit", "correct": false}], "ref": "Galatians 5:22–23", "verse": "\u201cBut the fruit of the Spirit is love, joy, peace, longsuffering, kindness, goodness, faithfulness, gentleness, self-control.\u201d", "life": "Proverbs commands self-control, and the Spirit supplies it; you are not left to grit your teeth without God."}
+];
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    let t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+shuffle(quiz);
+let i=0,score=0,tries=0;
+const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+const letters=['A','B','C','D'];
+function reveal(){
+  document.querySelectorAll('.opt').forEach((x,k)=>{
+    x.disabled=true;
+    if(quiz[i].answers[k].correct) x.classList.add('correct');
+  });
+  info.style.display='block';
+  info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
+  next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+  next.style.display='inline-block';
+}
+function load(){
+  tries=0;
+  p.textContent=`Question ${i+1} of ${quiz.length}`;
+  qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
+  shuffle(quiz[i].answers);
+  quiz[i].answers.forEach((ans, idx)=>{
+    let b=document.createElement('button');b.className='opt';
+    let letter=document.createElement('b');letter.textContent=letters[idx]+'. ';
+    b.appendChild(letter);b.appendChild(document.createTextNode(ans.text));
+    b.onclick=()=>{
+      if(ans.correct){
+        b.classList.add('correct');
+        score++;
+        reveal();
+      } else {
+        b.classList.add('wrong');
+        b.disabled=true;
+        tries++;
+        if(tries===1){
+          info.style.display='block';
+          info.innerHTML='<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.';
+          next.style.display='none';
+        } else {
+          reveal();
+        }
+      }
+    };
+    ael.appendChild(b);
+  });
+}
+next.onclick=()=>{i++;if(i<quiz.length)load();else{
+  document.querySelector('.q').style.display='none';ael.style.display='none';info.style.display='none';next.style.display='none';p.style.display='none';
+  result.innerHTML=`<h2>🎉 You scored ${score} / ${quiz.length}</h2>
+  <h3>Challenge for This Week</h3>
+  <ul>
+    <li>Get wisdom as the principal thing: choose one decision this week to slow down and seek counsel before you act.</li>
+    <li>Walk with the wise: notice which friendships form you, and which ones pull you toward folly.</li>
+    <li>Build your house in order: attend to provision, then to the people and peace of your home.</li>
+    <li>Rule your spirit: restrain one habitual reaction (words, anger, or appetite) by the Spirit’s help.</li>
+  </ul>
+  <p><a class="home-btn" href="../index.html">WisdomHub</a></p>`;
+  restart.style.display='inline-block';
+}};
+restart.onclick=()=>location.reload();
+load();
+</script>
+</body>
+</html>

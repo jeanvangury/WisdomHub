@@ -77,6 +77,15 @@
       display: none;
     }
 
+    .pass-note {
+      display: none;
+      background: #eef8ff;
+      border-left: 5px solid #2d7ef7;
+      padding: 16px;
+      margin-top: 18px;
+      border-radius: 6px;
+    }
+
     .score-screen {
       text-align: center;
     }
@@ -100,6 +109,7 @@
     <div id="quiz-container">
       <div class="question" id="question"></div>
       <div id="options"></div>
+      <div class="pass-note" id="pass-note"></div>
       <button class="next-btn" id="next-btn">Next Question</button>
     </div>
 
@@ -241,13 +251,18 @@
 
     let currentQuestion = 0;
     let score = 0;
+    let tries = 0;
 
     const questionEl = document.getElementById('question');
     const optionsEl = document.getElementById('options');
     const nextBtn = document.getElementById('next-btn');
     const questionCountEl = document.getElementById('question-count');
+    const passNote = document.getElementById('pass-note');
 
     function loadQuestion() {
+      tries = 0;
+      passNote.style.display = 'none';
+      passNote.innerHTML = '';
       const q = questions[currentQuestion];
 
       questionCountEl.innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
@@ -270,24 +285,33 @@
       });
     }
 
-    function selectAnswer(button, selected, correct) {
-      const buttons = document.querySelectorAll('.option');
-
-      buttons.forEach(btn => {
+    function reveal(correct) {
+      document.querySelectorAll('.option').forEach(btn => {
         btn.disabled = true;
-
-        if (btn.dataset.option === correct) {
-          btn.classList.add('correct');
-        }
+        if (btn.dataset.option === correct) btn.classList.add('correct');
       });
-
-      if (selected !== correct) {
-        button.classList.add('wrong');
-      } else {
-        score++;
-      }
-
+      passNote.style.display = 'none';
+      nextBtn.textContent = (currentQuestion === questions.length - 1) ? "See your score." : "Next Question";
       nextBtn.style.display = 'inline-block';
+    }
+
+    function selectAnswer(button, selected, correct) {
+      if (selected === correct) {
+        button.classList.add('correct');
+        score++;
+        reveal(correct);
+      } else {
+        button.classList.add('wrong');
+        button.disabled = true;
+        tries++;
+        if (tries === 1) {
+          passNote.style.display = 'block';
+          passNote.innerHTML = '<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.';
+          nextBtn.style.display = 'none';
+        } else {
+          reveal(correct);
+        }
+      }
     }
 
     nextBtn.onclick = () => {

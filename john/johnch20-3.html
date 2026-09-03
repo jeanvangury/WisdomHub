@@ -141,33 +141,49 @@ const explanations = {
   q6: "Thomas’ declaration marks a climax—what was previously misunderstood is now fully confessed."
 };
 
-function submitQuiz() {
-  let score = 0;
-
-  for (let q in answers) {
-    let selected = document.querySelector(`input[name="${q}"]:checked`);
-    let options = document.querySelectorAll(`input[name="${q}"]`);
-    let exp = document.getElementById("e" + q[1]);
-
-    options.forEach(opt => {
-      let label = opt.parentElement;
-      label.classList.remove("correct", "incorrect");
-
-      if (opt.value === answers[q]) {
-        label.classList.add("correct");
-      }
-
-      if (selected && opt.checked && opt.value !== answers[q]) {
-        label.classList.add("incorrect");
-      }
+const qTries = {};
+const qLocked = {};
+const qEarned = {};
+document.getElementById("quizForm").addEventListener("change", function(e) {
+  if (e.target.type !== "radio") return;
+  const q = e.target.name;
+  if (qLocked[q]) return;
+  const exp = document.getElementById("e" + q.slice(1));
+  if (e.target.value === answers[q]) {
+    qEarned[q] = true;
+    qLocked[q] = true;
+    document.querySelectorAll('input[name="' + q + '"]').forEach(inp => {
+      inp.disabled = true;
+      if (inp.value === answers[q]) inp.parentElement.classList.add("correct");
     });
-
-    if (selected && selected.value === answers[q]) {
-      score++;
+    exp.innerHTML = "✅ Correct. " + explanations[q];
+  } else {
+    qTries[q] = (qTries[q] || 0) + 1;
+    e.target.disabled = true;
+    e.target.checked = false;
+    e.target.parentElement.classList.add("incorrect");
+    if (qTries[q] === 1) {
+      exp.innerHTML = "<b>Pass this question to the next person.</b> That option is out — someone else should choose from the remaining answers.";
+    } else {
+      qLocked[q] = true;
+      document.querySelectorAll('input[name="' + q + '"]').forEach(inp => {
+        inp.disabled = true;
+        if (inp.value === answers[q]) inp.parentElement.classList.add("correct");
+      });
+      exp.innerHTML = "❌ Incorrect. " + explanations[q];
     }
-
-    exp.innerHTML = explanations[q];
   }
+});
+
+function submitQuiz() {
+  for (let q in answers) {
+    if (!qLocked[q]) {
+      document.getElementById("result").innerHTML = "Please finish every question (including a second try if the first was wrong) before submitting.";
+      return;
+    }
+  }
+  let score = 0;
+  for (let q in answers) if (qEarned[q]) score++;
 
   document.getElementById("result").innerHTML =
     `Score: ${score}/6<br><br>“Blessed are those who have not seen and yet have believed.” — John 20:29 (NKJV)`;

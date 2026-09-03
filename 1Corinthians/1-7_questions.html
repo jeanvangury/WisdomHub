@@ -43,9 +43,20 @@
     ];
     function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
     shuffle(quiz);quiz.forEach(q=>shuffle(q.answers));
-    let i=0,score=0;
+    let i=0,score=0,tries=0;
     const p=progress,qel=question,ael=answers,info=document.getElementById('info');
+    function reveal(){
+    document.querySelectorAll('.opt').forEach((x,k)=>{
+    x.disabled=true;
+    if(quiz[i].answers[k].correct) x.classList.add('correct');
+    });
+    info.style.display='block';
+    info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
+    next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
+    next.style.display='inline-block';
+    }
     function load(){
+    tries=0;
     p.textContent=`Question ${i+1} of ${quiz.length}`;
     qel.textContent=quiz[i].q;ael.innerHTML='';info.style.display='none';info.innerHTML='';next.style.display='none';
     quiz[i].answers.forEach((ans, idx)=>{
@@ -53,12 +64,22 @@
     let letter=document.createElement('b');letter.textContent=String.fromCharCode(65+idx)+'. ';
     b.appendChild(letter);b.appendChild(document.createTextNode(ans.text));
     b.onclick=()=>{
-    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
-    if(ans.correct){b.classList.add('correct');score++;}else{b.classList.add('wrong');document.querySelectorAll('.opt').forEach((x,k)=>{if(quiz[i].answers[k].correct)x.classList.add('correct');});}
+    if(ans.correct){
+    b.classList.add('correct');
+    score++;
+    reveal();
+    } else {
+    b.classList.add('wrong');
+    b.disabled=true;
+    tries++;
+    if(tries===1){
     info.style.display='block';
-    info.innerHTML=`<b>📖 ${quiz[i].ref}</b><br><em>${quiz[i].verse}</em><hr><b>💡 Life Lesson:</b> ${quiz[i].life}`;
-    next.textContent = (i === quiz.length - 1) ? "See your score." : "Next Question";
-    next.style.display='inline-block';
+    info.innerHTML='<b>Pass this question to the next person.</b><br>That option is out. The question is still open — someone else should choose from the remaining answers.';
+    next.style.display='none';
+    } else {
+    reveal();
+    }
+    }
     };
     ael.appendChild(b);
     });
