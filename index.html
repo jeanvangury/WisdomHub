@@ -16,6 +16,7 @@
       --scripture: #1e3a5f;
       --growth: #a15c3e;
       --gk: #3d7a73;
+      --teens: #b85c5c;
     }
 
     * { box-sizing: border-box; }
@@ -81,10 +82,12 @@
     .jump-nav .nav-scripture { color: var(--scripture); }
     .jump-nav .nav-growth { color: var(--growth); }
     .jump-nav .nav-gk { color: var(--gk); }
+    .jump-nav .nav-teens { color: var(--teens); }
 
     .jump-nav .nav-scripture:hover { border-bottom-color: var(--scripture); }
     .jump-nav .nav-growth:hover { border-bottom-color: var(--growth); }
     .jump-nav .nav-gk:hover { border-bottom-color: var(--gk); }
+    .jump-nav .nav-teens:hover { border-bottom-color: var(--teens); }
 
     .jump-nav a:focus-visible {
       outline: 2px solid currentColor;
@@ -118,6 +121,7 @@
     }
 
     #scripture h2 { color: var(--scripture); }
+    #teen-lessons h2 { color: var(--teens); }
     #personal-growth h2 { color: var(--growth); }
     #general-knowledge h2 { color: var(--gk); }
 
@@ -235,6 +239,12 @@
       color: var(--scripture);
     }
 
+    .card.teens {
+      background: #fde8e8;
+      border-color: #e8b4b4;
+      color: var(--teens);
+    }
+
     .card.growth {
       background: #f6ebe4;
       border-color: #e0c8b8;
@@ -248,16 +258,23 @@
     }
 
     .card.scripture:hover { border-color: var(--scripture); }
+    .card.teens:hover { border-color: var(--teens); }
     .card.growth:hover { border-color: var(--growth); }
     .card.gk:hover { border-color: var(--gk); }
 
     .card.scripture:focus-visible { outline-color: var(--scripture); }
+    .card.teens:focus-visible { outline-color: var(--teens); }
     .card.growth:focus-visible { outline-color: var(--growth); }
     .card.gk:focus-visible { outline-color: var(--gk); }
 
     .scripture .icon {
       background: rgba(30, 58, 95, 0.16);
       color: var(--scripture);
+    }
+
+    .teens .icon {
+      background: rgba(184, 92, 92, 0.18);
+      color: var(--teens);
     }
 
     .growth .icon {
@@ -357,6 +374,7 @@
     <nav aria-label="Sections">
       <ul class="jump-nav">
         <li><a href="#scripture" class="nav-scripture">Scripture</a></li>
+        <li><a href="#teen-lessons" class="nav-teens">Teen Lessons</a></li>
         <li><a href="#personal-growth" class="nav-growth">Personal growth</a></li>
         <li><a href="#general-knowledge" class="nav-gk">General knowledge</a></li>
       </ul>
@@ -520,6 +538,20 @@
             </a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="teen-lessons">
+      <h2><img src="assets/icons/scripture.png" alt="" width="36" height="36"> Teen Lessons</h2>
+      <div class="grid">
+        <a href="Teen Lessons/teen_lessons_quiz.html" class="card teens">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          </span>
+          <h3>Teen Lessons Quiz</h3>
+          <p>30 questions from recent teen lessons</p>
+          <span class="cta">Start →</span>
+        </a>
       </div>
     </section>
 
